@@ -117,11 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="password" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\png\password.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Target" xml:space="preserve">
+    <value>H4sIAAAAAAAEAM1YzW7bOBC+L7DvIOicmPlBgW4gt0idZBFsnQRR2mtBS2OHWIrUklQaP1sP+0j7CjuUqH/bkZ11uvBFHs1888sZjv758Xfw8Tnh3hMozaQY+8ejI98DEcmYicXYz8z88L3/8cOvvwSXcfLsfS35Ti0fSgo99h+NSc8I0dEjJFSPEhYpqeXcjCKZEBpLcnJ09Bs5PiaAED5ieV5wnwnDEsj/4N+JFBGkJqN8KmPg2tHxTZijejc0AZ3SCMZ+Kr+D+kYlG+W8vnfOGUUzQuBz36NCSEMNGnn2RUNolBSLMEUC5Q/LFJBvTrkGZ/xZzT7Uj6MT6wepBUuoKNNGJlsCHp+6wJCu+E7h9avAYeguMcRmab3Owzf2E/nE0POuprMJV5arF9pRLnDg5eRDJB9UBYB1Yn8H3iTjJlMwFpAZRfmBd5fNOIv+gOWD/BPEWGScN61Cu/Bdi4CkOyVTUGZ5D3Nn63Xse6QtR7qClVhDpnDkWpjTE9+7QeV0xqFKesPp0EgFv4MARQ3Ed9QYUMJiQB62nvaOrgdmOJTqsMzwuPjelD5/BrEwj2MfH33vij1DXFKcCV8Ew9OFQkZl8JKWe+BANVygiaUu+/yAR2eFd5ux0Fe1f4vvFItqWyFiCcUjeqfwyXWY974XRtSavSpDTfSA1CW8sbDxpCu9TWHnAj+nsNkOhc3esLAzDI2gyf4rJaVaf5cq3rsig/B7VxIpwHB/MyzZ9qRurnKcjIYyTKbTcy6ZG3u9aseidgWvnc1tiwvAEExzHOCxqdUXQ3Tk5gTZLO4OXU/a0Ve5WDlTz3dSDPjyIkDW3ASCKU1TzFzjZuAoXlhcCyaH4fYjMykwSKRXTM7K2koTniy6gM5bVI2WXjGlDWaczqhN8CROemxV6tbEtVTTyk63odThLtntsztRq8Z3F6GO3BU6k2BTyP2CyozyntCTy29jlFO1YuxOJM8SsW50b5J2g7QJ4EjDMVpjsonUejEcz43KJpIjDcdwg7CJ4Uh9jIB0UtLNOumlvTNBukU0qMSKk/qaCluJMKDC1sitiyXrVFh/hm6SridaE6OmDkeqR1YTqaYORypmUhOloAxHaA2cJlDrxRvXWq/Rd1kq7VXD7zT2wDXZl/fAXtctWOxlE/tXbDvudBn+xUf2/Sh/nHCGDtccUyrYHLQpbnT+u9G7zjb5/9nsiNYxH7LevfmuxWxEX7x0brmstNYrjju8gWfTRNlxe4rxuTgZjZXk6HW71K7mtVal+E1XpTffW/ZSJN1VZddEdDeRXXGai8auGCv2iJ1qdruton+DHbA6rN8cik6Mls8kOlHYWG4br9sqViG/buHoz5uANL9OBheg2aKGsN8qBUS2kdegJc+1mMsyoehT06KSpZPvKRiKCabnyrA5jQy+jkDrfEn9SnmGLJfJDOJrcZuZNDPnWkMy4601PiCb9edbVdvm4Da1//R/4QKayWyN3opPGeNxZffViqpcA2HrzzUGtAqXdIRbLCukGykGArnwXUAKwraVB0hSjmD6VoT0CXaxDcvrMyxotCxvDetBXk5EO+zBBaMLRRPtMGp5+8Wd2E/uH/4FSUGdlKQXAAA=</value>
   </data>
-  <data name="user_center" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\user center.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

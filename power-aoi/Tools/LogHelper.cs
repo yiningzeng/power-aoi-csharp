@@ -8,8 +8,8 @@ namespace power_aoi
 {
     public class LogHelper
     {
-        public static readonly log4net.ILog loginfo = log4net.LogManager.GetLogger("loginfo");
-        public static readonly log4net.ILog logerror = log4net.LogManager.GetLogger("logerror");
+        static readonly log4net.ILog loginfo = log4net.LogManager.GetLogger("loginfo");
+        static readonly log4net.ILog logerror = log4net.LogManager.GetLogger("logerror");
         public static void WriteLog(string info)
         {
             if (loginfo.IsInfoEnabled)

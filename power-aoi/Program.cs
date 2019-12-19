@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace power_aoi
 {
+
     static class Program
     {
         /// <summary>
@@ -18,7 +19,15 @@ namespace power_aoi
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            DB.init();
+            Login login = new Login();
+            DialogResult dialogResult = login.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+    
+                Application.Run(new Main());
+            }
         }
     }
 }
