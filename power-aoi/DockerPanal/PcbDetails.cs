@@ -100,6 +100,52 @@ namespace power_aoi.DockerPanal
             //if (DB.GetAoiModel().SaveChanges() > 0) { }
         }
 
+        /// <summary>
+        /// ListView加载数据
+        /// </summary>
+        /// <param name="pcb"></param>
+        public void loadData(Pcb pcb)
+        {
+            gbPcb.Text = $"板号: {pcb.PcbNumber}";
+            foreach (var item in pcb.results)
+            {
+                ListViewItem li = new ListViewItem();
+                li.BackColor = Color.Red;
+                li.SubItems[0].Text = item.PcbId.ToString();
+                li.SubItems.Add(item.IsFront.ToString());
+                li.SubItems.Add(item.PartImagePath);
+                li.SubItems.Add(item.Id.ToString());
+                li.SubItems.Add(item.Area);
+                li.SubItems.Add(item.NgType);
+                li.SubItems.Add("未判定");
+
+                lvList.Items.Add(li);
+            }
+            lvList.Items[0].Selected = true;
+        }
+
+        /// <summary>
+        /// ListView跳转到下一行
+        /// </summary>
+        /// <param name="res"></param>
+        public void lvListNextItemSelect(string res)
+        {
+            try
+            {
+                int index = lvList.SelectedItems[0].Index;
+                lvList.Items[index].BackColor = Color.Green;
+
+                lvList.Items[index].SubItems[6].Text = res;
+                if (index + 1 >= lvList.Items.Count)
+                {
+                    main.doLeisure();
+                }
+                lvList.Items[index].Selected = false;
+                lvList.Items[index + 1].Selected = true;
+            }
+            catch(Exception err) { }
+        }
+
         private void lvList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lvList.SelectedItems.Count != 0)

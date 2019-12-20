@@ -230,6 +230,10 @@
     <Compile Include="Migrations\201912201001341_initial1.Designer.cs">
       <DependentUpon>201912201001341_initial1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912201008577_initial2.cs" />
+    <Compile Include="Migrations\201912201008577_initial2.Designer.cs">
+      <DependentUpon>201912201008577_initial2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AoiModel.cs" />
     <Compile Include="Model\JsonData.cs" />
@@ -267,6 +271,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912201001341_initial1.resx">
       <DependentUpon>201912201001341_initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912201008577_initial2.resx">
+      <DependentUpon>201912201008577_initial2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

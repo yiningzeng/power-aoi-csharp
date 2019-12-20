@@ -175,7 +175,7 @@
             // 
             // colResult
             // 
-            this.colResult.Text = "检验结果";
+            this.colResult.Text = "人工复验";
             this.colResult.Width = 200;
             // 
             // colPcbId

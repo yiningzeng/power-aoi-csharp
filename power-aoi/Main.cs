@@ -48,23 +48,7 @@ namespace power_aoi
                 {
 
                     JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(message, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                    pcbDetails.gbPcb.Text = $"板号: {lst2.data.PcbNumber}";
-                    Pcb pcb = lst2.data;
-
-                    foreach (var item in pcb.results)
-                    {
-                        ListViewItem li = new ListViewItem();
-                        li.SubItems[0].Text = item.PcbId.ToString();
-                        li.SubItems.Add(item.IsFront.ToString());
-                        li.SubItems.Add(item.PartImagePath);
-                        li.SubItems.Add(item.Id.ToString());
-                        li.SubItems.Add(item.Area);
-                        li.SubItems.Add(item.NgType);
-                        li.SubItems.Add(item.ResultString);
-                 
-                        pcbDetails.lvList.Items.Add(li);
-                    }
-                    pcbDetails.lvList.Items[0].Selected = true;
+                    pcbDetails.loadData(lst2.data);
                 }));
                 isLeisure = false;
             }
@@ -132,37 +116,22 @@ namespace power_aoi
         /// <returns></returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            try
+            // if it is a hotkey, return true; otherwise, return false
+            switch (keyData)
             {
-                int index = 0;
-                // if it is a hotkey, return true; otherwise, return false
-                switch (keyData)
-                {
-                    case Keys.Left:
-                    case Keys.Right:
-                    case Keys.Up:
-                        pcbDetails.btnNG.Focus();
-                        index = pcbDetails.lvList.SelectedItems[0].Index;
-                        if (index + 1 >= pcbDetails.lvList.Items.Count) return true;
-                        pcbDetails.lvList.Items[index].Selected = false;
-                        pcbDetails.lvList.Items[index + 1].Selected = true;
-                        return true;
-                    case Keys.Down:
-                        pcbDetails.btnOK.Focus();
-                        index = pcbDetails.lvList.SelectedItems[0].Index;
-                        if (index + 1 >= pcbDetails.lvList.Items.Count) return true;
-                        pcbDetails.lvList.Items[index].Selected = false;
-                        pcbDetails.lvList.Items[index + 1].Selected = true;
-                        return true;
-                    default:
-                        break;
-                }
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Up:
+                    pcbDetails.btnNG.Focus();
+                    pcbDetails.lvListNextItemSelect("NG");
+                    return true;
+                case Keys.Down:
+                    pcbDetails.btnOK.Focus();
+                    pcbDetails.lvListNextItemSelect("OK");
+                    return true;
+                default:
+                    break;
             }
-            catch(Exception err)
-            {
-                return base.ProcessCmdKey(ref msg, keyData);
-            }
-           
             return base.ProcessCmdKey(ref msg, keyData);
         }
 

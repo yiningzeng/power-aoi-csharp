@@ -27,10 +27,6 @@ namespace power_aoi.Model
         [Description("对应的pcb板id")]
         public long PcbId { get; set; }
 
-        [Column(name: "element_number")]
-        [Description("元件位号")]
-        public string ElementNumber { get; set; }
-
         [Column(name: "area")]
         [Description("区域")]
         public string Area { get; set; }
@@ -48,7 +44,7 @@ namespace power_aoi.Model
         public int IsMisjudge { get; set; } = 0;
 
         [Column(name: "result_string")]
-        [Description("校验结果")]
+        [Description("人工复验结果")]
         public string ResultString { get; set; }
 
         [Column(name: "part_image_path")]
