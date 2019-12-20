@@ -3,16 +3,16 @@ namespace power_aoi.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial2 : DbMigration
+    public partial class initial1 : DbMigration
     {
         public override void Up()
         {
-            AlterColumn("dbo.results", "is_misjudge", c => c.Int(nullable: false));
+            AddColumn("dbo.results", "element_number", c => c.String(unicode: false));
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.results", "is_misjudge", c => c.String(unicode: false));
+            DropColumn("dbo.results", "element_number");
         }
     }
 }

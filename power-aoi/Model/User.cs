@@ -16,13 +16,25 @@ namespace power_aoi
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
+
+        [Column(name: "group_id")]
+        [Description("组id")]
+        public int GroupId { get; set; }
+
+        [Column(name: "username")]
         [Description("用户名")]
-        public string username { get; set; }
+        public string Username { get; set; }
+
+        [Column(name: "password")]
         [Description("密码")]
-        public string password { get; set; }
-        [Description("类型")]
-        public string type { get; set; }
+        public string Password { get; set; }
+
+        [Column(name: "type")]
+        [Description("类型，0禁止登录 1可以登录")]
+        public int Type { get; set; }
+
+        [Column(name: "create_time")]
         [Description("创建时间")]
-        public DateTime create_time { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 }

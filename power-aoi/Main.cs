@@ -1,5 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using FubarDev.FtpServer;
+using FubarDev.FtpServer.FileSystem.DotNet;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using power_aoi.DockerPanal;
+using power_aoi.Model;
 using power_aoi.Tools;
 using RabbitMQ.Client;
 using System;
@@ -28,20 +32,51 @@ namespace power_aoi
         private PartOfPcb partOfPcb;
         private PcbDetails pcbDetails;
 
+        public bool isLeisure = true;
+        public IModel mainChannel;
+
         // 队列处理回调！！所有的界面操作方法写在这个函数里
         public void doWork(IModel channel, string message)
         {
+            mainChannel = channel;
             //处理完成，手动确认
             //channel.BasicAck(Rabbitmq.deliveryTag, false);
-            Thread.Sleep(1000);
-            pcbDetails.Invoke((Action)(() =>
+            //Thread.Sleep(1000);
+            if (isLeisure)
             {
-                pcbDetails.gbPcb.Text = $"{message} is news, deal it";
-                string jsonText = @"{""input"" : ""value"", ""output"" : ""result""}";
-                JsonReader reader = new JsonTextReader(new StringReader(jsonText));
-                //pcbDetails.lvList.DataBindings
-            }));
-            channel.BasicAck(Rabbitmq.deliveryTag, false);
+                pcbDetails.BeginInvoke((Action)(() =>
+                {
+
+                    JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(message, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                    pcbDetails.gbPcb.Text = $"板号: {lst2.data.PcbNumber}";
+                    Pcb pcb = lst2.data;
+
+                    foreach (var item in pcb.results)
+                    {
+                        ListViewItem li = new ListViewItem();
+                        li.SubItems[0].Text = item.PcbId.ToString();
+                        li.SubItems.Add(item.IsFront.ToString());
+                        li.SubItems.Add(item.PartImagePath);
+                        li.SubItems.Add(item.Id.ToString());
+                        li.SubItems.Add(item.Area);
+                        li.SubItems.Add(item.NgType);
+                        li.SubItems.Add(item.ResultString);
+                 
+                        pcbDetails.lvList.Items.Add(li);
+                    }
+                    pcbDetails.lvList.Items[0].Selected = true;
+                }));
+                isLeisure = false;
+            }
+            else
+            {
+                channel.BasicNack(Rabbitmq.deliveryTag, false, true);
+            }
+
+            // isLeisure = true; // 这个需要在pcbDetails页面最后一个执行完成后执行
+            // mainChannel.BasicAck(Rabbitmq.deliveryTag, false); // 这个需要在pcbDetails页面最后一个执行完成后执行
+
+
             //htmlLabel1.Invoke((Action)(() =>
             //{
             //    htmlLabel1.Text = $"{message} is news, deal it";
@@ -49,12 +84,19 @@ namespace power_aoi
             //channel.BasicNack(Rabbitmq.deliveryTag, false, true);
         }
 
+        public void doLeisure()
+        {
+            isLeisure = true; 
+            mainChannel.BasicAck(Rabbitmq.deliveryTag, false);
+            pcbDetails.lvList.Items.Clear();
+            pcbDetails.gbPcb.Text = $"板号: ";
+        }
+
         public Main()
         {
             InitializeComponent();
 
-            doWorkD = new RabbitmqMessageCallback(doWork);
-            Rabbitmq.run(doWorkD);
+  
 
             //ShowDockContent();
             //测试代码
@@ -78,6 +120,8 @@ namespace power_aoi
             //dockPanel1.ResumeLayout(true, true);
 
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+
+
         }
 
         /// <summary>
@@ -88,25 +132,37 @@ namespace power_aoi
         /// <returns></returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            // if it is a hotkey, return true; otherwise, return false
-            switch (keyData)
+            try
             {
-                //case Keys.Left:
-                //case Keys.Right:
-                //case Keys.Up:
-                //    btnNg.Focus();
-                //    btnNg.PerformClick();
-                //    return true;
-                //case Keys.Down:
-                //    //焦点定位到控件button_num_0上，即数字0键上
-                //    btnOk.Focus();
-                //    //执行按钮点击操作
-                //    btnOk.PerformClick();
-                //    return true;
-                //......
-                default:
-                    break;
+                int index = 0;
+                // if it is a hotkey, return true; otherwise, return false
+                switch (keyData)
+                {
+                    case Keys.Left:
+                    case Keys.Right:
+                    case Keys.Up:
+                        pcbDetails.btnNG.Focus();
+                        index = pcbDetails.lvList.SelectedItems[0].Index;
+                        if (index + 1 >= pcbDetails.lvList.Items.Count) return true;
+                        pcbDetails.lvList.Items[index].Selected = false;
+                        pcbDetails.lvList.Items[index + 1].Selected = true;
+                        return true;
+                    case Keys.Down:
+                        pcbDetails.btnOK.Focus();
+                        index = pcbDetails.lvList.SelectedItems[0].Index;
+                        if (index + 1 >= pcbDetails.lvList.Items.Count) return true;
+                        pcbDetails.lvList.Items[index].Selected = false;
+                        pcbDetails.lvList.Items[index + 1].Selected = true;
+                        return true;
+                    default:
+                        break;
+                }
             }
+            catch(Exception err)
+            {
+                return base.ProcessCmdKey(ref msg, keyData);
+            }
+           
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -130,7 +186,7 @@ namespace power_aoi
         {
             twoSidesPcb = new TwoSidesPcb() { TabText = "正反图", CloseButton = false, CloseButtonVisible = false };
             partOfPcb = new PartOfPcb(this, twoSidesPcb) { TabText = "局部图", CloseButton = false, CloseButtonVisible = false };
-            pcbDetails = new PcbDetails(partOfPcb, twoSidesPcb) { TabText = "结果列表", CloseButton = false, CloseButtonVisible = false };
+            pcbDetails = new PcbDetails(this,partOfPcb, twoSidesPcb) { TabText = "结果列表", CloseButton = false, CloseButtonVisible = false };
         }
 
         public void ttt(string s)
@@ -152,7 +208,7 @@ namespace power_aoi
             }
             else if (persistString == typeof(PcbDetails).ToString())
             {
-                pcbDetails = new PcbDetails(partOfPcb, twoSidesPcb) { TabText = "结果列表", CloseButton = false, CloseButtonVisible = false };
+                pcbDetails = new PcbDetails(this, partOfPcb, twoSidesPcb) { TabText = "结果列表", CloseButton = false, CloseButtonVisible = false };
                 return pcbDetails;
             }
             else return null;
@@ -174,20 +230,24 @@ namespace power_aoi
 
             if (File.Exists(configFile))
                 dockPanel1.LoadFromXml(configFile, m_deserializeDockContent);
+
+            #region 队列
+            doWorkD = new RabbitmqMessageCallback(doWork);
+            Rabbitmq.run(doWorkD);
+            #endregion
         }
 
 
-        private void 界面重置ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void uiToolStripMenuItem_Click(object sender, EventArgs e)
         {
             dockPanel1.SuspendLayout(true);
 
             CloseAllDocuments();
 
-            CreateStandardControls();
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "default.config");
 
-            twoSidesPcb.Show(dockPanel1, DockState.DockRight);
-            partOfPcb.Show(dockPanel1, DockState.DockLeft);
-            pcbDetails.Show(dockPanel1, DockState.DockBottom);
+            if (File.Exists(configFile))
+                dockPanel1.LoadFromXml(configFile, m_deserializeDockContent);
 
             dockPanel1.ResumeLayout(true, true);
         }

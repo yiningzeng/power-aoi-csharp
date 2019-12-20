@@ -34,6 +34,7 @@
             this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.界面重置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,10 +62,18 @@
             // 
             // 界面重置ToolStripMenuItem
             // 
+            this.界面重置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uiToolStripMenuItem});
             this.界面重置ToolStripMenuItem.Name = "界面重置ToolStripMenuItem";
-            this.界面重置ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.界面重置ToolStripMenuItem.Text = "界面重置";
-            this.界面重置ToolStripMenuItem.Click += new System.EventHandler(this.界面重置ToolStripMenuItem_Click);
+            this.界面重置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.界面重置ToolStripMenuItem.Text = "设置";
+            // 
+            // uiToolStripMenuItem
+            // 
+            this.uiToolStripMenuItem.Name = "uiToolStripMenuItem";
+            this.uiToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uiToolStripMenuItem.Text = "界面恢复初始化";
+            this.uiToolStripMenuItem.Click += new System.EventHandler(this.uiToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -95,5 +104,6 @@
         private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 界面重置ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uiToolStripMenuItem;
     }
 }

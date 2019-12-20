@@ -42,7 +42,7 @@ namespace power_aoi
                 lbResult.Visible = true;
                 lbResult.Text = "登录中......";
                 string md5Pass = Utils.GenerateMD5(tbPassword.Text);
-                User user = DB.GetAoiModel().Users.Where(u => u.username == tbUsername.Text && u.password == md5Pass).FirstOrDefault();
+                User user = DB.GetAoiModel().users.Where(u => u.Username == tbUsername.Text && u.Password == md5Pass).FirstOrDefault();
                 if (user != null)
                 {
                     this.DialogResult = DialogResult.OK;

@@ -21,9 +21,26 @@ namespace power_aoi.Model
         [Description("板号")]
         public string PcbNumber { get; set; }
 
-        [Column(name: "pcb_other_number")]
-        [Description("料号")]
-        public string PcbOtherNumber { get; set; }
+        [Column(name: "pcb_name")]
+        [Description("PCB名称")]
+        public string PcbName { get; set; }
+
+        [Column(name: "pcb_width")]
+        [Description("PCB名称")]
+        public int PcbWidth { get; set; }
+
+        [Column(name: "pcb_height")]
+        [Description("PCB名称")]
+        public int PcbHeight { get; set; }
+
+        [Column(name: "pcb_childen_number")]
+        [Description("PCB名称")]
+        public int PcbChildenNumber { get; set; }
+
+        [Column(name: "surface_number")]
+        [Description("检测的面数")]
+        public int SurfaceNumber { get; set; }
+        
 
         [Column(name: "pcb_path")]
         [Description("对应的FTP保存的地址")]

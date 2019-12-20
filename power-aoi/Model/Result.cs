@@ -23,13 +23,17 @@ namespace power_aoi.Model
         [Description("是否正面,0不是，1是")]
         public int IsFront { get; set; }
 
-        [Column(name: "pdb_id")]
+        [Column(name: "pcb_id")]
         [Description("对应的pcb板id")]
         public long PcbId { get; set; }
 
         [Column(name: "element_number")]
         [Description("元件位号")]
         public string ElementNumber { get; set; }
+
+        [Column(name: "area")]
+        [Description("区域")]
+        public string Area { get; set; }
 
         [Column(name: "region")]
         [Description("范围 坐标")]

@@ -19,65 +19,67 @@ namespace power_aoi.DockerPanal
     {
         PartOfPcb partOfPcb;
         TwoSidesPcb twoSidesPcb;
+        Main main;
         //public PcbDetails()
         //{
         //    InitializeComponent();
         //}
 
-        public PcbDetails(PartOfPcb pPcb, TwoSidesPcb tPcb)
+        public PcbDetails(Main m, PartOfPcb pPcb, TwoSidesPcb tPcb)
         {
             InitializeComponent();
             partOfPcb = pPcb;
             twoSidesPcb = tPcb;
+            main = m;
 
-            #region:序列化字符串
+            //#region:序列化字符串
 
-            //List<long> aaaa = new List<long>();
-            //for (int i = 0; i < 1000; i++)
+            ////List<long> aaaa = new List<long>();
+            ////for (int i = 0; i < 1000; i++)
+            ////{
+            ////    aaaa.Add(snowflake.nextId());
+            ////}
+
+            //Snowflake snowflake = new Snowflake(1);
+            //List<Result> lst = new List<Result>();
+            //Result result = new Result();
+            //result.Id = snowflake.nextId();
+            //result.Region = "fuckckckckc";
+            ////result.PcbId = 1;
+            //lst.Add(result);
+            //result = new Result();
+            //result.Id = snowflake.nextId();
+            //result.Region = "我奥数的撒娇";
+            ////result.PcbId = 1;
+            //lst.Add(result);
+            //result = new Result();
+            //result.Id = snowflake.nextId();
+            ////result.PcbId = 1;
+            //result.Region = "空空空空";
+            //lst.Add(result);
+            ////省略赋值
+
+            //JsonData<Pcb> obj = new JsonData<Pcb>();
+            //obj.data = new Pcb() { results = lst };
+
+            ////序列化为json
+            //string json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings() { /*NullValueHandling = NullValueHandling.Ignore*/ });
+
+            ////反序列化
+            //JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(json, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+            //#endregion
+
+            //for (int i = 20; i >= 1; i--)
             //{
-            //    aaaa.Add(snowflake.nextId());
+            //    ListViewItem li = new ListViewItem();
+            //    li.SubItems[0].Text = i.ToString();
+            //    li.SubItems.Add("aaa");
+            //    li.SubItems.Add("25");
+            //    li.SubItems.Add("11223344");
+            //    li.SubItems.Add(i.ToString());
+            //    this.lvList.Items.Add(li);
             //}
-
-            Snowflake snowflake = new Snowflake(1);
-            List<Result> lst = new List<Result>();
-            Result result = new Result();
-            result.Id = snowflake.nextId();
-            result.Region = "fuckckckckc";
-            //result.PcbId = 1;
-            lst.Add(result);
-            result = new Result();
-            result.Id = snowflake.nextId();
-            result.Region = "我奥数的撒娇";
-            //result.PcbId = 1;
-            lst.Add(result);
-            result = new Result();
-            result.Id = snowflake.nextId();
-            //result.PcbId = 1;
-            result.Region = "空空空空";
-            lst.Add(result);
-            //省略赋值
-
-            JsonData<Pcb> obj = new JsonData<Pcb>();
-            obj.data = new Pcb() { results = lst };
-
-            //序列化为json
-            string json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-
-            //反序列化
-            JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(json, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-            #endregion
-
-            lvList.FullRowSelect = true;
-            for (int i = 20; i >= 1; i--)
-            {
-                ListViewItem li = new ListViewItem();
-                li.SubItems[0].Text = i.ToString();
-                li.SubItems.Add("aaa");
-                li.SubItems.Add("25");
-                li.SubItems.Add("11223344");
-                li.SubItems.Add(i.ToString());
-                this.lvList.Items.Add(li);
-            }
+            //this.lvList.Items[0].Selected = true;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -96,6 +98,18 @@ namespace power_aoi.DockerPanal
             //};
             //DB.GetAoiModel().movies.AddRange(lstmovie);
             //if (DB.GetAoiModel().SaveChanges() > 0) { }
+        }
+
+        private void lvList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvList.SelectedItems.Count != 0)
+            {
+                if (lvList.SelectedItems[0].Index + 1 > lvList.Items.Count)
+                {
+                    main.doLeisure();
+                }
+            }
+      
         }
     }
 }
