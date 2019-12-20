@@ -1,5 +1,6 @@
 ﻿namespace power_aoi
 {
+    using power_aoi.Model;
     using System;
     using System.Data.Entity;
     using System.Linq;
@@ -20,8 +21,9 @@
 
         //为您要在模型中包含的每种实体类型都添加 DbSet。有关配置和使用 Code First  模型
         //的详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=390109。
-        public DbSet<movie> movies { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Pcb> pcbs { get; set; }
+        public DbSet<Result> results { get; set; }
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }
 

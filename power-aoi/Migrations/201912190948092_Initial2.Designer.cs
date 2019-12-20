@@ -13,7 +13,7 @@ namespace power_aoi.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201912130721028_Initial2"; }
+            get { return "201912190948092_Initial2"; }
         }
         
         string IMigrationMetadata.Source

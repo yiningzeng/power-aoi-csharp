@@ -1,4 +1,5 @@
-﻿using power_aoi.DockerPanal;
+﻿using Newtonsoft.Json;
+using power_aoi.DockerPanal;
 using power_aoi.Tools;
 using RabbitMQ.Client;
 using System;
@@ -9,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -17,18 +19,6 @@ namespace power_aoi
 {
     public partial class Main : DockContent
     {
-        // 队列处理回调！！所有的界面操作方法写在这个函数里
-        public void doWork(IModel channel, string message)
-        {
-            //处理完成，手动确认
-            //channel.BasicAck(Rabbitmq.deliveryTag, false);
-            //Thread.Sleep(1000);
-            //htmlLabel1.Invoke((Action)(() =>
-            //{
-            //    htmlLabel1.Text = $"{message} is news, deal it";
-            //}));
-            //channel.BasicNack(Rabbitmq.deliveryTag, false, true);
-        }
         public delegate void RabbitmqMessageCallback(IModel channel, string message);
         public RabbitmqMessageCallback doWorkD;
 
@@ -37,6 +27,28 @@ namespace power_aoi
         private TwoSidesPcb twoSidesPcb;
         private PartOfPcb partOfPcb;
         private PcbDetails pcbDetails;
+
+        // 队列处理回调！！所有的界面操作方法写在这个函数里
+        public void doWork(IModel channel, string message)
+        {
+            //处理完成，手动确认
+            //channel.BasicAck(Rabbitmq.deliveryTag, false);
+            Thread.Sleep(1000);
+            pcbDetails.Invoke((Action)(() =>
+            {
+                pcbDetails.gbPcb.Text = $"{message} is news, deal it";
+                string jsonText = @"{""input"" : ""value"", ""output"" : ""result""}";
+                JsonReader reader = new JsonTextReader(new StringReader(jsonText));
+                //pcbDetails.lvList.DataBindings
+            }));
+            channel.BasicAck(Rabbitmq.deliveryTag, false);
+            //htmlLabel1.Invoke((Action)(() =>
+            //{
+            //    htmlLabel1.Text = $"{message} is news, deal it";
+            //}));
+            //channel.BasicNack(Rabbitmq.deliveryTag, false, true);
+        }
+
         public Main()
         {
             InitializeComponent();
@@ -153,7 +165,7 @@ namespace power_aoi
                 dockPanel1.SaveAsXml(configFile);
             else if (File.Exists(configFile)) // 不需要保存窗体状态时，删除配置文件。
                 File.Delete(configFile);
-            Application.Exit();
+            Environment.Exit(0);
         }
 
         private void Form1_Load(object sender, EventArgs e)

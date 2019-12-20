@@ -107,8 +107,8 @@
     <Reference Include="Nest, Version=7.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
       <HintPath>..\packages\NEST.7.4.2\lib\net461\Nest.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NGettext, Version=0.6.1.0, Culture=neutral, PublicKeyToken=08d3d1c89dfd2985, processorArchitecture=MSIL">
       <HintPath>..\packages\NGettext.0.6.3\lib\net46\NGettext.dll</HintPath>
@@ -222,31 +222,34 @@
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912130639479_Initial.cs" />
-    <Compile Include="Migrations\201912130639479_Initial.Designer.cs">
-      <DependentUpon>201912130639479_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201912190837331_Initial.cs" />
+    <Compile Include="Migrations\201912190837331_Initial.Designer.cs">
+      <DependentUpon>201912190837331_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912130719592_Initial1.cs" />
-    <Compile Include="Migrations\201912130719592_Initial1.Designer.cs">
-      <DependentUpon>201912130719592_Initial1.cs</DependentUpon>
+    <Compile Include="Migrations\201912190919226_Initial1.cs" />
+    <Compile Include="Migrations\201912190919226_Initial1.Designer.cs">
+      <DependentUpon>201912190919226_Initial1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912130721028_Initial2.cs" />
-    <Compile Include="Migrations\201912130721028_Initial2.Designer.cs">
-      <DependentUpon>201912130721028_Initial2.cs</DependentUpon>
+    <Compile Include="Migrations\201912190948092_Initial2.cs" />
+    <Compile Include="Migrations\201912190948092_Initial2.Designer.cs">
+      <DependentUpon>201912190948092_Initial2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912130727307_Initial3.cs" />
-    <Compile Include="Migrations\201912130727307_Initial3.Designer.cs">
-      <DependentUpon>201912130727307_Initial3.cs</DependentUpon>
+    <Compile Include="Migrations\201912191042446_Initial3.cs" />
+    <Compile Include="Migrations\201912191042446_Initial3.Designer.cs">
+      <DependentUpon>201912191042446_Initial3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AoiModel.cs" />
-    <Compile Include="Model\Movie.cs" />
+    <Compile Include="Model\JsonData.cs" />
+    <Compile Include="Model\Pcb.cs" />
+    <Compile Include="Model\Result.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Tools\DB.cs" />
     <Compile Include="Tools\LogHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Rabbitmq.cs" />
+    <Compile Include="Tools\Snowflake.cs" />
     <Compile Include="Tools\Utils.cs" />
     <EmbeddedResource Include="DockerPanal\PcbDetails.resx">
       <DependentUpon>PcbDetails.cs</DependentUpon>
@@ -266,17 +269,17 @@
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912130639479_Initial.resx">
-      <DependentUpon>201912130639479_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912190837331_Initial.resx">
+      <DependentUpon>201912190837331_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912130719592_Initial1.resx">
-      <DependentUpon>201912130719592_Initial1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912190919226_Initial1.resx">
+      <DependentUpon>201912190919226_Initial1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912130721028_Initial2.resx">
-      <DependentUpon>201912130721028_Initial2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912190948092_Initial2.resx">
+      <DependentUpon>201912190948092_Initial2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912130727307_Initial3.resx">
-      <DependentUpon>201912130727307_Initial3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912191042446_Initial3.resx">
+      <DependentUpon>201912191042446_Initial3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
