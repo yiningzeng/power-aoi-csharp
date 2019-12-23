@@ -1,4 +1,5 @@
-﻿using FubarDev.FtpServer;
+﻿using Amib.Threading;
+using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -9,7 +10,10 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.Entity.Core;
+using System.Data.Entity.Infrastructure;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -44,12 +48,66 @@ namespace power_aoi
             //Thread.Sleep(1000);
             if (isLeisure)
             {
+                // 反序列化json
+                JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(message, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+
+                #region 开启线程更新数据库
+                SmartThreadPool smartThreadPool = new SmartThreadPool();
+                Action<Pcb> t = (pcb) =>
+                {
+                    lock (DB._db)
+                    {
+                        string res = "";
+                        try
+                        {
+                            DB._db.pcbs.Add(pcb);
+                            DB._db.results.AddRange(pcb.results);
+                            if (DB._db.SaveChanges() > 0) { res = pcb.PcbNumber + "[已入库]"; }
+                            else { res = pcb.PcbNumber + "[入库失败]"; }
+                        }
+                        catch (Exception er)//UpdateException
+                        {
+
+                            res = pcb.PcbNumber + "[入库失败,ID冲突]";
+                        }
+
+                        this.BeginInvoke((Action)(() =>
+                            {
+                                this.Text = res;
+                            }));
+
+                        #region 加载图片
+                        try
+                        {
+                            twoSidesPcb.BeginInvoke((Action)(() =>
+                            {
+                                twoSidesPcb.showFrontImg(pcb.PcbPath + "/front.jpg");
+                                twoSidesPcb.showBackImg(pcb.PcbPath + "/back.jpg");
+                            }));
+                            partOfPcb.BeginInvoke((Action)(() =>
+                            {
+                                partOfPcb.showImg(pcb.PcbPath + "/" + pcb.results[0].PartImagePath);
+                            }));
+                        }
+                        catch (Exception er)
+                        {
+
+                        }
+                        #endregion
+
+                    }
+                };
+                smartThreadPool.QueueWorkItem<Pcb>(t, lst2.data);
+                #endregion
+
+                #region 加载ng列表
                 pcbDetails.BeginInvoke((Action)(() =>
                 {
-
-                    JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(message, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
                     pcbDetails.loadData(lst2.data);
                 }));
+                #endregion
+
+
                 isLeisure = false;
             }
             else
@@ -73,7 +131,23 @@ namespace power_aoi
             isLeisure = true; 
             mainChannel.BasicAck(Rabbitmq.deliveryTag, false);
             pcbDetails.lvList.Items.Clear();
-            pcbDetails.gbPcb.Text = $"板号: ";
+            pcbDetails.lbPcbNumber.Text = "";
+            pcbDetails.lbSurfaceNumber.Text = "";
+            pcbDetails.lbPcbWidth.Text = "";
+            pcbDetails.lbPcbHeight.Text = "";
+            pcbDetails.lbPcbChildenNumber.Text = "";
+            this.Text = "等待最新的校验信息...";
+
+            twoSidesPcb.BeginInvoke((Action)(() =>
+            {
+                twoSidesPcb.showFrontImg(null);
+                twoSidesPcb.showBackImg(null);
+            }));
+            partOfPcb.BeginInvoke((Action)(() =>
+            {
+                partOfPcb.showImg(null);
+            }));
+
         }
 
         public Main()

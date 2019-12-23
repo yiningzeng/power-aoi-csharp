@@ -14,8 +14,8 @@ namespace power_aoi.Model
     {
         [Description("主键")]
         [Key]
-        [Column(name:"id",TypeName ="bigint")]
-        public long Id { get; set; }
+        [Column(name:"id",TypeName = "varchar")]
+        public string Id { get; set; }
 
         [Column(name: "pcb_number")]
         [Description("板号")]

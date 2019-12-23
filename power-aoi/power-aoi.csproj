@@ -222,17 +222,9 @@
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912201000408_initial.cs" />
-    <Compile Include="Migrations\201912201000408_initial.Designer.cs">
-      <DependentUpon>201912201000408_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912201001341_initial1.cs" />
-    <Compile Include="Migrations\201912201001341_initial1.Designer.cs">
-      <DependentUpon>201912201001341_initial1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912201008577_initial2.cs" />
-    <Compile Include="Migrations\201912201008577_initial2.Designer.cs">
-      <DependentUpon>201912201008577_initial2.cs</DependentUpon>
+    <Compile Include="Migrations\201912230859411_Initial.cs" />
+    <Compile Include="Migrations\201912230859411_Initial.Designer.cs">
+      <DependentUpon>201912230859411_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AoiModel.cs" />
@@ -266,14 +258,8 @@
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912201000408_initial.resx">
-      <DependentUpon>201912201000408_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912201001341_initial1.resx">
-      <DependentUpon>201912201001341_initial1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912201008577_initial2.resx">
-      <DependentUpon>201912201008577_initial2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912230859411_Initial.resx">
+      <DependentUpon>201912230859411_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

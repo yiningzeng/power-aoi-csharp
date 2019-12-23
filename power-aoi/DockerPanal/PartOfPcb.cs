@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -22,10 +23,15 @@ namespace power_aoi.DockerPanal
             bbc = bb;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            bbc.fuck("s");
-            here_f1.ttt("ssssssssssssssssssssssssssssssssssss");
+        public void showImg(string str) {
+            if (str == null)
+            {
+                pbPart.Image = null;
+            }
+            else
+            {
+                pbPart.Image = Image.FromFile(ConfigurationManager.AppSettings["FtpPath"] + str);
+            }
         }
     }
 }

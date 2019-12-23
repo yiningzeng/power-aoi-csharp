@@ -71,7 +71,7 @@
             // uiToolStripMenuItem
             // 
             this.uiToolStripMenuItem.Name = "uiToolStripMenuItem";
-            this.uiToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uiToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.uiToolStripMenuItem.Text = "界面恢复初始化";
             this.uiToolStripMenuItem.Click += new System.EventHandler(this.uiToolStripMenuItem_Click);
             // 
@@ -86,7 +86,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "等待最新的校验信息...";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);

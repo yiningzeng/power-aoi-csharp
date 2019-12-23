@@ -17,6 +17,7 @@ namespace power_aoi.DockerPanal
 {
     public partial class PcbDetails : DockContent
     {
+        int checkedNum = 0;
         PartOfPcb partOfPcb;
         TwoSidesPcb twoSidesPcb;
         Main main;
@@ -82,23 +83,7 @@ namespace power_aoi.DockerPanal
             //this.lvList.Items[0].Selected = true;
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            
-            ////声明movie类
-            //List<movie> lstmovie = new List<movie> {
-            //    new movie{ Title="速度与激情系列1",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //    new movie{ Title="速度与激情系列2",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //    new movie{ Title="速度与激情系列3",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //    new movie{ Title="速度与激情系列4",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //    new movie{ Title="速度与激情系列5",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //    new movie{ Title="速度与激情系列6",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //    new movie{ Title="速度与激情系列7",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //    new movie{ Title="速度与激情系列8",Genre="动作",ReleaseDate=DateTime.Now,Price=50 },
-            //};
-            //DB.GetAoiModel().movies.AddRange(lstmovie);
-            //if (DB.GetAoiModel().SaveChanges() > 0) { }
-        }
+
 
         /// <summary>
         /// ListView加载数据
@@ -106,13 +91,19 @@ namespace power_aoi.DockerPanal
         /// <param name="pcb"></param>
         public void loadData(Pcb pcb)
         {
-            gbPcb.Text = $"板号: {pcb.PcbNumber}";
+            checkedNum = 0;
+            lbPcbNumber.Text = pcb.PcbNumber;
+            lbSurfaceNumber.Text = pcb.SurfaceNumber.ToString();
+            lbPcbWidth.Text = pcb.PcbWidth.ToString();
+            lbPcbHeight.Text = pcb.PcbHeight.ToString();
+            lbPcbChildenNumber.Text = pcb.PcbChildenNumber.ToString();
             foreach (var item in pcb.results)
             {
                 ListViewItem li = new ListViewItem();
                 li.BackColor = Color.Red;
                 li.SubItems[0].Text = item.PcbId.ToString();
-                li.SubItems.Add(item.IsFront.ToString());
+                li.SubItems.Add(item.IsBack.ToString());
+                li.SubItems.Add(pcb.PcbPath);
                 li.SubItems.Add(item.PartImagePath);
                 li.SubItems.Add(item.Id.ToString());
                 li.SubItems.Add(item.Area);
@@ -124,6 +115,20 @@ namespace power_aoi.DockerPanal
             lvList.Items[0].Selected = true;
         }
 
+        public bool hasListViewUncheck()
+        {
+            foreach(ListViewItem li in lvList.Items)
+            {
+                if(li.SubItems[7].Text == "未判定")
+                {
+                    li.Selected = true;
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
         /// <summary>
         /// ListView跳转到下一行
         /// </summary>
@@ -132,18 +137,51 @@ namespace power_aoi.DockerPanal
         {
             try
             {
-                int index = lvList.SelectedItems[0].Index;
-                lvList.Items[index].BackColor = Color.Green;
+                int index = 0;
+                if (lvList.SelectedItems.Count == 0)
+                {
+                    index = 0;
+                }
+                else
+                {
+                    index = lvList.SelectedItems[0].Index;
+                }
+       
+                if (res == "OK")
+                {
+                    lvList.Items[index].BackColor = Color.Green;
+                }
+                else
+                {
+                    lvList.Items[index].BackColor = Color.Yellow;
+                }
 
-                lvList.Items[index].SubItems[6].Text = res;
+
+                lvList.Items[index].SubItems[7].Text = res;
+                // 判断是否到最后一行
                 if (index + 1 >= lvList.Items.Count)
                 {
+                    #region 查询是否存在未校验的数据
+                    if (!hasListViewUncheck())
+                    {
+                        main.doLeisure();
+                        return;
+                    }
+                    #endregion
+                }
+                // 主要应用于，客户手动选了行，造成前面有些未验证
+                if(++checkedNum >= lvList.Items.Count)
+                {
                     main.doLeisure();
+                    return;
                 }
                 lvList.Items[index].Selected = false;
                 lvList.Items[index + 1].Selected = true;
+                twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[index + 1].SubItems[1].Text);
+                partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
+
             }
-            catch(Exception err) { }
+            catch (Exception err) { }
         }
 
         private void lvList_SelectedIndexChanged(object sender, EventArgs e)
@@ -156,6 +194,16 @@ namespace power_aoi.DockerPanal
                 }
             }
       
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            lvListNextItemSelect("OK");
+        }
+
+        private void btnNG_Click(object sender, EventArgs e)
+        {
+            lvListNextItemSelect("NG");
         }
     }
 }

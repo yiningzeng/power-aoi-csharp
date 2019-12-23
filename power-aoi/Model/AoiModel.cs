@@ -15,7 +15,7 @@
         //如果您想要针对其他数据库和/或数据库提供程序，请在应用程序配置文件中修改“AoiModel”
         //连接字符串。
         public AoiModel()
-            : base("name=AoiModel")
+            : base("name=Aoi")
         {
         }
 

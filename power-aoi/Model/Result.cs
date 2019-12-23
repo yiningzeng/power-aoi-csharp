@@ -16,16 +16,16 @@ namespace power_aoi.Model
     {
         [Description("主键")]
         [Key]
-        [Column(name: "id", TypeName = "bigint")]
-        public long Id { get; set; }
+        [Column(name: "id", TypeName = "varchar")]
+        public string Id { get; set; }
 
-        [Column(name: "is_front")]
-        [Description("是否正面,0不是，1是")]
-        public int IsFront { get; set; }
+        [Column(name: "is_back")]
+        [Description("是否反面,0不是，1是")]
+        public int IsBack { get; set; }
 
         [Column(name: "pcb_id")]
         [Description("对应的pcb板id")]
-        public long PcbId { get; set; }
+        public string PcbId { get; set; }
 
         [Column(name: "area")]
         [Description("区域")]
