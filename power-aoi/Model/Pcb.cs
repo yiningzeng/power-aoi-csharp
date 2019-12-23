@@ -15,13 +15,16 @@ namespace power_aoi.Model
         [Description("主键")]
         [Key]
         [Column(name:"id",TypeName = "varchar")]
+        [StringLength(50)]
         public string Id { get; set; }
 
         [Column(name: "pcb_number")]
+        [StringLength(250)]
         [Description("板号")]
         public string PcbNumber { get; set; }
 
         [Column(name: "pcb_name")]
+        [StringLength(250)]
         [Description("PCB名称")]
         public string PcbName { get; set; }
 
@@ -43,6 +46,7 @@ namespace power_aoi.Model
         
 
         [Column(name: "pcb_path")]
+        [StringLength(250)]
         [Description("对应的FTP保存的地址")]
         public string PcbPath { get; set; }
 

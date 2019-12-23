@@ -25,7 +25,9 @@ namespace power_aoi
             DialogResult dialogResult = login.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-    
+                Application.Run(new Main());
+            } else if (dialogResult == DialogResult.Yes)
+            {
                 Application.Run(new Main());
             }
         }

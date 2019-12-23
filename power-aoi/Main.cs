@@ -67,7 +67,6 @@ namespace power_aoi
                         }
                         catch (Exception er)//UpdateException
                         {
-
                             res = pcb.PcbNumber + "[入库失败,ID冲突]";
                         }
 

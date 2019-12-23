@@ -30,10 +30,11 @@
         {
             this.tbUsername = new System.Windows.Forms.TextBox();
             this.tbPassword = new System.Windows.Forms.TextBox();
-            this.btnLogin = new System.Windows.Forms.Button();
+            this.btnLoginRepair = new System.Windows.Forms.Button();
             this.lbResult = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnLoginSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -55,15 +56,15 @@
             this.tbPassword.TabIndex = 7;
             this.tbPassword.Text = "admin";
             // 
-            // btnLogin
+            // btnLoginRepair
             // 
-            this.btnLogin.Location = new System.Drawing.Point(107, 224);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(193, 23);
-            this.btnLogin.TabIndex = 8;
-            this.btnLogin.Text = "登 录";
-            this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.btnLoginRepair.Location = new System.Drawing.Point(107, 224);
+            this.btnLoginRepair.Name = "btnLoginRepair";
+            this.btnLoginRepair.Size = new System.Drawing.Size(86, 23);
+            this.btnLoginRepair.TabIndex = 8;
+            this.btnLoginRepair.Text = "登录校验";
+            this.btnLoginRepair.UseVisualStyleBackColor = true;
+            this.btnLoginRepair.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // lbResult
             // 
@@ -94,13 +95,24 @@
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
+            // btnLoginSearch
+            // 
+            this.btnLoginSearch.Location = new System.Drawing.Point(214, 224);
+            this.btnLoginSearch.Name = "btnLoginSearch";
+            this.btnLoginSearch.Size = new System.Drawing.Size(86, 23);
+            this.btnLoginSearch.TabIndex = 10;
+            this.btnLoginSearch.Text = "登录查询";
+            this.btnLoginSearch.UseVisualStyleBackColor = true;
+            this.btnLoginSearch.Click += new System.EventHandler(this.btnLoginSearch_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 329);
+            this.Controls.Add(this.btnLoginSearch);
             this.Controls.Add(this.lbResult);
-            this.Controls.Add(this.btnLogin);
+            this.Controls.Add(this.btnLoginRepair);
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.tbUsername);
             this.Controls.Add(this.pictureBox2);
@@ -120,7 +132,8 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.TextBox tbUsername;
         private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Button btnLoginRepair;
         private System.Windows.Forms.Label lbResult;
+        private System.Windows.Forms.Button btnLoginSearch;
     }
 }

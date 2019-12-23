@@ -25,8 +25,8 @@ namespace power_aoi
             switch (keyData)
             {
                 case Keys.Enter:
-                    btnLogin.Focus();
-                    btnLogin.PerformClick();
+                    btnLoginRepair.Focus();
+                    btnLoginRepair.PerformClick();
                     return true;
                 //......
                 default:
@@ -46,6 +46,33 @@ namespace power_aoi
                 if (user != null)
                 {
                     this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    lbResult.Text = "用户名或密码错误";
+                    lbResult.Visible = true;
+                }
+            }
+            catch (Exception err)
+            {
+                lbResult.Text = "连接数据库出错";
+                lbResult.Visible = true;
+                LogHelper.WriteLog("Login error", err);
+            }
+        }
+
+        private void btnLoginSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lbResult.Visible = true;
+                lbResult.Text = "登录中......";
+                string md5Pass = Utils.GenerateMD5(tbPassword.Text);
+                User user = DB._db.users.Where(u => u.Username == tbUsername.Text && u.Password == md5Pass).FirstOrDefault();
+                if (user != null)
+                {
+                    this.DialogResult = DialogResult.Yes;
                     this.Close();
                 }
                 else

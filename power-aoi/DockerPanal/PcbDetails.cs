@@ -146,18 +146,26 @@ namespace power_aoi.DockerPanal
                 {
                     index = lvList.SelectedItems[0].Index;
                 }
-       
+
                 if (res == "OK")
                 {
                     lvList.Items[index].BackColor = Color.Green;
+                    #region 更新数据库
+                    Result result = DB._db.results.Find(lvList.Items[index].SubItems[4].Text);
+                    result.ResultString = res;
+                    // 只有ok的才是误判的数据
+                    result.IsMisjudge = 1;
+                    DB._db.SaveChanges();
+                    #endregion
                 }
                 else
                 {
                     lvList.Items[index].BackColor = Color.Yellow;
                 }
-
-
                 lvList.Items[index].SubItems[7].Text = res;
+
+       
+
                 // 判断是否到最后一行
                 if (index + 1 >= lvList.Items.Count)
                 {
