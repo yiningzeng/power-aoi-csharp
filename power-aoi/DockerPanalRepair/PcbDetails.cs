@@ -91,7 +91,11 @@ namespace power_aoi.DockerPanal
         /// <param name="pcb"></param>
         public void loadData(Pcb pcb)
         {
-            if (pcb.results.Count == 0) return;
+            if (pcb.results.Count == 0)
+            {
+                main.doLeisure();
+                return;
+            }
             checkedNum = 0;
             lbPcbNumber.Text = pcb.PcbNumber;
             lbSurfaceNumber.Text = pcb.SurfaceNumber.ToString();

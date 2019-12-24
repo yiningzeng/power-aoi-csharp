@@ -90,15 +90,18 @@ namespace power_aoi
                         #region 加载图片
                         try
                         {
-                            twoSidesPcb.BeginInvoke((Action)(() =>
+                            if (pcb.results.Count > 0)
                             {
-                                twoSidesPcb.showFrontImg(pcb.PcbPath + "/front.jpg");
-                                twoSidesPcb.showBackImg(pcb.PcbPath + "/back.jpg");
-                            }));
-                            partOfPcb.BeginInvoke((Action)(() =>
-                            {
-                                partOfPcb.showImg(pcb.PcbPath + "/" + pcb.results[0].PartImagePath);
-                            }));
+                                twoSidesPcb.BeginInvoke((Action)(() =>
+                                {
+                                    twoSidesPcb.showFrontImg(pcb.PcbPath + "/front.jpg");
+                                    twoSidesPcb.showBackImg(pcb.PcbPath + "/back.jpg");
+                                }));
+                                partOfPcb.BeginInvoke((Action)(() =>
+                                {
+                                    partOfPcb.showImg(pcb.PcbPath + "/" + pcb.results[0].PartImagePath);
+                                }));
+                            }
                         }
                         catch (Exception er)
                         {
