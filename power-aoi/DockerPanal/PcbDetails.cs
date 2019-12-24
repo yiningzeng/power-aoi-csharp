@@ -151,11 +151,18 @@ namespace power_aoi.DockerPanal
                 {
                     lvList.Items[index].BackColor = Color.Green;
                     #region 更新数据库
-                    Result result = DB._db.results.Find(lvList.Items[index].SubItems[4].Text);
-                    result.ResultString = res;
-                    // 只有ok的才是误判的数据
-                    result.IsMisjudge = 1;
-                    DB._db.SaveChanges();
+                    try
+                    {
+                        AoiModel aoiModel = DB.GetAoiModel();
+                        Result users = aoiModel.results.Find(lvList.Items[index].SubItems[4].Text);
+                        users.IsMisjudge = 1;
+                        int result = aoiModel.SaveChanges();
+                        aoiModel.Dispose();
+                    }
+                    catch (Exception err)
+                    {
+
+                    }
                     #endregion
                 }
                 else
@@ -164,7 +171,7 @@ namespace power_aoi.DockerPanal
                 }
                 lvList.Items[index].SubItems[7].Text = res;
 
-       
+
 
                 // 判断是否到最后一行
                 if (index + 1 >= lvList.Items.Count)
@@ -178,7 +185,7 @@ namespace power_aoi.DockerPanal
                     #endregion
                 }
                 // 主要应用于，客户手动选了行，造成前面有些未验证
-                if(++checkedNum >= lvList.Items.Count)
+                if (++checkedNum >= lvList.Items.Count)
                 {
                     main.doLeisure();
                     return;
@@ -189,7 +196,10 @@ namespace power_aoi.DockerPanal
                 partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
 
             }
-            catch (Exception err) { }
+            catch (Exception err)
+            {
+                LogHelper.WriteLog("update result", err);
+            }
         }
 
         private void lvList_SelectedIndexChanged(object sender, EventArgs e)

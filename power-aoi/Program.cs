@@ -20,7 +20,6 @@ namespace power_aoi
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            DB.init();
             Login login = new Login();
             DialogResult dialogResult = login.ShowDialog();
             if (dialogResult == DialogResult.OK)

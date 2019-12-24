@@ -8,10 +8,9 @@ namespace power_aoi
 {
     public class DB
     {
-        public static AoiModel _db;
-        public static void init()
+        public static AoiModel GetAoiModel()
         {
-            _db = new AoiModel();
+            return new AoiModel();
         }
     }
 }

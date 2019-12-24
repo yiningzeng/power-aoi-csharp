@@ -37,12 +37,13 @@ namespace power_aoi
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            AoiModel aoiModel = DB.GetAoiModel();
             try
             {
                 lbResult.Visible = true;
                 lbResult.Text = "登录中......";
                 string md5Pass = Utils.GenerateMD5(tbPassword.Text);
-                User user = DB._db.users.Where(u => u.Username == tbUsername.Text && u.Password == md5Pass).FirstOrDefault();
+                User user = aoiModel.users.Where(u => u.Username == tbUsername.Text && u.Password == md5Pass).FirstOrDefault();
                 if (user != null)
                 {
                     this.DialogResult = DialogResult.OK;
@@ -60,16 +61,21 @@ namespace power_aoi
                 lbResult.Visible = true;
                 LogHelper.WriteLog("Login error", err);
             }
+            finally
+            {
+                aoiModel.Dispose();
+            }
         }
 
         private void btnLoginSearch_Click(object sender, EventArgs e)
         {
+            AoiModel aoiModel = DB.GetAoiModel();
             try
             {
                 lbResult.Visible = true;
                 lbResult.Text = "登录中......";
                 string md5Pass = Utils.GenerateMD5(tbPassword.Text);
-                User user = DB._db.users.Where(u => u.Username == tbUsername.Text && u.Password == md5Pass).FirstOrDefault();
+                User user = aoiModel.users.Where(u => u.Username == tbUsername.Text && u.Password == md5Pass).FirstOrDefault();
                 if (user != null)
                 {
                     this.DialogResult = DialogResult.Yes;
@@ -86,6 +92,10 @@ namespace power_aoi
                 lbResult.Text = "连接数据库出错";
                 lbResult.Visible = true;
                 LogHelper.WriteLog("Login error", err);
+            }
+            finally
+            {
+                aoiModel.Dispose();
             }
         }
     }

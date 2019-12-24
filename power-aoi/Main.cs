@@ -53,17 +53,25 @@ namespace power_aoi
 
                 #region 开启线程更新数据库
                 SmartThreadPool smartThreadPool = new SmartThreadPool();
+                AoiModel aoiModel = DB.GetAoiModel();
                 Action<Pcb> t = (pcb) =>
                 {
-                    lock (DB._db)
+                    lock (aoiModel)
                     {
                         string res = "";
                         try
                         {
-                            DB._db.pcbs.Add(pcb);
-                            DB._db.results.AddRange(pcb.results);
-                            if (DB._db.SaveChanges() > 0) { res = pcb.PcbNumber + "[已入库]"; }
-                            else { res = pcb.PcbNumber + "[入库失败]"; }
+                            aoiModel.pcbs.Add(pcb);
+                            aoiModel.results.AddRange(pcb.results);
+                            if (aoiModel.SaveChanges() > 0)
+                            {
+                                res = pcb.PcbNumber + "[已入库]";
+                            }
+                            else
+                            {
+                                res = pcb.PcbNumber + "[入库失败]";
+                            }
+                            aoiModel.Dispose();
                         }
                         catch (Exception er)//UpdateException
                         {
