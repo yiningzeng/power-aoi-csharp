@@ -50,6 +50,11 @@ namespace power_aoi.Model
         [Description("对应的FTP保存的地址")]
         public string PcbPath { get; set; }
 
+        [DefaultValue(0)]
+        [Column(name: "is_misjudge")]
+        [Description("是否误判, 0否 1是, 只要results下有一个误判，那该值就改为1")]
+        public int IsMisjudge { get; set; }
+
         [Column(name: "create_time")]
         [Description("创建时间")]
         public DateTime CreateTime { get; set; }

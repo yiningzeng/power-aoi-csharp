@@ -156,6 +156,8 @@ namespace power_aoi.DockerPanal
                         AoiModel aoiModel = DB.GetAoiModel();
                         Result users = aoiModel.results.Find(lvList.Items[index].SubItems[4].Text);
                         users.IsMisjudge = 1;
+                        Pcb pcb = aoiModel.pcbs.Find(users.PcbId);
+                        pcb.IsMisjudge = 1;
                         int result = aoiModel.SaveChanges();
                         aoiModel.Dispose();
                     }
