@@ -61,6 +61,10 @@ namespace power_aoi
                         string res = "";
                         try
                         {
+                            if (pcb.results.Count > 0)
+                            {
+                                pcb.IsError = 1;
+                            }
                             aoiModel.pcbs.Add(pcb);
                             aoiModel.results.AddRange(pcb.results);
                             if (aoiModel.SaveChanges() > 0)

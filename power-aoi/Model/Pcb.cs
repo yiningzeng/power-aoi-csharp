@@ -51,6 +51,11 @@ namespace power_aoi.Model
         public string PcbPath { get; set; }
 
         [DefaultValue(0)]
+        [Column(name: "is_error")]
+        [Description("是否报错, 0否 1是")]
+        public int IsError { get; set; }
+
+        [DefaultValue(0)]
         [Column(name: "is_misjudge")]
         [Description("是否误判, 0否 1是, 只要results下有一个误判，那该值就改为1")]
         public int IsMisjudge { get; set; }
