@@ -27,7 +27,7 @@ namespace power_aoi
                 Application.Run(new Main());
             } else if (dialogResult == DialogResult.Yes)
             {
-                Application.Run(new Main());
+                Application.Run(new MainSearch());
             }
         }
     }

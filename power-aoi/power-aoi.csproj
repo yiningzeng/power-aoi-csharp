@@ -170,6 +170,7 @@
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -186,23 +187,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DockerPanal\PcbDetails.cs">
+    <Compile Include="DockerPanalRepair\PcbDetails.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DockerPanal\PcbDetails.Designer.cs">
+    <Compile Include="DockerPanalRepair\PcbDetails.Designer.cs">
       <DependentUpon>PcbDetails.cs</DependentUpon>
     </Compile>
-    <Compile Include="DockerPanal\TwoSidesPcb.cs">
+    <Compile Include="DockerPanalRepair\TwoSidesPcb.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DockerPanal\TwoSidesPcb.Designer.cs">
+    <Compile Include="DockerPanalRepair\TwoSidesPcb.Designer.cs">
       <DependentUpon>TwoSidesPcb.cs</DependentUpon>
     </Compile>
-    <Compile Include="DockerPanal\PartOfPcb.cs">
+    <Compile Include="DockerPanalRepair\PartOfPcb.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DockerPanal\PartOfPcb.Designer.cs">
+    <Compile Include="DockerPanalRepair\PartOfPcb.Designer.cs">
       <DependentUpon>PartOfPcb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockerPanalSearch\Query.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockerPanalSearch\Query.Designer.cs">
+      <DependentUpon>Query.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockerPanalSearch\QueryCriteria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockerPanalSearch\QueryCriteria.Designer.cs">
+      <DependentUpon>QueryCriteria.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -222,6 +235,12 @@
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainSearch.Designer.cs">
+      <DependentUpon>MainSearch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201912231044255_Initial.cs" />
     <Compile Include="Migrations\201912231044255_Initial.Designer.cs">
       <DependentUpon>201912231044255_Initial.cs</DependentUpon>
@@ -230,13 +249,34 @@
     <Compile Include="Migrations\201912231053178_Initial1.Designer.cs">
       <DependentUpon>201912231053178_Initial1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912241029084_Initial2.cs" />
+    <Compile Include="Migrations\201912241029084_Initial2.Designer.cs">
+      <DependentUpon>201912241029084_Initial2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912241047193_Initial3.cs" />
+    <Compile Include="Migrations\201912241047193_Initial3.Designer.cs">
+      <DependentUpon>201912241047193_Initial3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912260242140_Initial4.cs" />
+    <Compile Include="Migrations\201912260242140_Initial4.Designer.cs">
+      <DependentUpon>201912260242140_Initial4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912260242537_Initial5.cs" />
+    <Compile Include="Migrations\201912260242537_Initial5.Designer.cs">
+      <DependentUpon>201912260242537_Initial5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AoiModel.cs" />
     <Compile Include="Model\JsonData.cs" />
+    <Compile Include="Model\PcbName.cs" />
     <Compile Include="Model\Pcb.cs" />
     <Compile Include="Model\Result.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserGroup.cs" />
+    <Compile Include="SqlPars\QueryPars.cs" />
+    <Compile Include="SqlPars\SqlQueryData2NG.cs" />
+    <Compile Include="SqlPars\SqlQueryData1.cs" />
+    <Compile Include="Tools\DateTimeHelper.cs" />
     <Compile Include="Tools\DB.cs" />
     <Compile Include="Tools\LogHelper.cs" />
     <Compile Include="Program.cs" />
@@ -244,14 +284,20 @@
     <Compile Include="Tools\Rabbitmq.cs" />
     <Compile Include="Tools\Snowflake.cs" />
     <Compile Include="Tools\Utils.cs" />
-    <EmbeddedResource Include="DockerPanal\PcbDetails.resx">
+    <EmbeddedResource Include="DockerPanalRepair\PcbDetails.resx">
       <DependentUpon>PcbDetails.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DockerPanal\TwoSidesPcb.resx">
+    <EmbeddedResource Include="DockerPanalRepair\TwoSidesPcb.resx">
       <DependentUpon>TwoSidesPcb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DockerPanal\PartOfPcb.resx">
+    <EmbeddedResource Include="DockerPanalRepair\PartOfPcb.resx">
       <DependentUpon>PartOfPcb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockerPanalSearch\Query.resx">
+      <DependentUpon>Query.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DockerPanalSearch\QueryCriteria.resx">
+      <DependentUpon>QueryCriteria.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -262,11 +308,26 @@
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainSearch.resx">
+      <DependentUpon>MainSearch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912231044255_Initial.resx">
       <DependentUpon>201912231044255_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912231053178_Initial1.resx">
       <DependentUpon>201912231053178_Initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912241029084_Initial2.resx">
+      <DependentUpon>201912241029084_Initial2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912241047193_Initial3.resx">
+      <DependentUpon>201912241047193_Initial3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912260242140_Initial4.resx">
+      <DependentUpon>201912260242140_Initial4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912260242537_Initial5.resx">
+      <DependentUpon>201912260242537_Initial5.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -299,5 +360,6 @@
   <ItemGroup>
     <None Include="Resources\user center.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

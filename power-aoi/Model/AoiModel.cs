@@ -25,6 +25,7 @@
         public DbSet<UserGroup> userGroups { get; set; }
         public DbSet<Pcb> pcbs { get; set; }
         public DbSet<Result> results { get; set; }
+        public DbSet<PcbName> pcbNames { get; set; }
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }
 
