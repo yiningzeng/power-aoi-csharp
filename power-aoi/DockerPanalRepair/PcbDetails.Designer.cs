@@ -44,16 +44,16 @@
             this.colNgType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colResult = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbPcbChildenNumber = new System.Windows.Forms.Label();
+            this.lbPcbHeight = new System.Windows.Forms.Label();
             this.lbPcbWidth = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lbSurfaceNumber = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lbPcbNumber = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lbPcbHeight = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lbPcbChildenNumber = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.gbPcb.SuspendLayout();
@@ -129,9 +129,9 @@
             // 
             this.panel2.Controls.Add(this.lvList);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(148, 17);
+            this.panel2.Location = new System.Drawing.Point(275, 17);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(643, 338);
+            this.panel2.Size = new System.Drawing.Size(516, 338);
             this.panel2.TabIndex = 2;
             // 
             // lvList
@@ -150,7 +150,7 @@
             this.lvList.HideSelection = false;
             this.lvList.Location = new System.Drawing.Point(0, 0);
             this.lvList.Name = "lvList";
-            this.lvList.Size = new System.Drawing.Size(643, 338);
+            this.lvList.Size = new System.Drawing.Size(516, 338);
             this.lvList.TabIndex = 0;
             this.lvList.UseCompatibleStateImageBehavior = false;
             this.lvList.View = System.Windows.Forms.View.Details;
@@ -208,16 +208,50 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(3, 17);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(145, 338);
+            this.panel1.Size = new System.Drawing.Size(272, 338);
             this.panel1.TabIndex = 1;
+            // 
+            // lbPcbChildenNumber
+            // 
+            this.lbPcbChildenNumber.AutoSize = true;
+            this.lbPcbChildenNumber.Location = new System.Drawing.Point(83, 120);
+            this.lbPcbChildenNumber.Name = "lbPcbChildenNumber";
+            this.lbPcbChildenNumber.Size = new System.Drawing.Size(0, 12);
+            this.lbPcbChildenNumber.TabIndex = 5;
+            // 
+            // lbPcbHeight
+            // 
+            this.lbPcbHeight.AutoSize = true;
+            this.lbPcbHeight.Location = new System.Drawing.Point(83, 91);
+            this.lbPcbHeight.Name = "lbPcbHeight";
+            this.lbPcbHeight.Size = new System.Drawing.Size(0, 12);
+            this.lbPcbHeight.TabIndex = 5;
             // 
             // lbPcbWidth
             // 
             this.lbPcbWidth.AutoSize = true;
-            this.lbPcbWidth.Location = new System.Drawing.Point(74, 63);
+            this.lbPcbWidth.Location = new System.Drawing.Point(83, 63);
             this.lbPcbWidth.Name = "lbPcbWidth";
             this.lbPcbWidth.Size = new System.Drawing.Size(0, 12);
             this.lbPcbWidth.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 120);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "子基板数：";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 91);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 12);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "PCB长：";
             // 
             // label4
             // 
@@ -231,7 +265,7 @@
             // lbSurfaceNumber
             // 
             this.lbSurfaceNumber.AutoSize = true;
-            this.lbSurfaceNumber.Location = new System.Drawing.Point(66, 35);
+            this.lbSurfaceNumber.Location = new System.Drawing.Point(83, 35);
             this.lbSurfaceNumber.Name = "lbSurfaceNumber";
             this.lbSurfaceNumber.Size = new System.Drawing.Size(0, 12);
             this.lbSurfaceNumber.TabIndex = 3;
@@ -248,7 +282,7 @@
             // lbPcbNumber
             // 
             this.lbPcbNumber.AutoSize = true;
-            this.lbPcbNumber.Location = new System.Drawing.Point(66, 7);
+            this.lbPcbNumber.Location = new System.Drawing.Point(83, 7);
             this.lbPcbNumber.Name = "lbPcbNumber";
             this.lbPcbNumber.Size = new System.Drawing.Size(0, 12);
             this.lbPcbNumber.TabIndex = 1;
@@ -261,40 +295,6 @@
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "板号：";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 91);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 12);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "PCB长：";
-            // 
-            // lbPcbHeight
-            // 
-            this.lbPcbHeight.AutoSize = true;
-            this.lbPcbHeight.Location = new System.Drawing.Point(74, 91);
-            this.lbPcbHeight.Name = "lbPcbHeight";
-            this.lbPcbHeight.Size = new System.Drawing.Size(0, 12);
-            this.lbPcbHeight.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 120);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "子基板数：";
-            // 
-            // lbPcbChildenNumber
-            // 
-            this.lbPcbChildenNumber.AutoSize = true;
-            this.lbPcbChildenNumber.Location = new System.Drawing.Point(83, 120);
-            this.lbPcbChildenNumber.Name = "lbPcbChildenNumber";
-            this.lbPcbChildenNumber.Size = new System.Drawing.Size(0, 12);
-            this.lbPcbChildenNumber.TabIndex = 5;
             // 
             // PcbDetails
             // 

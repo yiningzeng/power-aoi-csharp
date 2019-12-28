@@ -4,6 +4,7 @@ using power_aoi.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -84,7 +85,6 @@ namespace power_aoi.DockerPanal
         }
 
 
-
         /// <summary>
         /// ListView加载数据
         /// </summary>
@@ -118,6 +118,10 @@ namespace power_aoi.DockerPanal
                 lvList.Items.Add(li);
             }
             lvList.Items[0].Selected = true;
+
+ 
+            partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
+
         }
 
         public bool hasListViewUncheck()
@@ -201,7 +205,6 @@ namespace power_aoi.DockerPanal
                 lvList.Items[index + 1].Selected = true;
                 twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[index + 1].SubItems[1].Text);
                 partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
-
             }
             catch (Exception err)
             {

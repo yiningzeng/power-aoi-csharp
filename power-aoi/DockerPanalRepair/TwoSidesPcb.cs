@@ -9,43 +9,33 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using System.Configuration;
+using power_aoi.Tools;
+using ImageProcessor;
+using ImageProcessor.Imaging;
+using power_aoi.Model;
+using Amib.Threading;
+using System.Threading;
 
 namespace power_aoi.DockerPanal
 {
     public partial class TwoSidesPcb : DockContent
     {
         bool draw = true;
-        public TwoSidesPcb()
+        PartOfPcb partOfPcb;
+        public TwoSidesPcb(PartOfPcb partP)
         {
             InitializeComponent();
-        }
-        public void fuck(string aa)
-        {
-            //label1.Text = aa;
+            partOfPcb = partP;
         }
 
-        public void showFrontImg(string str)
+        public void showFrontImg(Image image)
         {
-            if (str == null)
-            {
-                pbFront.Image = null;
-            }
-            else
-            {
-                pbFront.Image = Image.FromFile(ConfigurationManager.AppSettings["FtpPath"] + str);
-            }
+            pbFront.Image = image;
         }
 
-        public void showBackImg(string str)
+        public void showBackImg(Image image)
         {
-            if (str == null)
-            {
-                pbBack.Image = null;
-            }
-            else
-            {
-                pbBack.Image = Image.FromFile(ConfigurationManager.AppSettings["FtpPath"] + str);
-            }
+            pbBack.Image = image;
         }
 
         private void pictureBox_Paint(object sender, PaintEventArgs e)
@@ -55,13 +45,13 @@ namespace power_aoi.DockerPanal
             //    Graphics gh = e.Graphics;
             //    Pen pp = new Pen(Color.Red);
             //    Rectangle rect = new Rectangle();
-            //    rect.X = 0;
-            //    rect.Y = 0;
+            //    rect.X = 80;
+            //    rect.Y = 90;
             //    rect.Width = 50;
             //    rect.Height = 60;
             //    rect.Location = new Point(0, 0);
             //    gh.DrawRectangle(new Pen(Color.FromArgb(255, 60, 60)), rect);
-            //    //draw = false;
+            //    draw = false;
             //}
 
         }

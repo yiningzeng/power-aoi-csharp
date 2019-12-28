@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +15,23 @@ namespace power_aoi.DockerPanal
 {
     public partial class PartOfPcb : DockContent
     {
-        Main here_f1;
-        TwoSidesPcb bbc;
-        public PartOfPcb(Main f1, TwoSidesPcb bb)
+        public PartOfPcb()
         {
             InitializeComponent();
-            here_f1 = f1;
-            bbc = bb;
         }
+
+        public void showImgThread(string image)
+        {
+            if (image == null)
+            {
+                pbPart.Image = null;
+            }
+            else
+            {
+                pbPart.Image = Image.FromFile(image);
+            }
+        }
+
 
         public void showImg(string str) {
             if (str == null)
@@ -30,7 +40,11 @@ namespace power_aoi.DockerPanal
             }
             else
             {
-                pbPart.Image = Image.FromFile(ConfigurationManager.AppSettings["FtpPath"] + str);
+                string path = ConfigurationManager.AppSettings["FtpPath"] + str;
+                if (File.Exists(path))
+                {
+                    pbPart.Image = Image.FromFile(path);
+                }
             }
         }
     }

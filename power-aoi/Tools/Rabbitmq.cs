@@ -25,7 +25,7 @@ namespace power_aoi.Tools
             var factory = new ConnectionFactory()
             {
                 //rabbitmq-server所在设备ip，这里就是本机
-                HostName = "127.0.0.1",
+                HostName = "192.168.31.157",
                 UserName = "admin",//用户名
                 Password = "admin",//密码
                 VirtualHost = "my_vhost"

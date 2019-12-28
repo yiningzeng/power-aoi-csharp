@@ -1,6 +1,7 @@
 ﻿using Amib.Threading;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
+using ImageProcessor;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using power_aoi.DockerPanal;
@@ -39,6 +40,7 @@ namespace power_aoi
         public bool isLeisure = true;
         public IModel mainChannel;
 
+
         // 队列处理回调！！所有的界面操作方法写在这个函数里
         public void doWork(IModel channel, string message)
         {
@@ -50,9 +52,9 @@ namespace power_aoi
             {
                 // 反序列化json
                 JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(message, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-
+                if (lst2 == null) { mainChannel.BasicAck(Rabbitmq.deliveryTag, false); return; };
                 #region 开启线程更新数据库
-                SmartThreadPool smartThreadPool = new SmartThreadPool();
+
                 AoiModel aoiModel = DB.GetAoiModel();
                 Action<Pcb> t = (pcb) =>
                 {
@@ -86,32 +88,129 @@ namespace power_aoi
                             {
                                 this.Text = res;
                             }));
-
-                        #region 加载图片
-                        try
-                        {
-                            if (pcb.results.Count > 0)
-                            {
-                                twoSidesPcb.BeginInvoke((Action)(() =>
-                                {
-                                    twoSidesPcb.showFrontImg(pcb.PcbPath + "/front.jpg");
-                                    twoSidesPcb.showBackImg(pcb.PcbPath + "/back.jpg");
-                                }));
-                                partOfPcb.BeginInvoke((Action)(() =>
-                                {
-                                    partOfPcb.showImg(pcb.PcbPath + "/" + pcb.results[0].PartImagePath);
-                                }));
-                            }
-                        }
-                        catch (Exception er)
-                        {
-
-                        }
-                        #endregion
-
                     }
                 };
-                smartThreadPool.QueueWorkItem<Pcb>(t, lst2.data);
+                MySmartThreadPool.Instance().QueueWorkItem<Pcb>(t, lst2.data);
+                #endregion
+
+                #region 处理图片
+                
+                string path = ConfigurationManager.AppSettings["FtpPath"] + lst2.data.PcbPath + "/";
+                string frontImg = path + "front.jpg";
+                string backImg = path + "back.jpg";
+                var imageFrontFactory = new ImageFactory().Load(frontImg);
+                var imageBackFactory = new ImageFactory().Load(frontImg);
+                imageFrontFactory.Quality(70);
+                imageBackFactory.Quality(70);
+
+                int drawNum = 0;
+                int allNum = lst2.data.results.Count;
+
+                // 画框所有线程中调用显示图片的委托
+                Action showImg = () =>
+                {
+                    drawNum++;
+                    if (drawNum >= allNum)
+                    {
+                        twoSidesPcb.showBackImg(imageBackFactory.Image);
+                        twoSidesPcb.showFrontImg(imageFrontFactory.Image);
+                        imageFrontFactory.Save(path + "drawfront.jpg");
+                        imageBackFactory.Save(path + "drawback.jpg");
+                    }
+                };
+
+                // 裁剪
+                Action<Rectangle, string, string,int> actCrop = (rect, pp, fi, ii) =>
+                  {
+                      if (!File.Exists(pp))
+                      {
+                          var partImg = new ImageFactory().Load(fi);
+                          partImg.Crop(rect);
+                          partImg.Save(pp);
+                          if (ii == 0)
+                          {
+                              int timeOut = 0;
+                              while (timeOut<50)
+                              {
+                                  timeOut++;
+                                  if (File.Exists(pp))
+                                  {
+                                      partOfPcb.BeginInvoke((Action)(() =>
+                                      {
+                                          partOfPcb.showImgThread(pp);
+                                      }));
+                                      partImg.Dispose();
+                                      break;
+                                  }
+                                  Thread.Sleep(100);
+                              }
+                          }
+                      }
+                  };
+
+                // 正面图画框的委托
+                Action<Result, Rectangle, int> actFrontDrawImg = (result, rect, index) =>
+                {
+                    lock (imageFrontFactory)
+                    {
+
+                        #region 在画框之前先裁剪下来用作局部窗体显示使用
+                        MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, frontImg, index);
+                        #endregion
+
+                        Graphics g = Graphics.FromImage(imageFrontFactory.Image);
+                        g.DrawString(result.NgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, rect.X, rect.Y - 15);
+                        g.DrawRectangle(
+                            new Pen(Color.Red, 3),
+                            rect);
+                        twoSidesPcb.BeginInvoke(showImg);
+                    }
+                };
+
+                // 背面图画框的委托
+                Action<Result, Rectangle, int> actBackDrawImg = (result, rect, index) =>
+                {
+                    lock (imageBackFactory)
+                    {
+
+                        #region 在画框之前先裁剪下来用作局部窗体显示使用
+                        MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, backImg, index);
+                        #endregion
+
+                        Graphics g = Graphics.FromImage(imageBackFactory.Image);
+                        g.DrawString(result.NgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, rect.X, rect.Y - 15);
+                        g.DrawRectangle(
+                            new Pen(Color.Red, 3),
+                            rect);
+                        twoSidesPcb.BeginInvoke(showImg);
+                    }
+                };
+
+                for(int i=0; i < lst2.data.results.Count; i++)
+                {
+                    var result = lst2.data.results[i];
+                    string[] reg = result.Region.Split(',');
+                    Rectangle rect = new Rectangle(
+                            int.Parse(reg[0]),
+                            int.Parse(reg[1]),
+                            int.Parse(reg[2]),
+                            int.Parse(reg[3]));
+                    if (result.IsBack == 1)
+                    {
+                        MySmartThreadPool.Instance().QueueWorkItem(actBackDrawImg, result, rect, i);
+                    }
+                    else
+                    {
+                        MySmartThreadPool.Instance().QueueWorkItem(actFrontDrawImg, result, rect, i);
+                    }
+                }
+
+
+                //}
+                //catch (Exception err)
+                //{
+                //    string aa = err.Message;
+                //}
                 #endregion
 
                 #region 加载ng列表
@@ -241,8 +340,8 @@ namespace power_aoi
 
         private void CreateStandardControls()
         {
-            twoSidesPcb = new TwoSidesPcb() { TabText = "正反图", CloseButton = false, CloseButtonVisible = false };
-            partOfPcb = new PartOfPcb(this, twoSidesPcb) { TabText = "局部图", CloseButton = false, CloseButtonVisible = false };
+            partOfPcb = new PartOfPcb() { TabText = "局部图", CloseButton = false, CloseButtonVisible = false };
+            twoSidesPcb = new TwoSidesPcb(partOfPcb) { TabText = "正反图", CloseButton = false, CloseButtonVisible = false };
             pcbDetails = new PcbDetails(this,partOfPcb, twoSidesPcb) { TabText = "结果列表", CloseButton = false, CloseButtonVisible = false };
         }
 
@@ -253,15 +352,15 @@ namespace power_aoi
 
         private IDockContent GetContentFromPersistString(string persistString)
         {
-            if (persistString == typeof(TwoSidesPcb).ToString())
+            if (persistString == typeof(PartOfPcb).ToString())
             {
-                twoSidesPcb = new TwoSidesPcb() { TabText = "正反图", CloseButton = false, CloseButtonVisible = false };
-                return twoSidesPcb;
-            }
-            else if (persistString == typeof(PartOfPcb).ToString())
-            {
-                partOfPcb = new PartOfPcb(this, twoSidesPcb) { TabText = "局部图", CloseButton = false, CloseButtonVisible = false };
+                partOfPcb = new PartOfPcb() { TabText = "局部图", CloseButton = false, CloseButtonVisible = false };
                 return partOfPcb;
+            }
+            else if (persistString == typeof(TwoSidesPcb).ToString())
+            {
+                twoSidesPcb = new TwoSidesPcb(partOfPcb) { TabText = "正反图", CloseButton = false, CloseButtonVisible = false };
+                return twoSidesPcb;
             }
             else if (persistString == typeof(PcbDetails).ToString())
             {

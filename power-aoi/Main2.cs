@@ -173,6 +173,7 @@ namespace power_aoi
             }
         }
 
+
         private void MetroButton4_Click(object sender, EventArgs e)
         {
             var factory = new ConnectionFactory();
