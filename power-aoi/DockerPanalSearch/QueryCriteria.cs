@@ -138,7 +138,6 @@ namespace power_aoi.DockerPanalSearch
 
         private void QueryCriteria_Load(object sender, EventArgs e)
         {
-            SmartThreadPool smartThreadPool = new SmartThreadPool();
             AoiModel aoiModel = DB.GetAoiModel();
             Action t = () =>
             {
@@ -154,7 +153,7 @@ namespace power_aoi.DockerPanalSearch
                     aoiModel.Dispose();
                 }
             };
-            smartThreadPool.QueueWorkItem(t);
+            MySmartThreadPool.Instance().QueueWorkItem(t);
         }
     }
 }

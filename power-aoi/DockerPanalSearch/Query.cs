@@ -1,5 +1,6 @@
 ﻿using Amib.Threading;
 using power_aoi.SqlPars;
+using power_aoi.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,7 +47,6 @@ namespace power_aoi.DockerPanalSearch
         #region 通用函数
         public void TopGridView(DataGridView dataGridView)
         {
-            SmartThreadPool smartThreadPool = new SmartThreadPool();
             AoiModel aoiModel = DB.GetAoiModel();
             Action<DataGridView> t = (control) =>
             {
@@ -72,7 +72,7 @@ namespace power_aoi.DockerPanalSearch
                     aoiModel.Dispose();
                 }
             };
-            smartThreadPool.QueueWorkItem<DataGridView>(t, dataGridView);
+            MySmartThreadPool.Instance().QueueWorkItem<DataGridView>(t, dataGridView);
         }
         #endregion
 
@@ -82,9 +82,8 @@ namespace power_aoi.DockerPanalSearch
             TopGridView(dgvAll);
 
             queryPars.nums = int.Parse(combPageNums.Text);
-            queryPars.pages = int.Parse(tbNowPage.Text)-1;
+            queryPars.pages = int.Parse(tbNowPage.Text) - 1;
             #region 开启线程查询数据库
-            SmartThreadPool smartThreadPool = new SmartThreadPool();
             AoiModel aoiModel = DB.GetAoiModel();
             Action<QueryPars> t = (v) =>
             {
@@ -188,7 +187,7 @@ namespace power_aoi.DockerPanalSearch
 
                 }
             };
-            smartThreadPool.QueueWorkItem<QueryPars>(t, queryPars);
+            MySmartThreadPool.Instance().QueueWorkItem<QueryPars>(t, queryPars);
             #endregion
         }
 
@@ -265,7 +264,6 @@ namespace power_aoi.DockerPanalSearch
         {
             TopGridView(dgvAll2);
 
-            SmartThreadPool smartThreadPool = new SmartThreadPool();
             AoiModel aoiModel = DB.GetAoiModel();
             Action<QueryPars> t = (v) =>
             {
@@ -303,7 +301,7 @@ namespace power_aoi.DockerPanalSearch
                     aoiModel.Dispose();
                 }
             };
-            smartThreadPool.QueueWorkItem<QueryPars>(t, q);
+            MySmartThreadPool.Instance().QueueWorkItem<QueryPars>(t, q);
         }
         #endregion
 
@@ -311,8 +309,6 @@ namespace power_aoi.DockerPanalSearch
         public void Tab2Ini(QueryPars q)
         {
             TopGridView(dgvAll3);
-
-            SmartThreadPool smartThreadPool = new SmartThreadPool();
             AoiModel aoiModel = DB.GetAoiModel();
             Action<QueryPars> t = (v) =>
             {
@@ -350,7 +346,7 @@ namespace power_aoi.DockerPanalSearch
                     aoiModel.Dispose();
                 }
             };
-            smartThreadPool.QueueWorkItem<QueryPars>(t, q);
+            MySmartThreadPool.Instance().QueueWorkItem<QueryPars>(t, q);
         }
         #endregion
 

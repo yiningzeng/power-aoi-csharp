@@ -9,7 +9,7 @@ namespace power_aoi.Tools
 {
     public class MySmartThreadPool
     {
-        static SmartThreadPool Pool = new SmartThreadPool();
+        static SmartThreadPool Pool = new SmartThreadPool() { MaxThreads = 30};
         public static SmartThreadPool Instance()
         {
             return Pool;
