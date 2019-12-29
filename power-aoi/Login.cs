@@ -79,7 +79,7 @@ namespace power_aoi
                 if (user != null)
                 {
                     this.DialogResult = DialogResult.Yes;
-                    this.Close();
+                    //this.Close();
                 }
                 else
                 {

@@ -22,6 +22,7 @@ namespace power_aoi
 
             Login login = new Login();
             DialogResult dialogResult = login.ShowDialog();
+            login.Close();
             if (dialogResult == DialogResult.OK)
             {
                 Application.Run(new Main());
