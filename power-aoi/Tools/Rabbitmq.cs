@@ -2,6 +2,7 @@
 using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,47 +21,55 @@ namespace power_aoi.Tools
             REPULSE = 2,
         };
 
-        public static void run(Main.RabbitmqMessageCallback doWork)
+        public static int run(Main.RabbitmqMessageCallback doWork)
         {
-            var factory = new ConnectionFactory()
+            try
             {
-                //rabbitmq-server所在设备ip，这里就是本机
-                HostName = "192.168.31.157",
-                UserName = "admin",//用户名
-                Password = "admin",//密码
-                VirtualHost = "my_vhost"
-            };
-            var connection = factory.CreateConnection();
+                var factory = new ConnectionFactory()
+                {
+                    HostName = ConfigurationManager.AppSettings["HostName"].Trim(),//"192.168.31.157",
+                    UserName = ConfigurationManager.AppSettings["UserName"].Trim(),//"admin",//用户名
+                    Password = ConfigurationManager.AppSettings["Password"].Trim(),//"admin",//密码
+                    VirtualHost = ConfigurationManager.AppSettings["VirtualHost"].Trim(),//"my_vhost"
+                };
+                var connection = factory.CreateConnection();
+               
+                var channel = connection.CreateModel();
 
-            var channel = connection.CreateModel();
+                channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: true);
+                #region EventingBasicConsumer
 
-            channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: true);
-            #region EventingBasicConsumer
+                //定义消费者                                      
+                var consumer = new EventingBasicConsumer(channel);
+                //接收到消息时执行的任务
+                consumer.Received += (model, ea) =>
+                {
 
-            //定义消费者                                      
-            var consumer = new EventingBasicConsumer(channel);
-            //接收到消息时执行的任务
-            consumer.Received += (model, ea) =>
+                    string message = Encoding.UTF8.GetString(ea.Body);
+
+                    if (ea.DeliveryTag != deliveryTag)
+                    {
+                        deliveryTag = ea.DeliveryTag;
+                        doWork(channel, message);
+                    }
+                    else
+                    {
+                        deliveryTag = ea.DeliveryTag;
+                        status = statusEnum.REPULSE;
+                        channel.BasicNack(ea.DeliveryTag, false, true);
+                    }
+
+                };
+                //处理消息
+                channel.BasicConsume(queue: "work", false, consumer: consumer);
+                return 1;
+                #endregion
+            }
+            catch(Exception er)
             {
-           
-                string message = Encoding.UTF8.GetString(ea.Body);
-
-                if (ea.DeliveryTag != deliveryTag)
-                {
-                    deliveryTag = ea.DeliveryTag;
-                    doWork(channel, message);
-                }
-                else
-                {
-                    deliveryTag = ea.DeliveryTag;
-                    status = statusEnum.REPULSE;
-                    channel.BasicNack(ea.DeliveryTag, false, true);
-                }
-
-            };
-            //处理消息
-            channel.BasicConsume(queue: "work", false, consumer: consumer);
-            #endregion
+                return 0;
+            }
         }
     }
 }
+

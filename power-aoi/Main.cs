@@ -388,8 +388,20 @@ namespace power_aoi
                 dockPanel1.LoadFromXml(configFile, m_deserializeDockContent);
 
             #region 队列
+
+            Action<RabbitmqMessageCallback> doS = (val) =>
+            {
+
+                if (Rabbitmq.run(doWorkD) == 0)
+                {
+                    this.BeginInvoke((Action)(() => {
+                        MessageBox.Show("连接队列失败!!!");
+                        Environment.Exit(0);
+                    }));
+                }
+            };
             doWorkD = new RabbitmqMessageCallback(doWork);
-            Rabbitmq.run(doWorkD);
+            MySmartThreadPool.Instance().QueueWorkItem(doS, doWorkD);
             #endregion
         }
 
