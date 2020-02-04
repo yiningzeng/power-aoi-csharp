@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ImageProcessor;
+using Newtonsoft.Json;
 using power_aoi.Model;
 using power_aoi.Tools;
 using System;
@@ -7,8 +8,10 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -22,6 +25,8 @@ namespace power_aoi.DockerPanal
         PartOfPcb partOfPcb;
         TwoSidesPcb twoSidesPcb;
         Main main;
+        Bitmap bitmapFront = null;
+        Bitmap bitmapBack = null;
         //public PcbDetails()
         //{
         //    InitializeComponent();
@@ -110,6 +115,7 @@ namespace power_aoi.DockerPanal
                 li.SubItems.Add(item.IsBack.ToString());
                 li.SubItems.Add(pcb.PcbPath);
                 li.SubItems.Add(item.PartImagePath);
+                li.SubItems.Add(item.Region);
                 li.SubItems.Add(item.Id.ToString());
                 li.SubItems.Add(item.Area);
                 li.SubItems.Add(item.NgType);
@@ -118,17 +124,31 @@ namespace power_aoi.DockerPanal
                 lvList.Items.Add(li);
             }
             lvList.Items[0].Selected = true;
-
- 
-            partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
-
+            ImageList ImgList = new ImageList();
+            //高度设为25
+            ImgList.ImageSize = new Size(1, 25);
+            //在Details显示模式下，小图标才会起作用
+            lvList.SmallImageList = ImgList;
+            string frontImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/front.jpg";
+            string backImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/back.jpg";
+            if (File.Exists(frontImgPath))
+            {
+                bitmapFront = new Bitmap(frontImgPath);
+            }
+            if (File.Exists(backImgPath))
+            {
+                bitmapBack = new Bitmap(backImgPath);
+            }
+            lvListNextItemSelect("未判定");
+            //partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
         }
+
 
         public bool hasListViewUncheck()
         {
             foreach(ListViewItem li in lvList.Items)
             {
-                if(li.SubItems[7].Text == "未判定")
+                if(li.SubItems[8].Text == "未判定")
                 {
                     li.Selected = true;
                     return true;
@@ -155,6 +175,46 @@ namespace power_aoi.DockerPanal
                 {
                     index = lvList.SelectedItems[0].Index;
                 }
+                //确保index行可见，必要时滚动
+                lvList.EnsureVisible(index);
+                #region 截图
+                try
+                {
+                    string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + lvList.Items[index].SubItems[2].Text + "\\" + lvList.Items[index].SubItems[3].Text;
+                    //if (!File.Exists(tFilePath))
+                    {
+                        Bitmap resBitmap=null;
+                        string[] reg = lvList.Items[index].SubItems[4].Text.Split(',');
+                        Rectangle rect = new Rectangle(
+                                int.Parse(reg[0]),
+                                int.Parse(reg[1]),
+                                int.Parse(reg[2]),
+                                int.Parse(reg[3]));
+                   
+                        if (lvList.Items[index].SubItems[1].Text == "0") // 正面
+                        {
+                            Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
+                            rect.Inflate(100, 100);
+                            resBitmap = Utils.BitmapCut(drawBitmap, rect);//.Save(tFilePath);
+                        }
+                        else if (lvList.Items[index].SubItems[1].Text == "1") // 背面
+                        {
+                            Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
+                            rect.Inflate(100, 100);
+                            resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
+                        }
+                        //resBitmap.Save(tFilePath);
+                        partOfPcb.showImgThread(resBitmap);
+                    }
+                    //partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
+
+                }
+                catch (Exception er)
+                {
+
+                }
+                #endregion
+
 
                 if (res == "OK")
                 {
@@ -163,7 +223,7 @@ namespace power_aoi.DockerPanal
                     try
                     {
                         AoiModel aoiModel = DB.GetAoiModel();
-                        Result users = aoiModel.results.Find(lvList.Items[index].SubItems[4].Text);
+                        Result users = aoiModel.results.Find(lvList.Items[index].SubItems[5].Text);
                         users.IsMisjudge = 1;
                         Pcb pcb = aoiModel.pcbs.Find(users.PcbId);
                         pcb.IsMisjudge = 1;
@@ -176,11 +236,15 @@ namespace power_aoi.DockerPanal
                     }
                     #endregion
                 }
-                else
+                else if(res == "NG")
                 {
                     lvList.Items[index].BackColor = Color.Yellow;
                 }
-                lvList.Items[index].SubItems[7].Text = res;
+                else
+                {
+                    return;
+                }
+                lvList.Items[index].SubItems[8].Text = res;
 
 
 
@@ -199,12 +263,16 @@ namespace power_aoi.DockerPanal
                 if (++checkedNum >= lvList.Items.Count)
                 {
                     main.doLeisure();
+                    bitmapFront.Dispose();
+                    bitmapBack.Dispose();
                     return;
                 }
                 lvList.Items[index].Selected = false;
                 lvList.Items[index + 1].Selected = true;
                 twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[index + 1].SubItems[1].Text);
-                partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
+    
+
+      
             }
             catch (Exception err)
             {

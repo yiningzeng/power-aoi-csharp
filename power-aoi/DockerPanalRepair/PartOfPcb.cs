@@ -20,6 +20,18 @@ namespace power_aoi.DockerPanal
             InitializeComponent();
         }
 
+        public void showImgThread(Image image)
+        {
+            if (image == null)
+            {
+                pbPart.Image = null;
+            }
+            else
+            {
+                pbPart.Image = image;
+            }
+        }
+
         public void showImgThread(string image)
         {
             if (image == null)

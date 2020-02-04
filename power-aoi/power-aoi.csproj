@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>power_aoi</RootNamespace>
     <AssemblyName>power-aoi</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -80,6 +80,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.DotNet.PlatformAbstractions.1.1.0\lib\net451\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
     </Reference>
@@ -116,8 +119,8 @@
     <Reference Include="NGettext, Version=0.6.1.0, Culture=neutral, PublicKeyToken=08d3d1c89dfd2985, processorArchitecture=MSIL">
       <HintPath>..\packages\NGettext.0.6.3\lib\net46\NGettext.dll</HintPath>
     </Reference>
-    <Reference Include="RabbitMQ.Client">
-      <HintPath>..\..\bin\RabbitMQ.Client.dll</HintPath>
+    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.5.1.2\lib\net451\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="Scrutor, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Scrutor.2.0.0\lib\net451\Scrutor.dll</HintPath>
@@ -226,12 +229,6 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Main2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Main2.Designer.cs">
-      <DependentUpon>Main2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,31 +241,6 @@
     <Compile Include="MainSearch.Designer.cs">
       <DependentUpon>MainSearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912231044255_Initial.cs" />
-    <Compile Include="Migrations\201912231044255_Initial.Designer.cs">
-      <DependentUpon>201912231044255_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912231053178_Initial1.cs" />
-    <Compile Include="Migrations\201912231053178_Initial1.Designer.cs">
-      <DependentUpon>201912231053178_Initial1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912241029084_Initial2.cs" />
-    <Compile Include="Migrations\201912241029084_Initial2.Designer.cs">
-      <DependentUpon>201912241029084_Initial2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912241047193_Initial3.cs" />
-    <Compile Include="Migrations\201912241047193_Initial3.Designer.cs">
-      <DependentUpon>201912241047193_Initial3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912260242140_Initial4.cs" />
-    <Compile Include="Migrations\201912260242140_Initial4.Designer.cs">
-      <DependentUpon>201912260242140_Initial4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912260242537_Initial5.cs" />
-    <Compile Include="Migrations\201912260242537_Initial5.Designer.cs">
-      <DependentUpon>201912260242537_Initial5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\AoiModel.cs" />
     <Compile Include="Model\JsonData.cs" />
     <Compile Include="Model\PcbName.cs" />
@@ -306,32 +278,11 @@
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Main2.resx">
-      <DependentUpon>Main2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainSearch.resx">
       <DependentUpon>MainSearch.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912231044255_Initial.resx">
-      <DependentUpon>201912231044255_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912231053178_Initial1.resx">
-      <DependentUpon>201912231053178_Initial1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912241029084_Initial2.resx">
-      <DependentUpon>201912241029084_Initial2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912241047193_Initial3.resx">
-      <DependentUpon>201912241047193_Initial3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912260242140_Initial4.resx">
-      <DependentUpon>201912260242140_Initial4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912260242537_Initial5.resx">
-      <DependentUpon>201912260242537_Initial5.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

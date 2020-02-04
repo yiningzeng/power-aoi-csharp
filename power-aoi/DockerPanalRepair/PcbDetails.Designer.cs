@@ -54,6 +54,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lbPcbNumber = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.colRegion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.gbPcb.SuspendLayout();
@@ -141,6 +142,7 @@
             this.colIsBack,
             this.colPcbPath,
             this.colPartImagePath,
+            this.colRegion,
             this.colId,
             this.colArea,
             this.colNgType,
@@ -296,6 +298,10 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "板号：";
             // 
+            // colRegion
+            // 
+            this.colRegion.Width = 0;
+            // 
             // PcbDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -342,5 +348,6 @@
         public System.Windows.Forms.Label lbPcbWidth;
         public System.Windows.Forms.Label lbPcbHeight;
         public System.Windows.Forms.Label lbPcbChildenNumber;
+        public System.Windows.Forms.ColumnHeader colRegion;
     }
 }
