@@ -1,4 +1,4 @@
-using Amib.Threading;
+﻿using Amib.Threading;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Extensions.DependencyInjection;
@@ -344,13 +344,11 @@ namespace power_aoi
             // if it is a hotkey, return true; otherwise, return false
             switch (keyData)
             {
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Up:
+                case Keys.Enter:
                     pcbDetails.btnNG.Focus();
                     pcbDetails.lvListNextItemSelect("NG");
                     return true;
-                case Keys.Down:
+                case Keys.NumPad0:
                     pcbDetails.btnOK.Focus();
                     pcbDetails.lvListNextItemSelect("OK");
                     return true;
