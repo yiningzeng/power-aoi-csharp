@@ -27,6 +27,7 @@ namespace power_aoi.DockerPanal
         Main main;
         Bitmap bitmapFront = null;
         Bitmap bitmapBack = null;
+        int selectIndex;
         //public PcbDetails()
         //{
         //    InitializeComponent();
@@ -164,6 +165,8 @@ namespace power_aoi.DockerPanal
             lvList.SmallImageList = ImgList;
      
             lvListNextItemSelect("未判定");
+            lvList.Select();
+            lvList.SelectedIndices.Add(0);
             //partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
         }
 
@@ -231,19 +234,12 @@ namespace power_aoi.DockerPanal
         {
             try
             {
-                int index = 0;
+                int index = selectIndex;
                 if (lvList.SelectedItems.Count == 0)
                 {
                     index = 0;
                 }
-                else
-                {
-                    index = lvList.SelectedItems[0].Index;
-                    //if (index >= lvList.Items.Count)
-                    //{
-                    //    index = index - 1;
-                    //}
-                }
+   
                 //确保index行可见，必要时滚动
                 lvList.EnsureVisible(index);
 
@@ -273,7 +269,6 @@ namespace power_aoi.DockerPanal
                 }
                 else
                 {
-                    cutBitmapShow(index);
                     return;
                 }
                 lvList.Items[index].SubItems[8].Text = res;
@@ -291,7 +286,6 @@ namespace power_aoi.DockerPanal
                     }
                     #endregion
                 }
-                cutBitmapShow(index + 1);
                 // 主要应用于，客户手动选了行，造成前面有些未验证
                 if (++checkedNum >= lvList.Items.Count)
                 {
@@ -300,12 +294,14 @@ namespace power_aoi.DockerPanal
                     bitmapBack.Dispose();
                     return;
                 }
-                lvList.Items[index].Selected = false;
-                lvList.Items[index + 1].Selected = true;
                 twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[index + 1].SubItems[1].Text);
-    
+                lvList.Select();
+                //lvList.Items[index].Selected = false;
+                //lvList.Items[index + 1].Selected = true;
+                lvList.SelectedIndices.Remove(selectIndex);
+                selectIndex = index + 1;
+                lvList.SelectedIndices.Add(selectIndex);
 
-      
             }
             catch (Exception err)
             {
@@ -315,13 +311,26 @@ namespace power_aoi.DockerPanal
 
         private void lvList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lvList.SelectedItems.Count != 0)
+            if (lvList.SelectedIndices != null && lvList.SelectedIndices.Count > 0)
             {
+                selectIndex = lvList.SelectedItems[0].Index;
+                cutBitmapShow(lvList.SelectedItems[0].Index);
+                //lbResult.Text = lvList.SelectedItems[0].Index + "";
+                
                 if (lvList.SelectedItems[0].Index + 1 > lvList.Items.Count)
                 {
                     main.doLeisure(true);
                 }
             }
+
+            //if (lvList.SelectedItems.Count != 0)
+            //{
+             
+            //}
+            //else if (lvList.SelectedItems.Count > 0)
+            //{
+                
+            //}
       
         }
 
