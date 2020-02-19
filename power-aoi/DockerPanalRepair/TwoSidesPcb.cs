@@ -1,20 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-using System.Configuration;
-using power_aoi.Tools;
-using ImageProcessor;
-using ImageProcessor.Imaging;
-using power_aoi.Model;
-using Amib.Threading;
-using System.Threading;
 
 namespace power_aoi.DockerPanal
 {
@@ -43,21 +30,32 @@ namespace power_aoi.DockerPanal
 
         void drawLine(PictureBox pictureBox, Rectangle rect)
         {
-            //pictureBox.Refresh();
+            // 先计算图像缩放的比例
+            double wPro = (double)pictureBox.Width / (double)pictureBox.Image.Width;
+            double hPro = (double)pictureBox.Height / (double)pictureBox.Image.Height;
+            Rectangle newRect = new Rectangle(
+                Convert.ToInt32((rect.X + rect.Width/2) * wPro),
+                Convert.ToInt32((rect.Y + rect.Height/2) * hPro),
+                Convert.ToInt32(rect.Width * wPro),
+                Convert.ToInt32(rect.Height * hPro));
+
+            pictureBox.Refresh();
             Graphics ghFront = pictureBox.CreateGraphics();
 
-            Pen newPen = new Pen(Color.Yellow, 5);//定义一个画笔，黄色
+            Pen newPen = new Pen(Color.Yellow, 2);//定义一个画笔，黄色
 
             pictureBox.Update();//这句话相当关键  会是消除之前画的图 速度加快
-            ghFront.DrawLine(newPen, new Point(401, 0), new Point(401, 250));
-            //ghFront.DrawLine(newPen, new Point(0, rect.Y), new Point(pictureBox.Image.Width, rect.Y));
+            ghFront.DrawLine(newPen, new Point(newRect.X, 0), new Point(newRect.X, pictureBox.Height));
+            ghFront.DrawLine(newPen, new Point(0, newRect.Y), new Point(pictureBox.Width, newRect.Y));
+
+
+            //LogHelper.WriteLog(string.Format("pictureBox [ width: {0}, height: {1}]\nfileimages [ width: {2}, height: {3}]", pictureBox.Width, pictureBox.Height, pictureBox.Image.Width, pictureBox.Image.Height));
      
         }
 
         public void pictureBoxDraw(bool front, Rectangle rect)
         {
-            //pbFront.Image = Utils.DrawLine(frontBitmap, rect);
-            drawLine(pbFront, rect);
+            if (front) drawLine(pbFront, rect); else drawLine(pbBack, rect);
         }
     }
 }

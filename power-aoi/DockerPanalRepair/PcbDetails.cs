@@ -183,7 +183,7 @@ namespace power_aoi.DockerPanal
 
         }
 
-        public Rectangle cutBitmapShow(int index)
+        public void cutBitmapShow(int index)
         {
             #region 截图显示下一个
             try
@@ -203,18 +203,28 @@ namespace power_aoi.DockerPanal
                         Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
                         rect.Inflate(250, 250);
                         resBitmap = Utils.BitmapCut(drawBitmap, rect);//.Save(tFilePath);
+                        twoSidesPcb.BeginInvoke((Action)(() =>
+                        {
+                            twoSidesPcb.pictureBoxDraw(true, rect);
+                        }));
+             
                     }
                     else if (lvList.Items[index].SubItems[1].Text == "1") // 背面
                     {
                         Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
                         rect.Inflate(250, 250);
                         resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
+                        twoSidesPcb.BeginInvoke((Action)(() =>
+                        {
+                            twoSidesPcb.pictureBoxDraw(false, rect);
+                        }));
                     }
                     //resBitmap.Save(tFilePath);
-                    partOfPcb.showImgThread(resBitmap);
-                    return rect;
-
-
+                    twoSidesPcb.BeginInvoke((Action)(() =>
+                    {
+                        partOfPcb.showImgThread(resBitmap);
+                    }));
+   
                 }
              
                 //partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
@@ -222,7 +232,6 @@ namespace power_aoi.DockerPanal
             }
             catch (Exception er)
             {
-                return new Rectangle();
             }
             #endregion
         }
@@ -330,8 +339,8 @@ namespace power_aoi.DockerPanal
                 // 确保index行可见，必要时滚动
                 lvList.EnsureVisible(selectIndex);
                 //截图并显示
-                Rectangle rect = cutBitmapShow(lvList.SelectedItems[0].Index);
-                twoSidesPcb.pictureBoxDraw(true, rect);
+                cutBitmapShow(lvList.SelectedItems[0].Index);
+
             }
         }
 

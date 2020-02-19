@@ -31,15 +31,15 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pbFront = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbBack = new System.Windows.Forms.PictureBox();
-            this.pbFront = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFront)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBack)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFront)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -56,6 +56,7 @@
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Enabled = false;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -72,6 +73,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "正面";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // pbFront
+            // 
+            this.pbFront.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbFront.Location = new System.Drawing.Point(3, 3);
+            this.pbFront.Margin = new System.Windows.Forms.Padding(0);
+            this.pbFront.Name = "pbFront";
+            this.pbFront.Size = new System.Drawing.Size(552, 320);
+            this.pbFront.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbFront.TabIndex = 0;
+            this.pbFront.TabStop = false;
             // 
             // tabPage2
             // 
@@ -94,16 +106,6 @@
             this.pbBack.TabIndex = 0;
             this.pbBack.TabStop = false;
             // 
-            // pbFront
-            // 
-            this.pbFront.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbFront.Location = new System.Drawing.Point(3, 3);
-            this.pbFront.Name = "pbFront";
-            this.pbFront.Size = new System.Drawing.Size(552, 320);
-            this.pbFront.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbFront.TabIndex = 0;
-            this.pbFront.TabStop = false;
-            // 
             // TwoSidesPcb
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -114,9 +116,9 @@
             this.panel1.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbFront)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbBack)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFront)).EndInit();
             this.ResumeLayout(false);
 
         }
