@@ -339,3 +339,11 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 power-aoi/Migrations/
+
+power-aoi/png/Thumbs.db
+
+power-aoi/png/Thumbs.db:encryptable
+
+power-aoi/Resources/Thumbs.db
+
+power-aoi/Resources/Thumbs.db:encryptable
