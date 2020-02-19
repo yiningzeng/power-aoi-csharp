@@ -157,7 +157,6 @@ namespace power_aoi.DockerPanal
 
                 lvList.Items.Add(li);
             }
-            lvList.Items[0].Selected = true;
             ImageList ImgList = new ImageList();
             //高度设为25
             ImgList.ImageSize = new Size(1, 25);
@@ -177,7 +176,6 @@ namespace power_aoi.DockerPanal
             {
                 if(li.SubItems[8].Text == "未判定")
                 {
-                    li.Selected = true;
                     return true;
                 }
             }
@@ -237,17 +235,16 @@ namespace power_aoi.DockerPanal
         {
             try
             {
+                lvList.Select();
                 int index = selectIndex;
                 if (lvList.SelectedItems.Count == 0)
                 {
                     index = 0;
                 }
-   
-                //确保index行可见，必要时滚动
-                lvList.EnsureVisible(index);
-
                 if (res == "OK")
                 {
+                    if (lvList.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
+
                     lvList.Items[index].BackColor = Color.Green;
                     #region 更新数据库
                     try
@@ -268,6 +265,8 @@ namespace power_aoi.DockerPanal
                 }
                 else if(res == "NG")
                 {
+                    if (lvList.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
+
                     lvList.Items[index].BackColor = Color.Yellow;
                 }
                 else
@@ -276,34 +275,43 @@ namespace power_aoi.DockerPanal
                 }
                 lvList.Items[index].SubItems[8].Text = res;
 
-
-
                 // 判断是否到最后一行
-                if (index + 1 >= lvList.Items.Count)
+                if (index + 1 >= lvList.Items.Count) // 是最后一行
                 {
                     #region 查询是否存在未校验的数据
-                    if (!hasListViewUncheck())
+                    if (!hasListViewUncheck()) // 数据校验完毕
                     {
                         main.doLeisure(true);
                         return;
                     }
+                    else // 未校验完毕，返回第一行从新开始
+                    {
+                        lvList.SelectedIndices.Remove(index);
+                        index = 0;
+                        lvList.SelectedIndices.Add(index);
+                        //由于光标不会跟着移动，需要手动设置
+                        lvList.FocusedItem = lvList.Items[index];
+                    }
                     #endregion
                 }
+                else
+                {
+                    lvList.SelectedIndices.Remove(index);
+                    lvList.SelectedIndices.Add(++index);
+                    //由于光标不会跟着移动，需要手动设置
+                    lvList.FocusedItem = lvList.Items[index];
+                }
+
                 // 主要应用于，客户手动选了行，造成前面有些未验证
-                if (++checkedNum >= lvList.Items.Count)
+                if (checkedNum >= lvList.Items.Count)
                 {
                     main.doLeisure(true);
                     bitmapFront.Dispose();
                     bitmapBack.Dispose();
                     return;
                 }
-                twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[index + 1].SubItems[1].Text);
-                lvList.Select();
-                //lvList.Items[index].Selected = false;
-                //lvList.Items[index + 1].Selected = true;
-                lvList.SelectedIndices.Remove(selectIndex);
-                selectIndex = index + 1;
-                lvList.SelectedIndices.Add(selectIndex);
+
+    
 
             }
             catch (Exception err)
@@ -317,6 +325,13 @@ namespace power_aoi.DockerPanal
             if (lvList.SelectedIndices != null && lvList.SelectedIndices.Count > 0)
             {
                 selectIndex = lvList.SelectedItems[0].Index;
+                // 切换正反面
+                twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[selectIndex].SubItems[1].Text);
+                // 确保index行可见，必要时滚动
+                lvList.EnsureVisible(selectIndex);
+               
+
+
                 Rectangle rect = cutBitmapShow(lvList.SelectedItems[0].Index);
                 //lbResult.Text = lvList.SelectedItems[0].Index + "";
 
