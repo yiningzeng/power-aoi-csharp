@@ -194,13 +194,13 @@ namespace power_aoi.DockerPanal
                         if (lvList.Items[index].SubItems[1].Text == "0") // 正面
                         {
                             Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
-                            rect.Inflate(100, 100);
+                            rect.Inflate(250, 250);
                             resBitmap = Utils.BitmapCut(drawBitmap, rect);//.Save(tFilePath);
                         }
                         else if (lvList.Items[index].SubItems[1].Text == "1") // 背面
                         {
                             Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
-                            rect.Inflate(100, 100);
+                            rect.Inflate(250, 250);
                             resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
                         }
                         //resBitmap.Save(tFilePath);
