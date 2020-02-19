@@ -288,7 +288,7 @@ namespace power_aoi
             //channel.BasicNack(Rabbitmq.deliveryTag, false, true);
         }
 
-        public void doLeisure()
+        public void doLeisure(bool clearAll)
         {
             isLeisure = true; 
             mainChannel.BasicAck(Rabbitmq.deliveryTag, false);
@@ -298,7 +298,21 @@ namespace power_aoi
             pcbDetails.lbPcbWidth.Text = "";
             pcbDetails.lbPcbHeight.Text = "";
             pcbDetails.lbPcbChildenNumber.Text = "";
+            pcbDetails.lbResult.Text = "";
             this.Text = "等待最新的校验信息...";
+
+            if(clearAll)
+            {
+                twoSidesPcb.BeginInvoke((Action)(() =>
+                {
+                    twoSidesPcb.showFrontImg(null);
+                    twoSidesPcb.showBackImg(null);
+                }));
+                partOfPcb.BeginInvoke((Action)(() =>
+                {
+                    partOfPcb.showImg(null);
+                }));
+            }
         }
 
         public Main()

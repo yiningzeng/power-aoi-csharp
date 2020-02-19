@@ -120,7 +120,7 @@ namespace power_aoi.DockerPanal
             }
             if (pcb.results.Count == 0)
             {
-                main.doLeisure();
+                main.doLeisure(false);
                 lbPcbNumber.Text = pcb.PcbNumber;
                 lbSurfaceNumber.Text = pcb.SurfaceNumber.ToString();
                 lbPcbWidth.Text = pcb.PcbWidth.ToString();
@@ -286,7 +286,7 @@ namespace power_aoi.DockerPanal
                     #region 查询是否存在未校验的数据
                     if (!hasListViewUncheck())
                     {
-                        main.doLeisure();
+                        main.doLeisure(true);
                         return;
                     }
                     #endregion
@@ -295,7 +295,7 @@ namespace power_aoi.DockerPanal
                 // 主要应用于，客户手动选了行，造成前面有些未验证
                 if (++checkedNum >= lvList.Items.Count)
                 {
-                    main.doLeisure();
+                    main.doLeisure(true);
                     bitmapFront.Dispose();
                     bitmapBack.Dispose();
                     return;
@@ -319,7 +319,7 @@ namespace power_aoi.DockerPanal
             {
                 if (lvList.SelectedItems[0].Index + 1 > lvList.Items.Count)
                 {
-                    main.doLeisure();
+                    main.doLeisure(true);
                 }
             }
       

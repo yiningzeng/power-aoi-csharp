@@ -360,6 +360,6 @@
         public System.Windows.Forms.Label lbPcbHeight;
         public System.Windows.Forms.Label lbPcbChildenNumber;
         public System.Windows.Forms.ColumnHeader colRegion;
-        private System.Windows.Forms.Label lbResult;
+        public System.Windows.Forms.Label lbResult;
     }
 }
