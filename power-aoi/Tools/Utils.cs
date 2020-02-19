@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace power_aoi
 {
@@ -49,6 +50,23 @@ namespace power_aoi
             ghFront.DrawRectangle(
                 new Pen(Color.Red, 3),
                 rect);
+            return bitmap;
+        }
+
+        /// <summary>
+        /// 缺陷画框行数
+        /// </summary>
+        /// <param name="bitmap">原始bitmap</param>
+        /// <param name="rect">Rectangle</param>
+        /// <param name="ngType">缺陷类型</param>
+        /// <returns></returns>
+        public static Bitmap DrawLine(Bitmap aa, Rectangle rect)
+        {
+            Bitmap bitmap = aa.Clone(new Rectangle(0, 0, aa.Width, aa.Height), aa.PixelFormat);
+            Graphics ghFront = Graphics.FromImage(bitmap);
+            Pen newPen = new Pen(Color.Yellow, 50);//定义一个画笔，黄色
+            ghFront.DrawLine(newPen, new Point(rect.X, 0), new Point(rect.X, bitmap.Height));
+            ghFront.DrawLine(newPen, new Point(0, rect.Y), new Point(bitmap.Width, rect.Y));
             return bitmap;
         }
         /// <summary>  

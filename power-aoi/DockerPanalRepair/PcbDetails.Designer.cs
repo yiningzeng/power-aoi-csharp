@@ -45,6 +45,7 @@
             this.colNgType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colResult = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbResult = new System.Windows.Forms.Label();
             this.lbPcbChildenNumber = new System.Windows.Forms.Label();
             this.lbPcbHeight = new System.Windows.Forms.Label();
             this.lbPcbWidth = new System.Windows.Forms.Label();
@@ -55,7 +56,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lbPcbNumber = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lbResult = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.gbPcb.SuspendLayout();
@@ -219,6 +219,15 @@
             this.panel1.Size = new System.Drawing.Size(272, 338);
             this.panel1.TabIndex = 1;
             // 
+            // lbResult
+            // 
+            this.lbResult.AutoSize = true;
+            this.lbResult.Font = new System.Drawing.Font("宋体", 80F, System.Drawing.FontStyle.Bold);
+            this.lbResult.Location = new System.Drawing.Point(37, 151);
+            this.lbResult.Name = "lbResult";
+            this.lbResult.Size = new System.Drawing.Size(0, 107);
+            this.lbResult.TabIndex = 6;
+            // 
             // lbPcbChildenNumber
             // 
             this.lbPcbChildenNumber.AutoSize = true;
@@ -303,15 +312,6 @@
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "板号：";
-            // 
-            // lbResult
-            // 
-            this.lbResult.AutoSize = true;
-            this.lbResult.Font = new System.Drawing.Font("宋体", 80F, System.Drawing.FontStyle.Bold);
-            this.lbResult.Location = new System.Drawing.Point(37, 151);
-            this.lbResult.Name = "lbResult";
-            this.lbResult.Size = new System.Drawing.Size(0, 107);
-            this.lbResult.TabIndex = 6;
             // 
             // PcbDetails
             // 

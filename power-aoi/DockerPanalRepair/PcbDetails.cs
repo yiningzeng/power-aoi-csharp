@@ -185,7 +185,7 @@ namespace power_aoi.DockerPanal
 
         }
 
-        public void cutBitmapShow(int index)
+        public Rectangle cutBitmapShow(int index)
         {
             #region 截图显示下一个
             try
@@ -200,7 +200,6 @@ namespace power_aoi.DockerPanal
                             int.Parse(reg[1]),
                             int.Parse(reg[2]),
                             int.Parse(reg[3]));
-
                     if (lvList.Items[index].SubItems[1].Text == "0") // 正面
                     {
                         Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
@@ -215,13 +214,17 @@ namespace power_aoi.DockerPanal
                     }
                     //resBitmap.Save(tFilePath);
                     partOfPcb.showImgThread(resBitmap);
+                    return rect;
+
+
                 }
+             
                 //partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
 
             }
             catch (Exception er)
             {
-
+                return new Rectangle();
             }
             #endregion
         }
@@ -314,13 +317,17 @@ namespace power_aoi.DockerPanal
             if (lvList.SelectedIndices != null && lvList.SelectedIndices.Count > 0)
             {
                 selectIndex = lvList.SelectedItems[0].Index;
-                cutBitmapShow(lvList.SelectedItems[0].Index);
+                Rectangle rect = cutBitmapShow(lvList.SelectedItems[0].Index);
                 //lbResult.Text = lvList.SelectedItems[0].Index + "";
-                
+
+                //twoSidesPcb.pictureBoxDraw(true, new Rectangle(100, 200, 400, 500));
+                //twoSidesPcb.pictureBoxDraw(true, new Rectangle(2401, 301, 512, 648));
+                twoSidesPcb.pictureBoxDraw(true, rect);
                 if (lvList.SelectedItems[0].Index + 1 > lvList.Items.Count)
                 {
                     main.doLeisure(true);
                 }
+       
             }
 
             //if (lvList.SelectedItems.Count != 0)

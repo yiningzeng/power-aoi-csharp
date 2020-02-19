@@ -119,6 +119,7 @@
     <Reference Include="NGettext, Version=0.6.1.0, Culture=neutral, PublicKeyToken=08d3d1c89dfd2985, processorArchitecture=MSIL">
       <HintPath>..\packages\NGettext.0.6.3\lib\net46\NGettext.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.5.1.2\lib\net451\RabbitMQ.Client.dll</HintPath>
     </Reference>
@@ -257,6 +258,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\MySmartThreadPool.cs" />
+    <Compile Include="Tools\ProPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\Rabbitmq.cs" />
     <Compile Include="Tools\Snowflake.cs" />
     <Compile Include="Tools\Utils.cs" />
