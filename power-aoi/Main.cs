@@ -252,7 +252,7 @@ namespace power_aoi
                     //        }
                     //        MySmartThreadPool.Instance().QueueWorkItem(actFrontDrawImg, result, rect, i);
                     //    }
-                    
+
                     //}
 
 
