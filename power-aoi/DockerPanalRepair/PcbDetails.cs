@@ -1,4 +1,4 @@
-﻿using ImageProcessor;
+using ImageProcessor;
 using Newtonsoft.Json;
 using power_aoi.Model;
 using power_aoi.Tools;
@@ -158,6 +158,47 @@ namespace power_aoi.DockerPanal
 
         }
 
+        public void cutBitmapShow(int index)
+        {
+            #region 截图显示下一个
+            try
+            {
+                string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + lvList.Items[index].SubItems[2].Text + "\\" + lvList.Items[index].SubItems[3].Text;
+                //if (!File.Exists(tFilePath))
+                {
+                    Bitmap resBitmap = null;
+                    string[] reg = lvList.Items[index].SubItems[4].Text.Split(',');
+                    Rectangle rect = new Rectangle(
+                            int.Parse(reg[0]),
+                            int.Parse(reg[1]),
+                            int.Parse(reg[2]),
+                            int.Parse(reg[3]));
+
+                    if (lvList.Items[index].SubItems[1].Text == "0") // 正面
+                    {
+                        Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
+                        rect.Inflate(250, 250);
+                        resBitmap = Utils.BitmapCut(drawBitmap, rect);//.Save(tFilePath);
+                    }
+                    else if (lvList.Items[index].SubItems[1].Text == "1") // 背面
+                    {
+                        Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
+                        rect.Inflate(250, 250);
+                        resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
+                    }
+                    //resBitmap.Save(tFilePath);
+                    partOfPcb.showImgThread(resBitmap);
+                }
+                //partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
+
+            }
+            catch (Exception er)
+            {
+
+            }
+            #endregion
+        }
+
         /// <summary>
         /// ListView跳转到下一行
         /// </summary>
@@ -174,47 +215,13 @@ namespace power_aoi.DockerPanal
                 else
                 {
                     index = lvList.SelectedItems[0].Index;
+                    //if (index >= lvList.Items.Count)
+                    //{
+                    //    index = index - 1;
+                    //}
                 }
                 //确保index行可见，必要时滚动
                 lvList.EnsureVisible(index);
-                #region 截图
-                try
-                {
-                    string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + lvList.Items[index].SubItems[2].Text + "\\" + lvList.Items[index].SubItems[3].Text;
-                    //if (!File.Exists(tFilePath))
-                    {
-                        Bitmap resBitmap=null;
-                        string[] reg = lvList.Items[index].SubItems[4].Text.Split(',');
-                        Rectangle rect = new Rectangle(
-                                int.Parse(reg[0]),
-                                int.Parse(reg[1]),
-                                int.Parse(reg[2]),
-                                int.Parse(reg[3]));
-                   
-                        if (lvList.Items[index].SubItems[1].Text == "0") // 正面
-                        {
-                            Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
-                            rect.Inflate(250, 250);
-                            resBitmap = Utils.BitmapCut(drawBitmap, rect);//.Save(tFilePath);
-                        }
-                        else if (lvList.Items[index].SubItems[1].Text == "1") // 背面
-                        {
-                            Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
-                            rect.Inflate(250, 250);
-                            resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
-                        }
-                        //resBitmap.Save(tFilePath);
-                        partOfPcb.showImgThread(resBitmap);
-                    }
-                    //partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
-
-                }
-                catch (Exception er)
-                {
-
-                }
-                #endregion
-
 
                 if (res == "OK")
                 {
@@ -242,6 +249,7 @@ namespace power_aoi.DockerPanal
                 }
                 else
                 {
+                    cutBitmapShow(index);
                     return;
                 }
                 lvList.Items[index].SubItems[8].Text = res;
@@ -259,6 +267,7 @@ namespace power_aoi.DockerPanal
                     }
                     #endregion
                 }
+                cutBitmapShow(index + 1);
                 // 主要应用于，客户手动选了行，造成前面有些未验证
                 if (++checkedNum >= lvList.Items.Count)
                 {
