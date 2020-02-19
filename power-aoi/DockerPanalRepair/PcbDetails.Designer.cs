@@ -131,9 +131,9 @@
             // 
             this.panel2.Controls.Add(this.lvList);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(275, 17);
+            this.panel2.Location = new System.Drawing.Point(192, 17);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(516, 338);
+            this.panel2.Size = new System.Drawing.Size(599, 338);
             this.panel2.TabIndex = 2;
             // 
             // lvList
@@ -153,7 +153,7 @@
             this.lvList.HideSelection = false;
             this.lvList.Location = new System.Drawing.Point(0, 0);
             this.lvList.Name = "lvList";
-            this.lvList.Size = new System.Drawing.Size(516, 338);
+            this.lvList.Size = new System.Drawing.Size(599, 338);
             this.lvList.TabIndex = 0;
             this.lvList.UseCompatibleStateImageBehavior = false;
             this.lvList.View = System.Windows.Forms.View.Details;
@@ -216,14 +216,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(3, 17);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(272, 338);
+            this.panel1.Size = new System.Drawing.Size(189, 338);
             this.panel1.TabIndex = 1;
             // 
             // lbResult
             // 
             this.lbResult.AutoSize = true;
             this.lbResult.Font = new System.Drawing.Font("宋体", 80F, System.Drawing.FontStyle.Bold);
-            this.lbResult.Location = new System.Drawing.Point(37, 151);
+            this.lbResult.Location = new System.Drawing.Point(13, 151);
             this.lbResult.Name = "lbResult";
             this.lbResult.Size = new System.Drawing.Size(0, 107);
             this.lbResult.TabIndex = 6;

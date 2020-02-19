@@ -49,7 +49,7 @@ namespace power_aoi.DockerPanal
             Pen newPen = new Pen(Color.Yellow, 5);//定义一个画笔，黄色
 
             pictureBox.Update();//这句话相当关键  会是消除之前画的图 速度加快
-            ghFront.DrawLine(newPen, new Point(2401, 0), new Point(2401, 250));
+            ghFront.DrawLine(newPen, new Point(401, 0), new Point(401, 250));
             //ghFront.DrawLine(newPen, new Point(0, rect.Y), new Point(pictureBox.Image.Width, rect.Y));
      
         }
@@ -58,30 +58,6 @@ namespace power_aoi.DockerPanal
         {
             //pbFront.Image = Utils.DrawLine(frontBitmap, rect);
             drawLine(pbFront, rect);
-        }
-
-        private void pictureBox_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics gh = e.Graphics;
-
-            Pen newPen = new Pen(Color.Yellow, 5);//定义一个画笔，黄色
-
-            pbFront.Update();//这句话相当关键  会是消除之前画的图 速度加快
-            gh.DrawLine(newPen, new Point(2401, 0), new Point(2401, 1000));
-            //if (draw)
-            //{
-            //    Graphics gh = e.Graphics;
-            //    Pen pp = new Pen(Color.Red);
-            //    Rectangle rect = new Rectangle();
-            //    rect.X = 80;
-            //    rect.Y = 90;
-            //    rect.Width = 50;
-            //    rect.Height = 60;
-            //    rect.Location = new Point(0, 0);
-            //    gh.DrawRectangle(new Pen(Color.FromArgb(255, 60, 60)), rect);
-            //    draw = false;
-            //}
-
         }
     }
 }

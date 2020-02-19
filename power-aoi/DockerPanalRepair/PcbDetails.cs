@@ -329,31 +329,10 @@ namespace power_aoi.DockerPanal
                 twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[selectIndex].SubItems[1].Text);
                 // 确保index行可见，必要时滚动
                 lvList.EnsureVisible(selectIndex);
-               
-
-
+                //截图并显示
                 Rectangle rect = cutBitmapShow(lvList.SelectedItems[0].Index);
-                //lbResult.Text = lvList.SelectedItems[0].Index + "";
-
-                //twoSidesPcb.pictureBoxDraw(true, new Rectangle(100, 200, 400, 500));
-                //twoSidesPcb.pictureBoxDraw(true, new Rectangle(2401, 301, 512, 648));
                 twoSidesPcb.pictureBoxDraw(true, rect);
-                if (lvList.SelectedItems[0].Index + 1 > lvList.Items.Count)
-                {
-                    main.doLeisure(true);
-                }
-       
             }
-
-            //if (lvList.SelectedItems.Count != 0)
-            //{
-             
-            //}
-            //else if (lvList.SelectedItems.Count > 0)
-            //{
-                
-            //}
-      
         }
 
         private void btnOK_Click(object sender, EventArgs e)

@@ -38,7 +38,7 @@
             this.pbPart.Location = new System.Drawing.Point(0, 0);
             this.pbPart.Name = "pbPart";
             this.pbPart.Size = new System.Drawing.Size(800, 450);
-            this.pbPart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbPart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbPart.TabIndex = 0;
             this.pbPart.TabStop = false;
             // 

@@ -33,7 +33,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbBack = new System.Windows.Forms.PictureBox();
-            this.pbFront = new power_aoi.Tools.ProPictureBox();
+            this.pbFront = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -100,7 +100,8 @@
             this.pbFront.Location = new System.Drawing.Point(3, 3);
             this.pbFront.Name = "pbFront";
             this.pbFront.Size = new System.Drawing.Size(552, 320);
-            this.pbFront.TabIndex = 4;
+            this.pbFront.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbFront.TabIndex = 0;
             this.pbFront.TabStop = false;
             // 
             // TwoSidesPcb
@@ -127,6 +128,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         public System.Windows.Forms.TabControl tabControl;
         public System.Windows.Forms.PictureBox pbBack;
-        public Tools.ProPictureBox pbFront;
+        public System.Windows.Forms.PictureBox pbFront;
     }
 }
