@@ -1,4 +1,4 @@
-using ImageProcessor;
+﻿using ImageProcessor;
 using Newtonsoft.Json;
 using power_aoi.Model;
 using power_aoi.Tools;
@@ -96,9 +96,40 @@ namespace power_aoi.DockerPanal
         /// <param name="pcb"></param>
         public void loadData(Pcb pcb)
         {
+            if (bitmapFront != null)
+            {
+                bitmapFront.Dispose();
+                bitmapFront = null;
+            }
+            if (bitmapBack != null)
+            {
+                bitmapBack.Dispose();
+                bitmapBack = null;
+            }
+            string frontImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/front.jpg";
+            string backImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/back.jpg";
+            if (File.Exists(frontImgPath))
+            {
+                bitmapFront = new Bitmap(frontImgPath);
+                twoSidesPcb.showFrontImg(bitmapFront);
+            }
+            if (File.Exists(backImgPath))
+            {
+                bitmapBack = new Bitmap(backImgPath);
+                twoSidesPcb.showBackImg(bitmapBack);
+            }
             if (pcb.results.Count == 0)
             {
                 main.doLeisure();
+                lbPcbNumber.Text = pcb.PcbNumber;
+                lbSurfaceNumber.Text = pcb.SurfaceNumber.ToString();
+                lbPcbWidth.Text = pcb.PcbWidth.ToString();
+                lbPcbHeight.Text = pcb.PcbHeight.ToString();
+                lbPcbChildenNumber.Text = pcb.PcbChildenNumber.ToString();
+                lbResult.Text = "OK";
+                lbResult.ForeColor = Color.Green;
+
+                partOfPcb.showImg(null);
                 return;
             }
             checkedNum = 0;
@@ -107,6 +138,8 @@ namespace power_aoi.DockerPanal
             lbPcbWidth.Text = pcb.PcbWidth.ToString();
             lbPcbHeight.Text = pcb.PcbHeight.ToString();
             lbPcbChildenNumber.Text = pcb.PcbChildenNumber.ToString();
+            lbResult.Text = "NG";
+            lbResult.ForeColor = Color.Red;
             foreach (var item in pcb.results)
             {
                 ListViewItem li = new ListViewItem();
@@ -129,16 +162,7 @@ namespace power_aoi.DockerPanal
             ImgList.ImageSize = new Size(1, 25);
             //在Details显示模式下，小图标才会起作用
             lvList.SmallImageList = ImgList;
-            string frontImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/front.jpg";
-            string backImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/back.jpg";
-            if (File.Exists(frontImgPath))
-            {
-                bitmapFront = new Bitmap(frontImgPath);
-            }
-            if (File.Exists(backImgPath))
-            {
-                bitmapBack = new Bitmap(backImgPath);
-            }
+     
             lvListNextItemSelect("未判定");
             //partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
         }

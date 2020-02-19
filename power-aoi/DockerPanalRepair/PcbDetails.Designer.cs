@@ -39,6 +39,7 @@
             this.colIsBack = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPcbPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPartImagePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colRegion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colArea = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colNgType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -54,7 +55,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lbPcbNumber = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.colRegion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lbResult = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.gbPcb.SuspendLayout();
@@ -100,7 +101,7 @@
             this.btnNG.Name = "btnNG";
             this.btnNG.Size = new System.Drawing.Size(391, 74);
             this.btnNG.TabIndex = 1;
-            this.btnNG.Text = "NG ← ↑ →";
+            this.btnNG.Text = "NG (小键盘回车)";
             this.btnNG.UseVisualStyleBackColor = true;
             this.btnNG.Click += new System.EventHandler(this.btnNG_Click);
             // 
@@ -111,7 +112,7 @@
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(391, 74);
             this.btnOK.TabIndex = 0;
-            this.btnOK.Text = "OK ↓";
+            this.btnOK.Text = "OK (小键盘0)";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -174,6 +175,10 @@
             // 
             this.colPartImagePath.Width = 0;
             // 
+            // colRegion
+            // 
+            this.colRegion.Width = 0;
+            // 
             // colId
             // 
             this.colId.Tag = "Id";
@@ -197,6 +202,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lbResult);
             this.panel1.Controls.Add(this.lbPcbChildenNumber);
             this.panel1.Controls.Add(this.lbPcbHeight);
             this.panel1.Controls.Add(this.lbPcbWidth);
@@ -298,9 +304,14 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "板号：";
             // 
-            // colRegion
+            // lbResult
             // 
-            this.colRegion.Width = 0;
+            this.lbResult.AutoSize = true;
+            this.lbResult.Font = new System.Drawing.Font("宋体", 80F, System.Drawing.FontStyle.Bold);
+            this.lbResult.Location = new System.Drawing.Point(37, 151);
+            this.lbResult.Name = "lbResult";
+            this.lbResult.Size = new System.Drawing.Size(0, 107);
+            this.lbResult.TabIndex = 6;
             // 
             // PcbDetails
             // 
@@ -349,5 +360,6 @@
         public System.Windows.Forms.Label lbPcbHeight;
         public System.Windows.Forms.Label lbPcbChildenNumber;
         public System.Windows.Forms.ColumnHeader colRegion;
+        private System.Windows.Forms.Label lbResult;
     }
 }

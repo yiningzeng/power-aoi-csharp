@@ -1,4 +1,4 @@
-﻿using Amib.Threading;
+using Amib.Threading;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,8 +40,8 @@ namespace power_aoi
         public bool isLeisure = true;
         public IModel mainChannel;
 
-        Bitmap imageFront = null;
-        Bitmap imageBack = null;
+        //Bitmap imageFront = null;
+        //Bitmap imageBack = null;
 
         Stopwatch stpwth = new Stopwatch();
 
@@ -104,20 +104,7 @@ namespace power_aoi
                             {
                                 pcbDetails.loadData(lst2.data);
                             }));
-                            if (File.Exists(frontImg))
-                            {
-                                twoSidesPcb.BeginInvoke((Action)(() =>
-                                {
-                                    twoSidesPcb.showFrontImg(new Bitmap(frontImg));
-                                }));
-                            }
-                            if (File.Exists(backImg))
-                            {
-                                twoSidesPcb.BeginInvoke((Action)(() =>
-                                {
-                                    twoSidesPcb.showBackImg(new Bitmap(backImg));
-                                }));
-                            }
+
                             #endregion
                         }
                     };
@@ -130,43 +117,43 @@ namespace power_aoi
    
 
 
-                    Graphics ghFront = null;
-                    Graphics ghBack = null;
+                    //Graphics ghFront = null;
+                    //Graphics ghBack = null;
 
-                    int drawNum = 0;
-                    int allNum = lst2.data.results.Count;
+                    //int drawNum = 0;
+                    //int allNum = lst2.data.results.Count;
            
-                    // 画框所有线程中调用显示图片的委托
-                    Action showImg = () =>
-                    {
-                        drawNum++;
-                        if (drawNum >= allNum)
-                        {
-                            if (imageFront != null)
-                            {
-                                twoSidesPcb.BeginInvoke((Action)(() =>
-                                {
-                                    twoSidesPcb.showFrontImg(imageFront);
+                    //// 画框所有线程中调用显示图片的委托
+                    //Action showImg = () =>
+                    //{
+                    //    drawNum++;
+                    //    if (drawNum >= allNum)
+                    //    {
+                    //        if (imageFront != null)
+                    //        {
+                    //            twoSidesPcb.BeginInvoke((Action)(() =>
+                    //            {
+                    //                twoSidesPcb.showFrontImg(imageFront);
                                     
-                                }));
-                                imageFront.Save(path + "drawfront.jpg");
-                            }
-                            if (imageBack != null)
-                            {
-                                twoSidesPcb.BeginInvoke((Action)(() =>
-                                {
-                                    twoSidesPcb.showBackImg(imageBack);
-                                }));
-                                imageBack.Save(path + "drawback.jpg");
-                                //stpwth.Stop();
-                                //long a = stpwth.ElapsedMilliseconds;
+                    //            }));
+                    //            imageFront.Save(path + "drawfront.jpg");
+                    //        }
+                    //        if (imageBack != null)
+                    //        {
+                    //            twoSidesPcb.BeginInvoke((Action)(() =>
+                    //            {
+                    //                twoSidesPcb.showBackImg(imageBack);
+                    //            }));
+                    //            imageBack.Save(path + "drawback.jpg");
+                    //            //stpwth.Stop();
+                    //            //long a = stpwth.ElapsedMilliseconds;
 
-                                //stpwth.Restart();
-                            }
-                        }
-                    };
+                    //            //stpwth.Restart();
+                    //        }
+                    //    }
+                    //};
 
-                    // 裁剪
+                    //// 裁剪
                     //Action<Rectangle, string, string, int> actCrop = (rect, pp, fi, ii) =>
                     //{
                     //    if (!File.Exists(pp))
@@ -197,39 +184,39 @@ namespace power_aoi
                     //    }
                     //};
 
-                    // 正面图画框的委托
-                    Action<Result, Rectangle, int> actFrontDrawImg = (result, rect, index) =>
-                    {
-                        lock (ghFront)
-                        {
-                            #region 在画框之前先裁剪下来用作局部窗体显示使用
-                            //MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, frontImg, index);
-                            #endregion
-                            ghFront.DrawString(result.NgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, rect.X, rect.Y - 15);
-                            ghFront.DrawRectangle(
-                                new Pen(Color.Red, 3),
-                                rect);
-                            this.BeginInvoke(showImg);
+                    //// 正面图画框的委托
+                    //Action<Result, Rectangle, int> actFrontDrawImg = (result, rect, index) =>
+                    //{
+                    //    lock (ghFront)
+                    //    {
+                    //        #region 在画框之前先裁剪下来用作局部窗体显示使用
+                    //        //MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, frontImg, index);
+                    //        #endregion
+                    //        ghFront.DrawString(result.NgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, rect.X, rect.Y - 15);
+                    //        ghFront.DrawRectangle(
+                    //            new Pen(Color.Red, 3),
+                    //            rect);
+                    //        this.BeginInvoke(showImg);
                     
-                        }
-                    };
+                    //    }
+                    //};
 
-                    // 背面图画框的委托
-                    Action<Result, Rectangle, int> actBackDrawImg = (result, rect, index) =>
-                    {
-                        lock (ghBack)
-                        {
+                    //// 背面图画框的委托
+                    //Action<Result, Rectangle, int> actBackDrawImg = (result, rect, index) =>
+                    //{
+                    //    lock (ghBack)
+                    //    {
                             
-                            #region 在画框之前先裁剪下来用作局部窗体显示使用
-                            //MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, backImg, index);
-                            #endregion
-                            ghBack.DrawString(result.NgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, rect.X, rect.Y - 15);
-                            ghBack.DrawRectangle(
-                                new Pen(Color.Red, 3),
-                                rect);
-                            this.BeginInvoke(showImg);
-                        }
-                    };
+                    //        #region 在画框之前先裁剪下来用作局部窗体显示使用
+                    //        //MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, backImg, index);
+                    //        #endregion
+                    //        ghBack.DrawString(result.NgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, rect.X, rect.Y - 15);
+                    //        ghBack.DrawRectangle(
+                    //            new Pen(Color.Red, 3),
+                    //            rect);
+                    //        this.BeginInvoke(showImg);
+                    //    }
+                    //};
 
                     //for (int i = 0; i < lst2.data.results.Count; i++)
                     //{
@@ -312,27 +299,6 @@ namespace power_aoi
             pcbDetails.lbPcbHeight.Text = "";
             pcbDetails.lbPcbChildenNumber.Text = "";
             this.Text = "等待最新的校验信息...";
-
-            twoSidesPcb.BeginInvoke((Action)(() =>
-            {
-                twoSidesPcb.showFrontImg(null);
-                twoSidesPcb.showBackImg(null);
-            }));
-            partOfPcb.BeginInvoke((Action)(() =>
-            {
-                partOfPcb.showImg(null);
-            }));
-            if(imageFront != null)
-            {
-                imageFront.Dispose();
-                imageFront = null;
-            }
-            if (imageBack != null)
-            {
-                imageBack.Dispose();
-                imageBack = null;
-            }
-
         }
 
         public Main()
