@@ -102,7 +102,7 @@
             this.pbBack.Location = new System.Drawing.Point(3, 3);
             this.pbBack.Name = "pbBack";
             this.pbBack.Size = new System.Drawing.Size(552, 320);
-            this.pbBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbBack.TabIndex = 0;
             this.pbBack.TabStop = false;
             // 
