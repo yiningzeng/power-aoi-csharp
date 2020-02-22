@@ -166,6 +166,7 @@ namespace power_aoi.DockerPanal
             lvListNextItemSelect("未判定");
             lvList.Select();
             lvList.SelectedIndices.Add(0);
+         
             //partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
         }
 
@@ -337,6 +338,7 @@ namespace power_aoi.DockerPanal
                 // 切换正反面
                 twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[selectIndex].SubItems[1].Text);
                 // 确保index行可见，必要时滚动
+                //if(lvList.EnsureVisible)
                 lvList.EnsureVisible(selectIndex);
                 //截图并显示
                 cutBitmapShow(lvList.SelectedItems[0].Index);

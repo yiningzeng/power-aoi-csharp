@@ -34,7 +34,7 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.gbPcb = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lvList = new System.Windows.Forms.ListView();
+            this.lvList = new power_aoi.Tools.DoubleBufferListView();
             this.colPcbId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colIsBack = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPcbPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -338,7 +338,6 @@
         public System.Windows.Forms.ColumnHeader colNgType;
         public System.Windows.Forms.ColumnHeader colResult;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        public System.Windows.Forms.ListView lvList;
         public System.Windows.Forms.Button btnNG;
         public System.Windows.Forms.Button btnOK;
         public System.Windows.Forms.GroupBox gbPcb;
@@ -361,5 +360,6 @@
         public System.Windows.Forms.Label lbPcbChildenNumber;
         public System.Windows.Forms.ColumnHeader colRegion;
         public System.Windows.Forms.Label lbResult;
+        public Tools.DoubleBufferListView lvList;
     }
 }
