@@ -254,6 +254,9 @@
     <Compile Include="SqlPars\SqlQueryData1.cs" />
     <Compile Include="Tools\DateTimeHelper.cs" />
     <Compile Include="Tools\DB.cs" />
+    <Compile Include="Tools\DoubleBufferListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\LogHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
