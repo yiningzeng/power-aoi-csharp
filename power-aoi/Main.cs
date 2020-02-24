@@ -366,6 +366,9 @@ namespace power_aoi
                     pcbDetails.btnOK.Focus();
                     pcbDetails.lvListNextItemSelect("OK");
                     return true;
+                case Keys.Space:
+                    doLeisure(true);
+                    break;
                 default:
                     break;
             }
