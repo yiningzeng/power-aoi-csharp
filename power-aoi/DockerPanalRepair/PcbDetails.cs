@@ -90,6 +90,17 @@ namespace power_aoi.DockerPanal
             //this.lvList.Items[0].Selected = true;
         }
 
+        public void listSwitch(bool isback){
+            if (isback)
+            {
+                tabListView.SelectedIndex = 1;
+
+            }
+            else
+            {
+                tabListView.SelectedIndex = 0;
+            }
+        }
 
         /// <summary>
         /// ListView加载数据
@@ -155,17 +166,17 @@ namespace power_aoi.DockerPanal
                 li.SubItems.Add(item.NgType);
                 li.SubItems.Add("未判定");
 
-                lvList.Items.Add(li);
+                lvListFront.Items.Add(li);
             }
             ImageList ImgList = new ImageList();
             //高度设为25
             ImgList.ImageSize = new Size(1, 25);
             //在Details显示模式下，小图标才会起作用
-            lvList.SmallImageList = ImgList;
+            lvListFront.SmallImageList = ImgList;
      
             lvListNextItemSelect("未判定");
-            lvList.Select();
-            lvList.SelectedIndices.Add(0);
+            lvListFront.Select();
+            lvListFront.SelectedIndices.Add(0);
          
             //partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
         }
@@ -173,7 +184,7 @@ namespace power_aoi.DockerPanal
 
         public bool hasListViewUncheck()
         {
-            foreach(ListViewItem li in lvList.Items)
+            foreach(ListViewItem li in lvListFront.Items)
             {
                 if(li.SubItems[8].Text == "未判定")
                 {
@@ -189,18 +200,18 @@ namespace power_aoi.DockerPanal
             #region 截图显示下一个
             try
             {
-                string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + lvList.Items[index].SubItems[2].Text + "\\" + lvList.Items[index].SubItems[3].Text;
+                string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + lvListFront.Items[index].SubItems[2].Text + "\\" + lvListFront.Items[index].SubItems[3].Text;
                 //if (!File.Exists(tFilePath))
                 {
                     Bitmap resBitmap = null;
-                    string[] reg = lvList.Items[index].SubItems[4].Text.Split(',');
+                    string[] reg = lvListFront.Items[index].SubItems[4].Text.Split(',');
                     Rectangle rect = new Rectangle(
                             int.Parse(reg[0]),
                             int.Parse(reg[1]),
                             int.Parse(reg[2]),
                             int.Parse(reg[3]));
                     Rectangle oldRect = rect;
-                    if (lvList.Items[index].SubItems[1].Text == "0") // 正面
+                    if (lvListFront.Items[index].SubItems[1].Text == "0") // 正面
                     {
                         //Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
                         rect.Inflate(250, 250);
@@ -211,7 +222,7 @@ namespace power_aoi.DockerPanal
                         }));
              
                     }
-                    else if (lvList.Items[index].SubItems[1].Text == "1") // 背面
+                    else if (lvListFront.Items[index].SubItems[1].Text == "1") // 背面
                     {
                         //Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
                         rect.Inflate(250, 250);
@@ -226,7 +237,7 @@ namespace power_aoi.DockerPanal
                     //resBitmap.Save(tFilePath);
                     partOfPcb.BeginInvoke((Action)(() =>
                     {
-                        partOfPcb.showImgThread(resBitmap, newRect, lvList.Items[index].SubItems[7].Text);
+                        partOfPcb.showImgThread(resBitmap, newRect, lvListFront.Items[index].SubItems[7].Text);
                     }));
    
                 }
@@ -248,22 +259,22 @@ namespace power_aoi.DockerPanal
         {
             try
             {
-                lvList.Select();
+                lvListFront.Select();
                 int index = selectIndex;
-                if (lvList.SelectedItems.Count == 0)
+                if (lvListFront.SelectedItems.Count == 0)
                 {
                     index = 0;
                 }
                 if (res == "OK")
                 {
-                    if (lvList.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
+                    if (lvListFront.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
 
-                    lvList.Items[index].BackColor = Color.Green;
+                    lvListFront.Items[index].BackColor = Color.Green;
                     #region 更新数据库
                     try
                     {
                         AoiModel aoiModel = DB.GetAoiModel();
-                        Result users = aoiModel.results.Find(lvList.Items[index].SubItems[5].Text);
+                        Result users = aoiModel.results.Find(lvListFront.Items[index].SubItems[5].Text);
                         users.IsMisjudge = 1;
                         Pcb pcb = aoiModel.pcbs.Find(users.PcbId);
                         pcb.IsMisjudge = 1;
@@ -278,18 +289,18 @@ namespace power_aoi.DockerPanal
                 }
                 else if(res == "NG")
                 {
-                    if (lvList.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
+                    if (lvListFront.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
 
-                    lvList.Items[index].BackColor = Color.Yellow;
+                    lvListFront.Items[index].BackColor = Color.Yellow;
                 }
                 else
                 {
                     return;
                 }
-                lvList.Items[index].SubItems[8].Text = res;
+                lvListFront.Items[index].SubItems[8].Text = res;
 
                 // 判断是否到最后一行
-                if (index + 1 >= lvList.Items.Count) // 是最后一行
+                if (index + 1 >= lvListFront.Items.Count) // 是最后一行
                 {
                     #region 查询是否存在未校验的数据
                     if (!hasListViewUncheck()) // 数据校验完毕
@@ -299,24 +310,24 @@ namespace power_aoi.DockerPanal
                     }
                     else // 未校验完毕，返回第一行从新开始
                     {
-                        lvList.SelectedIndices.Remove(index);
+                        lvListFront.SelectedIndices.Remove(index);
                         index = 0;
-                        lvList.SelectedIndices.Add(index);
+                        lvListFront.SelectedIndices.Add(index);
                         //由于光标不会跟着移动，需要手动设置
-                        lvList.FocusedItem = lvList.Items[index];
+                        lvListFront.FocusedItem = lvListFront.Items[index];
                     }
                     #endregion
                 }
                 else
                 {
-                    lvList.SelectedIndices.Remove(index);
-                    lvList.SelectedIndices.Add(++index);
+                    lvListFront.SelectedIndices.Remove(index);
+                    lvListFront.SelectedIndices.Add(++index);
                     //由于光标不会跟着移动，需要手动设置
-                    lvList.FocusedItem = lvList.Items[index];
+                    lvListFront.FocusedItem = lvListFront.Items[index];
                 }
 
                 // 主要应用于，客户手动选了行，造成前面有些未验证
-                if (checkedNum >= lvList.Items.Count)
+                if (checkedNum >= lvListFront.Items.Count)
                 {
                     main.doLeisure(true);
                     bitmapFront.Dispose();
@@ -335,16 +346,16 @@ namespace power_aoi.DockerPanal
 
         private void lvList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lvList.SelectedIndices != null && lvList.SelectedIndices.Count > 0)
+            if (lvListFront.SelectedIndices != null && lvListFront.SelectedIndices.Count > 0)
             {
-                selectIndex = lvList.SelectedItems[0].Index;
+                selectIndex = lvListFront.SelectedItems[0].Index;
                 // 切换正反面
-                twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvList.Items[selectIndex].SubItems[1].Text);
+                twoSidesPcb.tabControl.SelectedIndex = int.Parse(lvListFront.Items[selectIndex].SubItems[1].Text);
                 // 确保index行可见，必要时滚动
                 //if(lvList.EnsureVisible)
-                lvList.EnsureVisible(selectIndex);
+                lvListFront.EnsureVisible(selectIndex);
                 //截图并显示
-                cutBitmapShow(lvList.SelectedItems[0].Index);
+                cutBitmapShow(lvListFront.SelectedItems[0].Index);
 
             }
         }
@@ -357,6 +368,13 @@ namespace power_aoi.DockerPanal
         private void btnNG_Click(object sender, EventArgs e)
         {
             lvListNextItemSelect("NG");
+        }
+
+        private void tabListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            twoSidesPcb.BeginInvoke((Action)(() => {
+                twoSidesPcb.tabControl.SelectedIndex = tabListView.SelectedIndex;
+            }));
         }
     }
 }

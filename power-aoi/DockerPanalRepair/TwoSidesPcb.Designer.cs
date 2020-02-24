@@ -58,7 +58,9 @@
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Enabled = false;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Name = "tabControl";
+            this.tabControl.Padding = new System.Drawing.Point(0, 0);
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(566, 352);
             this.tabControl.TabIndex = 1;
@@ -67,8 +69,8 @@
             // 
             this.tabPage1.Controls.Add(this.pbFront);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(558, 326);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "正面";
@@ -77,10 +79,10 @@
             // pbFront
             // 
             this.pbFront.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbFront.Location = new System.Drawing.Point(3, 3);
+            this.pbFront.Location = new System.Drawing.Point(0, 0);
             this.pbFront.Margin = new System.Windows.Forms.Padding(0);
             this.pbFront.Name = "pbFront";
-            this.pbFront.Size = new System.Drawing.Size(552, 320);
+            this.pbFront.Size = new System.Drawing.Size(558, 326);
             this.pbFront.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbFront.TabIndex = 0;
             this.pbFront.TabStop = false;
@@ -89,8 +91,8 @@
             // 
             this.tabPage2.Controls.Add(this.pbBack);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(558, 326);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "反面";
@@ -99,9 +101,10 @@
             // pbBack
             // 
             this.pbBack.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbBack.Location = new System.Drawing.Point(3, 3);
+            this.pbBack.Location = new System.Drawing.Point(0, 0);
+            this.pbBack.Margin = new System.Windows.Forms.Padding(0);
             this.pbBack.Name = "pbBack";
-            this.pbBack.Size = new System.Drawing.Size(552, 320);
+            this.pbBack.Size = new System.Drawing.Size(558, 326);
             this.pbBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbBack.TabIndex = 0;
             this.pbBack.TabStop = false;

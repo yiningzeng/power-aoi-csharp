@@ -292,7 +292,7 @@ namespace power_aoi
         {
             isLeisure = true; 
             mainChannel.BasicAck(Rabbitmq.deliveryTag, false);
-            pcbDetails.lvList.Items.Clear();
+            pcbDetails.lvListFront.Items.Clear();
             pcbDetails.lbPcbNumber.Text = "";
             pcbDetails.lbSurfaceNumber.Text = "";
             pcbDetails.lbPcbWidth.Text = "";
@@ -359,13 +359,27 @@ namespace power_aoi
             switch (keyData)
             {
                 case Keys.Enter:
-                    pcbDetails.btnNG.Focus();
-                    pcbDetails.lvListNextItemSelect("NG");
+                    pcbDetails.BeginInvoke((Action)(()=> {
+                        pcbDetails.btnNG.Focus();
+                        pcbDetails.lvListNextItemSelect("NG");
+                    }));
                     return true;
                 case Keys.NumPad0:
-                    pcbDetails.btnOK.Focus();
-                    pcbDetails.lvListNextItemSelect("OK");
+                    pcbDetails.BeginInvoke((Action)(() => {
+                        pcbDetails.btnOK.Focus();
+                        pcbDetails.lvListNextItemSelect("OK");
+                    }));
                     return true;
+                case Keys.Left:
+                    pcbDetails.BeginInvoke((Action)(() => {
+                        pcbDetails.listSwitch(false);
+                    }));
+                    break;
+                case Keys.Right:
+                    pcbDetails.BeginInvoke((Action)(() => {
+                        pcbDetails.listSwitch(true);
+                    }));
+                    break;
                 case Keys.Space:
                     doLeisure(true);
                     break;

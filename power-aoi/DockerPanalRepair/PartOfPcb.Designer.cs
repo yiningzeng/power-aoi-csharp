@@ -36,11 +36,13 @@
             // 
             this.pbPart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbPart.Location = new System.Drawing.Point(0, 0);
+            this.pbPart.Margin = new System.Windows.Forms.Padding(0);
             this.pbPart.Name = "pbPart";
             this.pbPart.Size = new System.Drawing.Size(800, 450);
             this.pbPart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbPart.TabIndex = 0;
             this.pbPart.TabStop = false;
+            this.pbPart.SizeChanged += new System.EventHandler(this.pbPart_SizeChanged);
             // 
             // PartOfPcb
             // 

@@ -15,23 +15,26 @@ namespace power_aoi.DockerPanal
 {
     public partial class PartOfPcb : DockContent
     {
+        Rectangle globalRect;
+        string globalNgType;
+        double globalImageWidth, globalImageHeight;
         public PartOfPcb()
         {
             InitializeComponent();
         }
 
-        public void drawRect(Rectangle rect, string ngType, double imageWidth, double imageHeight)
+        public void drawRect()
         {
             try
             {
                 // 先计算图像缩放的比例
-                double wPro = (double)pbPart.Width / imageWidth; // pictureBox.Image.Width改成全局
-                double hPro = (double)pbPart.Height / imageHeight;
+                double wPro = (double)pbPart.Width / globalImageWidth; // pictureBox.Image.Width改成全局
+                double hPro = (double)pbPart.Height / globalImageHeight;
                 Rectangle newRect = new Rectangle(
-                    Convert.ToInt32((rect.X + rect.Width / 2) * wPro),
-                    Convert.ToInt32((rect.Y + rect.Height / 2) * hPro),
-                    Convert.ToInt32(rect.Width * wPro),
-                    Convert.ToInt32(rect.Height * hPro));
+                    Convert.ToInt32((globalRect.X + globalRect.Width / 2) * wPro),
+                    Convert.ToInt32((globalRect.Y + globalRect.Height / 2) * hPro),
+                    Convert.ToInt32(globalRect.Width * wPro),
+                    Convert.ToInt32(globalRect.Height * hPro));
                 newRect.Inflate(10, 10);
                 pbPart.Refresh();
                 Graphics ghFront = pbPart.CreateGraphics();
@@ -40,7 +43,7 @@ namespace power_aoi.DockerPanal
 
                 pbPart.Update();//这句话相当关键  会是消除之前画的图 速度加快
                 ghFront.DrawRectangle(newPen, newRect);
-                ghFront.DrawString(ngType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, newRect.X, newRect.Y - 15);
+                ghFront.DrawString(globalNgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, newRect.X, newRect.Y - 15);
                 //ghFront.DrawLine(newPen, new Point(newRect.X, 0), new Point(newRect.X, pictureBox.Height));
                 //ghFront.DrawLine(newPen, new Point(0, newRect.Y), new Point(pictureBox.Width, newRect.Y));
             }
@@ -59,8 +62,11 @@ namespace power_aoi.DockerPanal
             else
             {
                 pbPart.Image = image;
-
-                drawRect(rect, ngType, image.Width, image.Height);
+                globalRect = rect;
+                globalNgType = ngType;
+                globalImageWidth = image.Width;
+                globalImageHeight = image.Height;
+                drawRect();
             }
         }
 
@@ -76,6 +82,10 @@ namespace power_aoi.DockerPanal
             }
         }
 
+        private void pbPart_SizeChanged(object sender, EventArgs e)
+        {
+            drawRect();
+        }
 
         public void showImg(string str) {
             if (str == null)
@@ -91,5 +101,7 @@ namespace power_aoi.DockerPanal
                 }
             }
         }
+
+
     }
 }
