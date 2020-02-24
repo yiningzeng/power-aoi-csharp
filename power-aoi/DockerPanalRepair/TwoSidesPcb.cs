@@ -52,9 +52,6 @@ namespace power_aoi.DockerPanal
                 ghFront.DrawLine(newPen, new Point(0, newRect.Y), new Point(pictureBox.Width, newRect.Y));
             }
             catch(Exception er) { }
-
-
-
             //LogHelper.WriteLog(string.Format("pictureBox [ width: {0}, height: {1}]\nfileimages [ width: {2}, height: {3}]", pictureBox.Width, pictureBox.Height, pictureBox.Image.Width, pictureBox.Image.Height));
      
         }

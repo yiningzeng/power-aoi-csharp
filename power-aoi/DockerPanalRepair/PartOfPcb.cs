@@ -20,7 +20,37 @@ namespace power_aoi.DockerPanal
             InitializeComponent();
         }
 
-        public void showImgThread(Image image)
+        public void drawRect(Rectangle rect, string ngType, double imageWidth, double imageHeight)
+        {
+            try
+            {
+                // 先计算图像缩放的比例
+                double wPro = (double)pbPart.Width / imageWidth; // pictureBox.Image.Width改成全局
+                double hPro = (double)pbPart.Height / imageHeight;
+                Rectangle newRect = new Rectangle(
+                    Convert.ToInt32((rect.X + rect.Width / 2) * wPro),
+                    Convert.ToInt32((rect.Y + rect.Height / 2) * hPro),
+                    Convert.ToInt32(rect.Width * wPro),
+                    Convert.ToInt32(rect.Height * hPro));
+                newRect.Inflate(10, 10);
+                pbPart.Refresh();
+                Graphics ghFront = pbPart.CreateGraphics();
+
+                Pen newPen = new Pen(Color.Red, 1);//定义一个画笔，黄色
+
+                pbPart.Update();//这句话相当关键  会是消除之前画的图 速度加快
+                ghFront.DrawRectangle(newPen, newRect);
+                ghFront.DrawString(ngType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, newRect.X, newRect.Y - 15);
+                //ghFront.DrawLine(newPen, new Point(newRect.X, 0), new Point(newRect.X, pictureBox.Height));
+                //ghFront.DrawLine(newPen, new Point(0, newRect.Y), new Point(pictureBox.Width, newRect.Y));
+            }
+            catch (Exception er) { }
+            //LogHelper.WriteLog(string.Format("pictureBox [ width: {0}, height: {1}]\nfileimages [ width: {2}, height: {3}]", pictureBox.Width, pictureBox.Height, pictureBox.Image.Width, pictureBox.Image.Height));
+
+        }
+
+
+        public void showImgThread(Image image, Rectangle rect, string ngType)
         {
             if (image == null)
             {
@@ -29,6 +59,8 @@ namespace power_aoi.DockerPanal
             else
             {
                 pbPart.Image = image;
+
+                drawRect(rect, ngType, image.Width, image.Height);
             }
         }
 

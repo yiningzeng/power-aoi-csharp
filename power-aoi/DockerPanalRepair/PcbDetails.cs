@@ -199,11 +199,12 @@ namespace power_aoi.DockerPanal
                             int.Parse(reg[1]),
                             int.Parse(reg[2]),
                             int.Parse(reg[3]));
+                    Rectangle oldRect = rect;
                     if (lvList.Items[index].SubItems[1].Text == "0") // 正面
                     {
-                        Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
+                        //Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
                         rect.Inflate(250, 250);
-                        resBitmap = Utils.BitmapCut(drawBitmap, rect);//.Save(tFilePath);
+                        resBitmap = Utils.BitmapCut(bitmapFront, rect);//.Save(tFilePath);
                         twoSidesPcb.BeginInvoke((Action)(() =>
                         {
                             twoSidesPcb.pictureBoxDraw(true, rect);
@@ -212,7 +213,7 @@ namespace power_aoi.DockerPanal
                     }
                     else if (lvList.Items[index].SubItems[1].Text == "1") // 背面
                     {
-                        Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
+                        //Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
                         rect.Inflate(250, 250);
                         resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
                         twoSidesPcb.BeginInvoke((Action)(() =>
@@ -220,10 +221,12 @@ namespace power_aoi.DockerPanal
                             twoSidesPcb.pictureBoxDraw(false, rect);
                         }));
                     }
+
+                    Rectangle newRect = new Rectangle(oldRect.X - rect.X - oldRect.Width / 2, oldRect.Y - rect.Y - oldRect.Height / 2, oldRect.Width, oldRect.Height);
                     //resBitmap.Save(tFilePath);
-                    twoSidesPcb.BeginInvoke((Action)(() =>
+                    partOfPcb.BeginInvoke((Action)(() =>
                     {
-                        partOfPcb.showImgThread(resBitmap);
+                        partOfPcb.showImgThread(resBitmap, newRect, lvList.Items[index].SubItems[7].Text);
                     }));
    
                 }
