@@ -180,9 +180,8 @@ namespace power_aoi.DockerPanal
             //在Details显示模式下，小图标才会起作用
             lvListFront.SmallImageList = ImgList;
             lvListBack.SmallImageList = ImgList;
-            
+
             selectListView = lvListFront;
-            
             lvListNextItemSelect("未判定");
             lvListFront.Select();
             if (lvListFront.Items.Count > 0) lvListFront.SelectedIndices.Add(0);
@@ -416,6 +415,9 @@ namespace power_aoi.DockerPanal
             {
                 selectIndex = 0;
             }
+
+            selectListView.Select();
+            cutBitmapShow(selectIndex);
 
             twoSidesPcb.BeginInvoke((Action)(() => {
                 twoSidesPcb.tabControl.SelectedIndex = tabListView.SelectedIndex;
