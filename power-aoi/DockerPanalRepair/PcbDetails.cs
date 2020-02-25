@@ -40,7 +40,7 @@ namespace power_aoi.DockerPanal
             twoSidesPcb = tPcb;
             main = m;
 
-            //#region:序列化字符串
+            #region 序列化字符串
 
             ////List<long> aaaa = new List<long>();
             ////for (int i = 0; i < 1000; i++)
@@ -75,19 +75,7 @@ namespace power_aoi.DockerPanal
 
             ////反序列化
             //JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(json, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-            //#endregion
-
-            //for (int i = 20; i >= 1; i--)
-            //{
-            //    ListViewItem li = new ListViewItem();
-            //    li.SubItems[0].Text = i.ToString();
-            //    li.SubItems.Add("aaa");
-            //    li.SubItems.Add("25");
-            //    li.SubItems.Add("11223344");
-            //    li.SubItems.Add(i.ToString());
-            //    this.lvList.Items.Add(li);
-            //}
-            //this.lvList.Items[0].Selected = true;
+            #endregion
         }
 
         public void listSwitch(bool isback){
@@ -165,15 +153,21 @@ namespace power_aoi.DockerPanal
                 li.SubItems.Add(item.Area);
                 li.SubItems.Add(item.NgType);
                 li.SubItems.Add("未判定");
-
-                lvListFront.Items.Add(li);
+                if(item.IsBack == 0)
+                {
+                    lvListFront.Items.Add(li);
+                }
+                else if(item.IsBack == 1)
+                {
+                    lvListBack.Items.Add(li);
+                }
             }
             ImageList ImgList = new ImageList();
             //高度设为25
             ImgList.ImageSize = new Size(1, 25);
             //在Details显示模式下，小图标才会起作用
             lvListFront.SmallImageList = ImgList;
-     
+            lvListBack.SmallImageList = ImgList;
             lvListNextItemSelect("未判定");
             lvListFront.Select();
             lvListFront.SelectedIndices.Add(0);
@@ -360,6 +354,22 @@ namespace power_aoi.DockerPanal
             }
         }
 
+
+
+        /// <summary>
+        /// 缺陷列表切换函数
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            twoSidesPcb.BeginInvoke((Action)(() => {
+                twoSidesPcb.tabControl.SelectedIndex = tabListView.SelectedIndex;
+            }));
+        }
+
+        #region 底部四个button
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             lvListNextItemSelect("OK");
@@ -369,12 +379,15 @@ namespace power_aoi.DockerPanal
         {
             lvListNextItemSelect("NG");
         }
-
-        private void tabListView_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnLeft_Click(object sender, EventArgs e)
         {
-            twoSidesPcb.BeginInvoke((Action)(() => {
-                twoSidesPcb.tabControl.SelectedIndex = tabListView.SelectedIndex;
-            }));
+            tabListView.SelectedIndex = 0;
         }
+
+        private void btnRight_Click(object sender, EventArgs e)
+        {
+            tabListView.SelectedIndex = 1;
+        }
+        #endregion
     }
 }

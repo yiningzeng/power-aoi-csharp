@@ -346,6 +346,7 @@
             this.btnLeft.TabIndex = 2;
             this.btnLeft.Text = "正面 (←)";
             this.btnLeft.UseVisualStyleBackColor = true;
+            this.btnLeft.Click += new System.EventHandler(this.btnLeft_Click);
             // 
             // btnRight
             // 
@@ -356,6 +357,7 @@
             this.btnRight.TabIndex = 3;
             this.btnRight.Text = "反面 (→)";
             this.btnRight.UseVisualStyleBackColor = true;
+            this.btnRight.Click += new System.EventHandler(this.btnRight_Click);
             // 
             // tabListView
             // 
