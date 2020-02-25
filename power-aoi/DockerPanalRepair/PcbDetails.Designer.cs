@@ -181,7 +181,6 @@
             this.lvListFront.TabIndex = 0;
             this.lvListFront.UseCompatibleStateImageBehavior = false;
             this.lvListFront.View = System.Windows.Forms.View.Details;
-            this.lvListFront.SelectedIndexChanged += new System.EventHandler(this.lvList_SelectedIndexChanged);
             // 
             // colPcbId
             // 
