@@ -290,9 +290,18 @@ namespace power_aoi
 
         public void doLeisure(bool clearAll)
         {
-            isLeisure = true; 
-            mainChannel.BasicAck(Rabbitmq.deliveryTag, false);
+            isLeisure = true;
+            try
+            {
+                mainChannel.BasicAck(Rabbitmq.deliveryTag, false);
+            }
+            catch (Exception)
+            {
+
+            }
+
             pcbDetails.lvListFront.Items.Clear();
+            pcbDetails.lvListBack.Items.Clear();
             pcbDetails.lbPcbNumber.Text = "";
             pcbDetails.lbSurfaceNumber.Text = "";
             pcbDetails.lbPcbWidth.Text = "";
@@ -301,7 +310,7 @@ namespace power_aoi
             pcbDetails.lbResult.Text = "";
             this.Text = "等待最新的校验信息...";
 
-            if(clearAll)
+            if (clearAll)
             {
                 twoSidesPcb.BeginInvoke((Action)(() =>
                 {
@@ -412,10 +421,6 @@ namespace power_aoi
             pcbDetails = new PcbDetails(this,partOfPcb, twoSidesPcb) { TabText = "结果列表", CloseButton = false, CloseButtonVisible = false };
         }
 
-        public void ttt(string s)
-        {
-            this.Text = s;
-        }
 
         private IDockContent GetContentFromPersistString(string persistString)
         {

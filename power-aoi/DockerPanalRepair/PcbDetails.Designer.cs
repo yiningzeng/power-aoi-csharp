@@ -181,7 +181,6 @@
             this.lvListFront.TabIndex = 0;
             this.lvListFront.UseCompatibleStateImageBehavior = false;
             this.lvListFront.View = System.Windows.Forms.View.Details;
-            this.lvListFront.SelectedIndexChanged += new System.EventHandler(this.lvList_SelectedIndexChanged);
             // 
             // colPcbId
             // 
@@ -346,6 +345,7 @@
             this.btnLeft.TabIndex = 2;
             this.btnLeft.Text = "正面 (←)";
             this.btnLeft.UseVisualStyleBackColor = true;
+            this.btnLeft.Click += new System.EventHandler(this.btnLeft_Click);
             // 
             // btnRight
             // 
@@ -356,6 +356,7 @@
             this.btnRight.TabIndex = 3;
             this.btnRight.Text = "反面 (→)";
             this.btnRight.UseVisualStyleBackColor = true;
+            this.btnRight.Click += new System.EventHandler(this.btnRight_Click);
             // 
             // tabListView
             // 

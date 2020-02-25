@@ -10,6 +10,9 @@ namespace power_aoi.DockerPanal
         bool draw = true;
         PartOfPcb partOfPcb;
         Bitmap frontBitmap, backBitmap;
+
+        Rectangle globalFrontRect, globalBackRect;
+
         //Rectangle rectangle
         public TwoSidesPcb(PartOfPcb partP)
         {
@@ -29,10 +32,22 @@ namespace power_aoi.DockerPanal
             pbBack.Image = image;
         }
 
-        void drawLine(PictureBox pictureBox, Rectangle rect)
+        void drawLine(bool isBack)
         {
             try
             {
+                PictureBox pictureBox = null;
+                Rectangle rect;
+                if (isBack)
+                {
+                    pictureBox = pbBack;
+                    rect = globalBackRect;
+                }
+                else
+                {
+                    pictureBox = pbFront;
+                    rect = globalFrontRect;
+                }
                 // 先计算图像缩放的比例
                 double wPro = (double)pictureBox.Width / (double)pictureBox.Image.Width; // pictureBox.Image.Width改成全局
                 double hPro = (double)pictureBox.Height / (double)pictureBox.Image.Height;
@@ -56,9 +71,29 @@ namespace power_aoi.DockerPanal
      
         }
 
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedIndex == 0)
+            {
+                drawLine(false);
+            }
+            else if(tabControl.SelectedIndex == 1)
+            {
+                drawLine(true);
+            }
+        }
+
         public void pictureBoxDraw(bool front, Rectangle rect)
         {
-            if (front) drawLine(pbFront, rect); else drawLine(pbBack, rect);
+            if (front)
+            {
+                globalFrontRect = rect;
+                drawLine(false);
+            }
+            else {
+                globalBackRect = rect;
+                drawLine(true);
+            }
         }
     }
 }
