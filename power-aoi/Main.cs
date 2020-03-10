@@ -414,7 +414,7 @@ namespace power_aoi
                         pcbDetails.listSwitch(true);
                     }));
                     break;
-                case Keys.Space:
+                case Keys.Delete:
                     doLeisure(true);
                     break;
                 default:
