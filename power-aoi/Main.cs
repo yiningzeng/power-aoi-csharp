@@ -28,7 +28,7 @@ namespace power_aoi
 {
     public partial class Main : DockContent
     {
-        public delegate void RabbitmqMessageCallback(IModel channel, string message);
+        public delegate void RabbitmqMessageCallback(string message);
         public RabbitmqMessageCallback doWorkD;
 
         public delegate void RabbitmqConnectCallback(string message);
@@ -41,7 +41,8 @@ namespace power_aoi
         private PcbDetails pcbDetails;
 
         public bool isLeisure = true;
-        public IModel mainChannel;
+        //public IModel mainChannel;
+
 
         //Bitmap imageFront = null;
         //Bitmap imageBack = null;
@@ -61,18 +62,18 @@ namespace power_aoi
         }
 
         // 队列处理回调！！所有的界面操作方法写在这个函数里
-        public void doWork(IModel channel, string message)
+        public void doWork(string message)
         {
             if (InvokeRequired)
             {
                 // If called from a different thread, we must use the Invoke method to marshal the call to the proper GUI thread.
                 // The grab result will be disposed after the event call. Clone the event arguments for marshaling to the GUI thread.
               
-                BeginInvoke(new RabbitmqMessageCallback(doWork), channel, message);
+                BeginInvoke(new RabbitmqMessageCallback(doWork), message);
                 return;
             }
             LogHelper.WriteLog("接收到数据\n" + message);
-            mainChannel = channel;
+            //mainChannel = channel;
             //处理完成，手动确认
             //channel.BasicAck(Rabbitmq.deliveryTag, false);
             //Thread.Sleep(1000);
@@ -81,9 +82,10 @@ namespace power_aoi
                 isLeisure = false;
                 try
                 {
+                    
                     // 反序列化json
                     JsonData<Pcb> lst2 = JsonConvert.DeserializeObject<JsonData<Pcb>>(message, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                    if (lst2 == null) { mainChannel.BasicAck(Rabbitmq.deliveryTag, false); return; };
+                    if (lst2 == null) { RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false); return; };
                     #region 开启线程更新数据库
                     string path = ConfigurationManager.AppSettings["FtpPath"] + lst2.data.PcbPath + "/";
                     string frontImg = path + "front.jpg";
@@ -104,22 +106,22 @@ namespace power_aoi
                                 aoiModel.results.AddRange(pcb.results);
                                 if (aoiModel.SaveChanges() > 0)
                                 {
-                                    res = pcb.Id + "-" + pcb.PcbNumber + "[已入库]";
+                                    res = pcb.Id + "-" + pcb.PcbNumber + " 已入库";
                                 }
                                 else
                                 {
-                                    res = pcb.Id + "-" + pcb.PcbNumber + "[入库失败]";
+                                    res = pcb.Id + "-" + pcb.PcbNumber + " 入库失败";
                                 }
                                 aoiModel.Dispose();
                             }
                             catch (Exception er)//UpdateException
                             {
-                                res = pcb.Id + "-" + pcb.PcbNumber + "[入库失败,ID冲突]";
+                                res = pcb.Id + "-" + pcb.PcbNumber + " 入库失败,ID冲突";
                             }
 
                             this.BeginInvoke((Action)(() =>
                             {
-                                this.Text = res;
+                                this.Text = "检验端 ["+res+"]";
                             }));
                             #region 加载ng列表
                             pcbDetails.BeginInvoke((Action)(() =>
@@ -296,7 +298,7 @@ namespace power_aoi
             }
             else
             {
-                channel.BasicNack(Rabbitmq.deliveryTag, false, true);
+                RabbitMQClientHandler.ListenChannel.BasicNack(RabbitMQClientHandler.deliveryTag, false, true);
             }
 
             // isLeisure = true; // 这个需要在pcbDetails页面最后一个执行完成后执行
@@ -315,11 +317,11 @@ namespace power_aoi
             isLeisure = true;
             try
             {
-                mainChannel.BasicAck(Rabbitmq.deliveryTag, false);
+                RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false);
             }
             catch (Exception)
             {
-                LogHelper.WriteLog("队列释放失败\n" + Rabbitmq.deliveryTag);
+                LogHelper.WriteLog("队列释放失败\n" + RabbitMQClientHandler.deliveryTag);
             }
 
             pcbDetails.lvListFront.Items.Clear();
@@ -484,21 +486,23 @@ namespace power_aoi
 
             #region 队列
 
-            Action<RabbitmqMessageCallback, RabbitmqConnectCallback> doS = (val, rbCon) =>
-            {
-                try
-                {
-                    RabbitMQClientHandler.GetInstance(val, rbCon).SyncDataFromServer("work");
-                }
-                catch(Exception er)
-                {
-                    MessageBox.Show("连接队列失败!!!");
-                    Environment.Exit(0);
-                }
-            };
+            //Action<RabbitmqMessageCallback, RabbitmqConnectCallback> doS = (val, rbCon) =>
+            //{
+               
+            //};
             doWorkD = new RabbitmqMessageCallback(doWork);
             rabbitmqConnectCallback = new RabbitmqConnectCallback(RabbitmqConnected);
-            MySmartThreadPool.Instance().QueueWorkItem(doS, doWorkD, rabbitmqConnectCallback);
+            try
+            {
+                RabbitMQClientHandler.GetInstance(doWorkD, rabbitmqConnectCallback).SyncDataFromServer("work");
+
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("连接队列失败!!!");
+                Environment.Exit(0);
+            }
+            //MySmartThreadPool.Instance().QueueWorkItem(doS, doWorkD, rabbitmqConnectCallback);
             #endregion
         }
 
