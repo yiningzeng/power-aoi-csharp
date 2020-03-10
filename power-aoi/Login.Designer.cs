@@ -32,9 +32,9 @@
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.btnLoginRepair = new System.Windows.Forms.Button();
             this.lbResult = new System.Windows.Forms.Label();
+            this.btnLoginSearch = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnLoginSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -75,6 +75,16 @@
             this.lbResult.TabIndex = 9;
             this.lbResult.Visible = false;
             // 
+            // btnLoginSearch
+            // 
+            this.btnLoginSearch.Location = new System.Drawing.Point(214, 224);
+            this.btnLoginSearch.Name = "btnLoginSearch";
+            this.btnLoginSearch.Size = new System.Drawing.Size(86, 23);
+            this.btnLoginSearch.TabIndex = 10;
+            this.btnLoginSearch.Text = "登录查询";
+            this.btnLoginSearch.UseVisualStyleBackColor = true;
+            this.btnLoginSearch.Click += new System.EventHandler(this.btnLoginSearch_Click);
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::power_aoi.Properties.Resources.user_center;
@@ -94,16 +104,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
-            // 
-            // btnLoginSearch
-            // 
-            this.btnLoginSearch.Location = new System.Drawing.Point(214, 224);
-            this.btnLoginSearch.Name = "btnLoginSearch";
-            this.btnLoginSearch.Size = new System.Drawing.Size(86, 23);
-            this.btnLoginSearch.TabIndex = 10;
-            this.btnLoginSearch.Text = "登录查询";
-            this.btnLoginSearch.UseVisualStyleBackColor = true;
-            this.btnLoginSearch.Click += new System.EventHandler(this.btnLoginSearch_Click);
             // 
             // Login
             // 

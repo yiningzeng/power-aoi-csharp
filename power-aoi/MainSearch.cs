@@ -22,7 +22,7 @@ namespace power_aoi
         public MainSearch()
         {
             InitializeComponent();
-
+            this.Icon = Properties.Resources.aa;
             CreateStandardControls();
 
             queryCriteria.Show(this.dockPanel1, DockState.DockLeft);

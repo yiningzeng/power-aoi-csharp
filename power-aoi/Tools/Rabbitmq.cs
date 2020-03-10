@@ -32,9 +32,12 @@ namespace power_aoi.Tools
                     Password = ConfigurationManager.AppSettings["Password"].Trim(),//"admin",//密码
                     VirtualHost = ConfigurationManager.AppSettings["VirtualHost"].Trim(),//"my_vhost"
                 };
+                factory.AutomaticRecoveryEnabled = true;
                 var connection = factory.CreateConnection();
                
                 var channel = connection.CreateModel();
+
+
 
                 channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: true);
                 #region EventingBasicConsumer

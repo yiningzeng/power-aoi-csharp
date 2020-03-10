@@ -31,6 +31,9 @@ namespace power_aoi
         public delegate void RabbitmqMessageCallback(IModel channel, string message);
         public RabbitmqMessageCallback doWorkD;
 
+        public delegate void RabbitmqConnectCallback(string message);
+        public RabbitmqConnectCallback rabbitmqConnectCallback;
+
         private bool m_bSaveLayout = true;
         private DeserializeDockContent m_deserializeDockContent;
         private TwoSidesPcb twoSidesPcb;
@@ -44,11 +47,30 @@ namespace power_aoi
         //Bitmap imageBack = null;
 
         Stopwatch stpwth = new Stopwatch();
+        public void RabbitmqConnected(string message)
+        {
+            if (InvokeRequired)
+            {
+                // If called from a different thread, we must use the Invoke method to marshal the call to the proper GUI thread.
+                // The grab result will be disposed after the event call. Clone the event arguments for marshaling to the GUI thread.
+
+                BeginInvoke(new RabbitmqConnectCallback(RabbitmqConnected), message);
+                return;
+            }
+            this.Text = "检验端 "+message;
+        }
 
         // 队列处理回调！！所有的界面操作方法写在这个函数里
         public void doWork(IModel channel, string message)
         {
-;
+            if (InvokeRequired)
+            {
+                // If called from a different thread, we must use the Invoke method to marshal the call to the proper GUI thread.
+                // The grab result will be disposed after the event call. Clone the event arguments for marshaling to the GUI thread.
+              
+                BeginInvoke(new RabbitmqMessageCallback(doWork), channel, message);
+                return;
+            }
             LogHelper.WriteLog("接收到数据\n" + message);
             mainChannel = channel;
             //处理完成，手动确认
@@ -297,7 +319,7 @@ namespace power_aoi
             }
             catch (Exception)
             {
-
+                LogHelper.WriteLog("队列释放失败\n" + Rabbitmq.deliveryTag);
             }
 
             pcbDetails.lvListFront.Items.Clear();
@@ -308,7 +330,7 @@ namespace power_aoi
             pcbDetails.lbPcbHeight.Text = "";
             pcbDetails.lbPcbChildenNumber.Text = "";
             pcbDetails.lbResult.Text = "";
-            this.Text = "等待最新的校验信息...";
+            this.Text = "检验端 [等待最新的校验信息...]";
 
             if (clearAll)
             {
@@ -328,7 +350,8 @@ namespace power_aoi
         {
             InitializeComponent();
 
-  
+            this.Icon = Properties.Resources.aa;
+
 
             //ShowDockContent();
             //测试代码
@@ -444,11 +467,11 @@ namespace power_aoi
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockPanel.config");
-            if (m_bSaveLayout)
-                dockPanel1.SaveAsXml(configFile);
-            else if (File.Exists(configFile)) // 不需要保存窗体状态时，删除配置文件。
-                File.Delete(configFile);
+            //string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "DockPanel.config");
+            //if (m_bSaveLayout)
+            //    dockPanel1.SaveAsXml(configFile);
+            //else if (File.Exists(configFile)) // 不需要保存窗体状态时，删除配置文件。
+            //    File.Delete(configFile);
             Environment.Exit(0);
         }
 
@@ -461,19 +484,21 @@ namespace power_aoi
 
             #region 队列
 
-            Action<RabbitmqMessageCallback> doS = (val) =>
+            Action<RabbitmqMessageCallback, RabbitmqConnectCallback> doS = (val, rbCon) =>
             {
-
-                if (Rabbitmq.run(doWorkD) == 0)
+                try
                 {
-                    this.BeginInvoke((Action)(() => {
-                        MessageBox.Show("连接队列失败!!!");
-                        Environment.Exit(0);
-                    }));
+                    RabbitMQClientHandler.GetInstance(val, rbCon).SyncDataFromServer("work");
+                }
+                catch(Exception er)
+                {
+                    MessageBox.Show("连接队列失败!!!");
+                    Environment.Exit(0);
                 }
             };
             doWorkD = new RabbitmqMessageCallback(doWork);
-            MySmartThreadPool.Instance().QueueWorkItem(doS, doWorkD);
+            rabbitmqConnectCallback = new RabbitmqConnectCallback(RabbitmqConnected);
+            MySmartThreadPool.Instance().QueueWorkItem(doS, doWorkD, rabbitmqConnectCallback);
             #endregion
         }
 
