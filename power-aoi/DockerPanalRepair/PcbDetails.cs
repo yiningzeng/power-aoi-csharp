@@ -186,6 +186,7 @@ namespace power_aoi.DockerPanal
             lvListFront.Select();
             if (lvListFront.Items.Count > 0) lvListFront.SelectedIndices.Add(0);
             if (lvListBack.Items.Count > 0) lvListBack.SelectedIndices.Add(0);
+            LogHelper.WriteLog("接收到数据》界面显示\n");
             //partOfPcb.showImg(lvList.Items[0].SubItems[2].Text + "/" + lvList.Items[0].SubItems[3].Text);
         }
 

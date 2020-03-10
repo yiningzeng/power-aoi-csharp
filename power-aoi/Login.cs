@@ -17,6 +17,7 @@ namespace power_aoi
         public Login()
         {
             InitializeComponent();
+            this.Icon = Properties.Resources.aa;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
