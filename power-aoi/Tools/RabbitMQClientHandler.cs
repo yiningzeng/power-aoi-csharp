@@ -37,9 +37,9 @@ namespace power_aoi.Tools
 
         //发送频道及接收频道分开，避免互相影响，导致整个服务不可用
         //Send Channel
-        private static IModel SendChannel;
+        public static IModel SendChannel;
         //Listen Channel
-        private static IModel ListenChannel;
+        public static IModel ListenChannel;
 
         //数据监控队列
         private static string MC_SyncDataConsume = string.Empty;
@@ -445,7 +445,7 @@ namespace power_aoi.Tools
                         if (e.DeliveryTag != deliveryTag)
                         {
                             deliveryTag = e.DeliveryTag;
-                            doWork(ListenChannel, message);
+                            doWork(message);
                         }
                         else
                         {

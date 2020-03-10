@@ -53,7 +53,7 @@ namespace power_aoi.Tools
                     if (ea.DeliveryTag != deliveryTag)
                     {
                         deliveryTag = ea.DeliveryTag;
-                        doWork(channel, message);
+                        doWork(message);
                     }
                     else
                     {

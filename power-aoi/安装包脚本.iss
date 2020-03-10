@@ -2,7 +2,7 @@
 ; 有关创建 Inno Setup 脚本文件的详细资料请查阅帮助文档！
 
 #define MyAppName "检验端"
-#define MyAppVersion "1.5"
+#define MyAppVersion "v1.5.3"
 #define MyAppPublisher "宁波轻蜓视觉科技有限公司"
 #define MyAppURL "http://www.qtingvision.com/"
 #define MyAppExeName "检验端.exe"
@@ -21,7 +21,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=检验端安装包
+OutputBaseFilename=检验端安装包{#MyAppVersion}
 SetupIconFile=D:\power-aoi-csharp\power-aoi\aa.ico
 Compression=lzma
 SolidCompression=yes
