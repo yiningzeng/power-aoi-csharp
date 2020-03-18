@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
+
 namespace power_aoi.DockerPanal
 {
     public partial class TwoSidesPcb : DockContent
@@ -18,6 +19,7 @@ namespace power_aoi.DockerPanal
         {
             InitializeComponent();
             partOfPcb = partP;
+
         }
 
         public void showFrontImg(Image image)
@@ -70,6 +72,8 @@ namespace power_aoi.DockerPanal
             //LogHelper.WriteLog(string.Format("pictureBox [ width: {0}, height: {1}]\nfileimages [ width: {2}, height: {3}]", pictureBox.Width, pictureBox.Height, pictureBox.Image.Width, pictureBox.Image.Height));
      
         }
+
+        
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {

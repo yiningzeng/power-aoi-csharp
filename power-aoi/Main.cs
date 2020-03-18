@@ -1,4 +1,7 @@
-using Amib.Threading;
+﻿using Amib.Threading;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +10,7 @@ using power_aoi.DockerPanal;
 using power_aoi.Model;
 using power_aoi.Tools;
 using RabbitMQ.Client;
+using RTree;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +27,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using DPoint = System.Drawing.Point;
+using DRectangle = System.Drawing.Rectangle;
 
 namespace power_aoi
 {
@@ -42,7 +48,6 @@ namespace power_aoi
 
         public bool isLeisure = true;
         //public IModel mainChannel;
-
 
         //Bitmap imageFront = null;
         //Bitmap imageBack = null;
@@ -104,6 +109,7 @@ namespace power_aoi
                                 }
                                 aoiModel.pcbs.Add(pcb);
                                 aoiModel.results.AddRange(pcb.results);
+                                //aoiModel.markers.AddRange(pcb.markers);
                                 if (aoiModel.SaveChanges() > 0)
                                 {
                                     res = pcb.Id + "-" + pcb.PcbNumber + " 已入库";
@@ -123,10 +129,11 @@ namespace power_aoi
                             {
                                 this.Text = "检验端 ["+res+"]";
                             }));
+
                             #region 加载ng列表
                             pcbDetails.BeginInvoke((Action)(() =>
                             {
-                                pcbDetails.loadData(lst2.data);
+                                pcbDetails.xxxx(lst2.data);
                             }));
 
                             #endregion
@@ -134,7 +141,6 @@ namespace power_aoi
                     };
                     MySmartThreadPool.Instance().QueueWorkItem<Pcb>(t, lst2.data);
                     #endregion
-
 
                     #region 处理图片
 
@@ -355,8 +361,67 @@ namespace power_aoi
         public Main()
         {
             InitializeComponent();
-
             this.Icon = Properties.Resources.aa;
+
+
+            //Mat marker = new Mat(Application.StartupPath + "/marker.jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
+            //for (int i = 1; i <= 16; i++)
+            //{
+            //    DPoint point = new DPoint();
+            //    Mat frontMatImg = new Mat(@"C:\res\test\ (" + i + ").jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
+
+            //    double dres = Aoi.marker_match(frontMatImg.Ptr, marker.Ptr, ref point);
+            //    CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X, point.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
+            //    CvInvoke.Rectangle(frontMatImg, new DRectangle(new DPoint(point.X, point.Y), new Size(75, 75)), new MCvScalar(0, 0, 255), 3);
+            //    frontMatImg.Save(@"C:\res\result\" + i + ".jpg");
+            //    Console.WriteLine(dres);
+            //    Console.WriteLine("正面:" + dres);
+
+            //    //DPoint point = new DPoint();
+            //    //double dres = Aoi.marker_match(img.Ptr, marker.Ptr, ref point);
+            //    //CvInvoke.Rectangle(img, new DRectangle(point, new Size(200, 200)), new MCvScalar(0, 0, 255), 3);
+            //    //img.Save(@"E:\索米测试图片\result\" + i + ".jpg");
+            //    //Console.WriteLine(res);
+            //}
+
+
+
+            //Mat frontMatImg = new Mat(@"D:\Power-Ftp\25895042755890176\front.jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
+            //Mat backMatImg = new Mat(@"D:\Power-Ftp\25895042755890176\back.jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
+            //for (int i = 0; i <= 7; i++)
+            //{
+            //    DRectangle act = frontMarkerCheckArea[i];
+            //    DPoint point = new DPoint();
+            //    double dres = Aoi.marker_match(frontMatImg.Ptr, marker.Ptr, ref point, ref act);
+            //    CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
+            //    CvInvoke.Rectangle(frontMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(0, 0, 255), 3);
+            //    //frontMatImg.Save(@"C:\res\f" + point.X + ".jpg");
+            //    Console.WriteLine(dres);
+            //    Console.WriteLine("正面:" + dres);
+
+            //    act = backMarkerCheckArea[i];
+            //    point = new DPoint();
+            //    dres = Aoi.marker_match(backMatImg.Ptr, marker.Ptr, ref point, ref act);
+
+            //    CvInvoke.PutText(backMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
+            //    CvInvoke.Rectangle(backMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(255, 0, 0), 3);
+            //    //frontMatImg.Save(@"C:\res\b" + point.X + ".jpg");
+            //    Console.WriteLine(dres);
+            //    Console.WriteLine("反面:" + dres);
+
+            //    //DPoint point = new DPoint();
+            //    //double dres = Aoi.marker_match(img.Ptr, marker.Ptr, ref point);
+            //    //CvInvoke.Rectangle(img, new DRectangle(point, new Size(200, 200)), new MCvScalar(0, 0, 255), 3);
+            //    //img.Save(@"E:\索米测试图片\result\" + i + ".jpg");
+            //    //Console.WriteLine(res);
+            //}
+            ////Mat frontaaaa = new Mat();
+            ////CvInvoke.Resize(frontMatImg, frontaaaa, new Size(Convert.ToInt32(frontMatImg.Width *0.1),Convert.ToInt32(frontMatImg.Height*0.1)));
+            ////CvInvoke.Imshow("frontMatImg", frontaaaa);
+            //frontMatImg.Save(@"C:\res\frontMatImg.jpg");
+            ////CvInvoke.Resize(backMatImg, frontaaaa, new Size(Convert.ToInt32(frontMatImg.Width * 0.1), Convert.ToInt32(frontMatImg.Height * 0.1)));
+            ////CvInvoke.Imshow("backMatImg", frontaaaa);
+            //backMatImg.Save(@"C:\res\backMatImg.jpg");
 
 
             //ShowDockContent();
@@ -365,8 +430,6 @@ namespace power_aoi
             //f2.Show(this.dockPanel1, DockState.DockLeft);
             //var f3 = new Test(this) { TabText = "Float", CloseButton = false, CloseButtonVisible = false };
             //f3.Show(this.dockPanel1, DockState.DockRight);
-
-
 
             //dockPanel1.SuspendLayout(true);
 
@@ -377,11 +440,9 @@ namespace power_aoi
             //aa.Show(dockPanel1, DockState.DockRight);
             //bb.Show(dockPanel1, DockState.DockLeft);
 
-
             //dockPanel1.ResumeLayout(true, true);
 
             m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
-
 
         }
 
