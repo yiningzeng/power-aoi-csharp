@@ -1,4 +1,4 @@
-﻿using Amib.Threading;
+using Amib.Threading;
 using FubarDev.FtpServer;
 using FubarDev.FtpServer.FileSystem.DotNet;
 using Microsoft.Extensions.DependencyInjection;
@@ -287,14 +287,18 @@ namespace power_aoi
                     //}
                     #endregion
 
-
-
                 }
                 catch(Exception err)
                 {
+                    isLeisure = true;
+                    RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false);
+                    this.BeginInvoke((Action)(() =>
+                    {
+                        this.Text = "检验端 [数据异常-请把当前板放回重新检测]";
+                        MessageBox.Show("数据异常-请把当前板放回重新检测", "异常报警", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }));
                     LogHelper.WriteLog("处理失败\n" + message, err);
                 }
-          
             }
             else
             {

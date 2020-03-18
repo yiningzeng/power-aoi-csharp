@@ -86,7 +86,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "检验端 [等待最新的校验信息...]";
+            this.Text = "检验端 [初始化...]";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
