@@ -221,6 +221,7 @@ namespace power_aoi.Tools
                         Connect();
 
                         mres.Set(); // state set to true - breaks out of loop
+                        rabbitmqConnectCallback("[连接成功...等待最新的数据]");
                     }
                     catch (Exception ex)
                     {
