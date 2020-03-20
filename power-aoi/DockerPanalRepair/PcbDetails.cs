@@ -1,4 +1,4 @@
-using ImageProcessor;
+﻿using ImageProcessor;
 using Newtonsoft.Json;
 using power_aoi.Model;
 using power_aoi.Tools;
@@ -169,9 +169,17 @@ namespace power_aoi.DockerPanal
         {
             DRectangle dRectangle;
             //只有匹配结果分值较高时才新增
-            if(dres <= threshold)
+            if(dres >= threshold)
             {
-                Console.WriteLine("加入加入:" +i+"  "+ dres+"     " +xboard.isBack);
+                if (xboard.isBack)
+                {
+                    Console.WriteLine("反面:" + i + "  " + dres);
+                }
+                else
+                {
+                    Console.WriteLine("正面:" + i + "  " + dres);
+                }
+
                 switch (i)
                 {
                     case 0:

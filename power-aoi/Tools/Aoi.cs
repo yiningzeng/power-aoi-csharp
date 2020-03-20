@@ -10,7 +10,7 @@ namespace power_aoi.Tools
     class Aoi
     {
         [DllImport("aoi.dll", EntryPoint = "marker_match_crop", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern double marker_match_crop(IntPtr iplImage, IntPtr patch, ref Point point, ref Rectangle rectangle);
+        public static extern double marker_match_crop(IntPtr iplImage, IntPtr patch, ref Point point, ref Rectangle rectangle, bool binarize=false, int method=1, bool debug=false);
 
         [DllImport("aoi.dll", EntryPoint = "marker_match", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern double marker_match(IntPtr iplImage, IntPtr patch, ref Point point);
