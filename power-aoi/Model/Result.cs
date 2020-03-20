@@ -25,6 +25,11 @@ namespace power_aoi.Model
         [Description("是否反面,0不是，1是")]
         public int IsBack { get; set; }
 
+        [DefaultValue(0)]
+        [Column(name: "score")]
+        [Description("缺陷置信度")]
+        public float score { get; set; }
+
         [Column(name: "pcb_id", TypeName = "varchar")]
         [StringLength(50)]
         [Description("对应的pcb板id")]
