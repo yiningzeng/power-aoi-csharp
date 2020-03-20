@@ -2,7 +2,7 @@
 ; 有关创建 Inno Setup 脚本文件的详细资料请查阅帮助文档！
 
 #define MyAppName "检验端"
-#define MyAppVersion "v2.1.0"
+#define MyAppVersion "v2.3.10"
 #define MyAppPublisher "宁波轻蜓视觉科技有限公司"
 #define MyAppURL "http://www.qtingvision.com/"
 #define MyAppExeName "power-aoi.exe"
@@ -36,6 +36,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "D:\power-aoi-csharp\power-aoi\bin\Release\power-aoi.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\power-aoi-csharp\power-aoi\bin\Release\config.ini"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\power-aoi-csharp\power-aoi\bin\Release\aoi.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\power-aoi-csharp\power-aoi\bin\Release\bad_marker.jpg"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\power-aoi-csharp\power-aoi\bin\Release\default.config"; DestDir: "{app}"; Flags: ignoreversion
