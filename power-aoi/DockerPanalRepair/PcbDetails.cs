@@ -159,180 +159,116 @@ namespace power_aoi.DockerPanal
             #endregion
         }
 
+        /// <summary>
+        /// 更新图片上的板子区域和区域树的添加
+        /// </summary>
+        /// <param name="xboard"></param>
+        /// <param name="dBackRectangle">背面板子的区域</param>
+        /// <param name="dFrontRectangle">正面板子的区域</param>
+        private void drawAndTree(XBoard xboard, double markerScore, DRectangle dBackRectangle, DRectangle dFrontRectangle)
+        {
+            if (xboard.isBack)
+            {
+                MCvScalar mCvScalar;
+                //只有匹配结果分值较高时才新增
+                if (markerScore >= threshold) // 得分大于阈值就是坏板
+                {
+                    mCvScalar = new MCvScalar(0, 0, 255); // 使用红色 bgr
+                    //并且需要画X
+                    CvInvoke.Line(backBoard.matImg, dBackRectangle.Location, new DPoint(dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height), mCvScalar, 20);
+                    CvInvoke.Line(backBoard.matImg, new DPoint(dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y), new DPoint(dBackRectangle.X, dBackRectangle.Y + dBackRectangle.Height), mCvScalar, 20);
+                    xboard.badTree.Add(new RRectangle(dBackRectangle.X, dBackRectangle.Y, dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height, 0, 0), dBackRectangle);
+                }
+                else
+                {
+                    mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
+                    xboard.okTree.Add(new RRectangle(dBackRectangle.X, dBackRectangle.Y, dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height, 0, 0), dBackRectangle);
+                }
+                CvInvoke.Rectangle(backBoard.matImg, dBackRectangle, mCvScalar, 20);
+            }
+            else
+            {
+                MCvScalar mCvScalar;
+                //只有匹配结果分值较高时才新增
+                if (markerScore >= threshold) // 得分大于阈值就是坏板
+                {
+                    mCvScalar = new MCvScalar(0, 0, 255); // 使用红色 bgr
+                    CvInvoke.Line(frontBoard.matImg, dFrontRectangle.Location, new DPoint(dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height), mCvScalar, 20);
+                    CvInvoke.Line(frontBoard.matImg, new DPoint(dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y), new DPoint(dFrontRectangle.X, dFrontRectangle.Y + dFrontRectangle.Height), mCvScalar, 20);
+                    xboard.badTree.Add(new RRectangle(dFrontRectangle.X, dFrontRectangle.Y, dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height, 0, 0), dFrontRectangle);
+                }
+                else
+                {
+                    mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
+                    xboard.okTree.Add(new RRectangle(dFrontRectangle.X, dFrontRectangle.Y, dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height, 0, 0), dFrontRectangle);
+                }
+                CvInvoke.Rectangle(frontBoard.matImg, dFrontRectangle, mCvScalar, 20);
+            }
+        }
 
         /// <summary>
         /// 增加坏板的区域， 里面存储的都是坏板的直接区域
         /// </summary>
         /// <param name="i"></param>
         /// <param name="xboard"></param>
-        private void xBoardAddTree(int i,double dres, XBoard xboard)
+        private void xBoardAddTree(int i, double dres, XBoard xboard)
         {
-            DRectangle dRectangle;
-            //只有匹配结果分值较高时才新增
-            if(dres >= threshold)
-            {
-                if (xboard.isBack)
-                {
-                    Console.WriteLine("反面:" + i + "  " + dres);
-                }
-                else
-                {
-                    Console.WriteLine("正面:" + i + "  " + dres);
-                }
 
-                switch (i)
-                {
-                    case 0:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(724, 594), new Size(1453, 2664));
-                            xboard.badTree.Add(new RRectangle(724, 594, 724 + 1453, 594 + 2664, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(1096, 592), new Size(1381, 2661));
-                            xboard.badTree.Add(new RRectangle(1096, 592, 1096 + 1381, 592 + 2661, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                    case 1:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(2389, 585), new Size(1435, 2706));
-                            xboard.badTree.Add(new RRectangle(2389, 585, 2389 + 1435, 585 + 2706, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(2734, 607), new Size(1354, 2691));
-                            xboard.badTree.Add(new RRectangle(2734, 607, 2734 + 1354, 607 + 2691, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                    case 2:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(4084, 600), new Size(1402, 2691));
-                            xboard.badTree.Add(new RRectangle(4084, 600, 4084 + 1402, 600 + 2691, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(4387, 643), new Size(1369, 2682));
-                            xboard.badTree.Add(new RRectangle(4387, 643, 4387 + 1369, 643 + 2682, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                    case 3:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(5737, 600), new Size(1399, 2654));
-                            xboard.badTree.Add(new RRectangle(5737, 600, 5737 + 1399, 600 + 2654, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(6022, 703), new Size(1333, 2651));
-                            xboard.badTree.Add(new RRectangle(6022, 703, 6022 + 1333, 703 + 2651, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                    case 4:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(7364, 568), new Size(1411, 2660));
-                            xboard.badTree.Add(new RRectangle(7364, 568, 7364 + 1411, 568 + 2660, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(7668, 718), new Size(1363, 2624));
-                            xboard.badTree.Add(new RRectangle(7668, 718, 7668 + 1363, 718 + 2624, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                    case 5:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(9042, 598), new Size(1359, 2618));
-                            xboard.badTree.Add(new RRectangle(9042, 598, 9042 + 1359, 598 + 2618, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(9324, 706), new Size(1363, 2666));
-                            xboard.badTree.Add(new RRectangle(9324, 706, 9324 + 1363, 706 + 2666, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                    case 6:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(10681, 576), new Size(1414, 2675));
-                            xboard.badTree.Add(new RRectangle(10681, 576, 10681 + 1414, 576 + 2675, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(10995, 775), new Size(1366, 2633));
-                            xboard.badTree.Add(new RRectangle(10995, 775, 10995 + 1366, 775 + 2633, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                    case 7:
-                        if (xboard.isBack)
-                        {
-                            dRectangle = new DRectangle(new DPoint(12358, 570), new Size(1348, 2660));
-                            xboard.badTree.Add(new RRectangle(12358, 570, 12358 + 1348, 570 + 2660, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(backBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(backBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        else
-                        {
-                            dRectangle = new DRectangle(new DPoint(12630, 748), new Size(1372, 2678));
-                            xboard.badTree.Add(new RRectangle(12630, 748, 12630 + 1372, 748 + 2678, 0, 0), dRectangle);
-                            CvInvoke.Rectangle(frontBoard.matImg, dRectangle, new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, dRectangle.Location, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                            CvInvoke.Line(frontBoard.matImg, new DPoint(dRectangle.X + dRectangle.Width, dRectangle.Y), new DPoint(dRectangle.X, dRectangle.Y + dRectangle.Height), new MCvScalar(0, 0, 255), 20);
-                        }
-                        break;
-                }
+            if (xboard.isBack)
+            {
+                Console.WriteLine("反面:" + i + "  " + dres);
             }
-    
+            else
+            {
+                Console.WriteLine("正面:" + i + "  " + dres);
+            }
+            switch (i)
+            {
+                case 0:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(724, 594), new Size(1453, 2664)),
+                        new DRectangle(new DPoint(1096, 592), new Size(1381, 2661)));
+                    break;
+                case 1:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(2389, 585), new Size(1435, 2706)),
+                        new DRectangle(new DPoint(2734, 607), new Size(1354, 2691)));
+                    break;
+                case 2:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(4084, 600), new Size(1402, 2691)),
+                        new DRectangle(new DPoint(4387, 643), new Size(1369, 2682)));
+                    break;
+                case 3:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(5737, 600), new Size(1399, 2654)),
+                        new DRectangle(new DPoint(6022, 703), new Size(1333, 2651)));
+                    break;
+                case 4:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(7364, 568), new Size(1411, 2660)),
+                        new DRectangle(new DPoint(7668, 718), new Size(1363, 2624)));
+                    break;
+                case 5:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(9042, 598), new Size(1359, 2618)),
+                        new DRectangle(new DPoint(9324, 706), new Size(1363, 2666)));
+                    break;
+                case 6:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(10681, 576), new Size(1414, 2675)),
+                        new DRectangle(new DPoint(10995, 775), new Size(1366, 2633)));
+                    break;
+                case 7:
+                    drawAndTree(xboard, dres,
+                        new DRectangle(new DPoint(12358, 570), new Size(1348, 2660)),
+                        new DRectangle(new DPoint(12630, 748), new Size(1372, 2678)));
+                    break;
+            }
             xboardDoneNum++;
             //到这里结束了！！！！大于等于16，说明正反面都执行完了
             //所以要执行loadData
-            if(frontBoard!=null && backBoard != null)
+            if (frontBoard != null && backBoard != null)
             {
                 if (xboardDoneNum >= 16)
                 {
@@ -539,11 +475,13 @@ namespace power_aoi.DockerPanal
             lbResult.Text = "NG";
             lbResult.ForeColor = Color.Red;
 
-            //这里判断下！！！！是否在X板子里，如果是的话就不加载
+
             foreach (var item in pcb.results)
             {
+                //这里判断下！！！！是否在X板子里，如果是的话就不加载
                 #region 判断缺陷点是否在badmarker所对应的坐标内
                 List<DRectangle> badlist = new List<DRectangle>();
+                List<DRectangle> oklist = new List<DRectangle>();
                 try
                 {
                     string[] reg = item.Region.Split(',');
@@ -551,11 +489,13 @@ namespace power_aoi.DockerPanal
               
                     if (item.IsBack == 0)
                     {
-                        badlist = frontBoard.badTree.Nearest(point, 0);
+                        badlist = frontBoard.badTree.Nearest(point, 0); //检索坏板
+                        oklist = frontBoard.okTree.Nearest(point, 0); //检索好板
                     }
                     else
                     {
-                        badlist = backBoard.badTree.Nearest(point, 0);
+                        badlist = backBoard.badTree.Nearest(point, 0); //检索坏板
+                        oklist = backBoard.okTree.Nearest(point, 0); //检索好板
                     }
                 }
                 catch (Exception er)
@@ -564,7 +504,9 @@ namespace power_aoi.DockerPanal
                 }
                 #endregion
 
-                if (badlist.Count == 0)
+               
+
+                if (badlist.Count == 0 && oklist.Count>0)
                 {
                     //这里只有通过比较分值大的才显示在列表
                     if (aacompare(item.NgType, item.score))
