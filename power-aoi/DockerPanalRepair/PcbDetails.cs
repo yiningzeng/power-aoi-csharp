@@ -1,4 +1,4 @@
-﻿using ImageProcessor;
+using ImageProcessor;
 using Newtonsoft.Json;
 using power_aoi.Model;
 using power_aoi.Tools;
@@ -23,28 +23,24 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using RTree;
-using System.Collections.Generic;
-using power_aoi.Tools;
 
 namespace power_aoi.DockerPanal
 {
-    public class XBoard
-    {
-        public Mat matImg;
-        public bool isBack = false;
-        public RTree<DRectangle> badTree =new RTree<DRectangle>();
-        public RTree<DRectangle> okTree = new RTree<DRectangle>();
-
-        public XBoard(string path, bool isBack)
-        {
-            matImg = new Mat(path, Emgu.CV.CvEnum.LoadImageType.AnyColor);
-            this.isBack = isBack;
-        }
-    }
-
     public partial class PcbDetails : DockContent
     {
+        public class XBoard
+        {
+            public Mat matImg;
+            public bool isBack = false;
+            public RTree<DRectangle> badTree = new RTree<DRectangle>();
+            public RTree<DRectangle> okTree = new RTree<DRectangle>();
 
+            public XBoard(string path, bool isBack)
+            {
+                matImg = new Mat(path, Emgu.CV.CvEnum.LoadImageType.AnyColor);
+                this.isBack = isBack;
+            }
+        }
         PartOfPcb partOfPcb;
         TwoSidesPcb twoSidesPcb;
         Main main;
