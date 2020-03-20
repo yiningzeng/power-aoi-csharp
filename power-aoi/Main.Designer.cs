@@ -36,8 +36,8 @@
             this.界面重置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pStatus = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.pStatus.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +90,17 @@
             this.pStatus.TabIndex = 8;
             this.pStatus.Visible = false;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("宋体", 100F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.ForeColor = System.Drawing.Color.Brown;
+            this.label2.Location = new System.Drawing.Point(3, 200);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(928, 134);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "请按End键恢复";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -101,17 +112,6 @@
             this.label1.Size = new System.Drawing.Size(459, 134);
             this.label1.TabIndex = 0;
             this.label1.Text = "已暂停";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 100F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ForeColor = System.Drawing.Color.Brown;
-            this.label2.Location = new System.Drawing.Point(3, 200);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(928, 134);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "请按End键恢复";
             // 
             // Main
             // 
