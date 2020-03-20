@@ -324,10 +324,21 @@ namespace power_aoi.DockerPanal
             xboardDoneNum++;
             //到这里结束了！！！！大于等于16，说明正反面都执行完了
             //所以要执行loadData
-            if (xboardDoneNum >= 16)
+            if(frontBoard!=null && backBoard != null)
             {
-                loadData(nowWorkingPcb);
+                if (xboardDoneNum >= 16)
+                {
+                    loadData(nowWorkingPcb);
+                }
             }
+            else if (frontBoard != null || backBoard != null)
+            {
+                if (xboardDoneNum >= 8)
+                {
+                    loadData(nowWorkingPcb);
+                }
+            }
+
         }
 
         /// <summary>
