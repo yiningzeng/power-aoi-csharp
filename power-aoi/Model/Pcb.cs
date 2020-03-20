@@ -65,5 +65,7 @@ namespace power_aoi.Model
         public DateTime CreateTime { get; set; }
 
         public List<Result> results { get; set; }
+
+        //public List<Marker> markers { get; set; }
     }
 }

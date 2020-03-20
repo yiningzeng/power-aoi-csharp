@@ -26,6 +26,7 @@
         public DbSet<Pcb> pcbs { get; set; }
         public DbSet<Result> results { get; set; }
         public DbSet<PcbName> pcbNames { get; set; }
+        //public DbSet<Marker> markers { get; set; }
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }
 
