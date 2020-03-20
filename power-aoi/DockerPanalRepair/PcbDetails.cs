@@ -606,7 +606,6 @@ namespace power_aoi.DockerPanal
             }
             return false;
         }
-
         public void cutBitmapShow(int index)
         {
             #region 截图显示下一个
@@ -655,11 +654,7 @@ namespace power_aoi.DockerPanal
                         catch (Exception er)
                         { }
                     }));
-   
                 }
-             
-                //partOfPcb.showImg(lvList.Items[index].SubItems[2].Text + "/" + lvList.Items[index].SubItems[3].Text);
-
             }
             catch (Exception er)
             {
@@ -723,6 +718,7 @@ namespace power_aoi.DockerPanal
                     {
                         //main.doLeisure(true);
                         // 主要应用于，客户手动选了行，造成前面有些未验证
+                        
                         if (checkedNum >= needCheckNumAll)
                         {
                             main.doLeisure(true);
@@ -765,10 +761,6 @@ namespace power_aoi.DockerPanal
                     bitmapFront.Dispose();
                     bitmapBack.Dispose();
                 }
-
-
-
-
             }
             catch (Exception err)
             {
@@ -791,8 +783,6 @@ namespace power_aoi.DockerPanal
 
             }
         }
-
-
 
         /// <summary>
         /// 缺陷列表切换函数
@@ -825,12 +815,16 @@ namespace power_aoi.DockerPanal
             }));
         }
 
+        public void changePause(string str, bool enable)
+        {
+            btnPause.Text = str + " (End)";
+            btnPause.Enabled = enable;
+        }
         #region 底部四个button
         private void btnOK_Click(object sender, EventArgs e)
         {
             lvListNextItemSelect("OK");
         }
-
         private void btnNG_Click(object sender, EventArgs e)
         {
             lvListNextItemSelect("NG");
@@ -839,10 +833,13 @@ namespace power_aoi.DockerPanal
         {
             tabListView.SelectedIndex = 0;
         }
-
         private void btnRight_Click(object sender, EventArgs e)
         {
             tabListView.SelectedIndex = 1;
+        } 
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            main.changeStatus();
         }
         #endregion
     }

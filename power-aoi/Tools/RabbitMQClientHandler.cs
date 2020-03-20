@@ -16,7 +16,7 @@ namespace power_aoi.Tools
 {
     public class RabbitMQClientHandler
     {
-
+        private static bool isPause = false;
         private static string defaultRabbitMQHostName = ConfigurationManager.AppSettings["RabbitMQServerHostName"].Trim();
         private static string defaultRabbitMQPort = ConfigurationManager.AppSettings["RabbitMQServerPort"].Trim();
         private static string defaultRabbitMQUserName = ConfigurationManager.AppSettings["RabbitMQUserName"].Trim();
@@ -142,6 +142,17 @@ namespace power_aoi.Tools
             }
         }
 
+        public static void Resume()
+        {
+            isPause = false;
+            Reconnect();
+        }
+
+        public static void Pause()
+        {
+            isPause = true;
+            Cleanup();        
+        }
         static void Cleanup()
         {
             try
@@ -214,20 +225,29 @@ namespace power_aoi.Tools
                 var mres = new ManualResetEventSlim(false); // state is initially false
                 while (!mres.Wait(3000)) // loop until state is true, checking every 3s
                 {
-                    try
+                    if (isPause)
                     {
-                        rabbitmqConnectCallback("[RabbitMQ连接中...]");
-                        //连接
-                        Connect();
+                        rabbitmqConnectCallback("[暂停中...]");
+                        mres.Set();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            rabbitmqConnectCallback("[RabbitMQ连接中...]");
+                            //连接
+                            Connect();
 
-                        mres.Set(); // state set to true - breaks out of loop
-                        rabbitmqConnectCallback("[连接成功...等待最新的数据]");
+                            mres.Set(); // state set to true - breaks out of loop
+                            rabbitmqConnectCallback("[连接成功...等待最新的数据]");
+                        }
+                        catch (Exception ex)
+                        {
+                            rabbitmqConnectCallback("[RabbitMQ尝试连接RabbitMQ服务器出现错误，请检查配置文件是否正确，将在3秒后尝试再次连接...]");
+                            LogHelper.WriteLog("RabbitMQ尝试连接RabbitMQ服务器出现错误：" + ex.Message, ex);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        rabbitmqConnectCallback("[RabbitMQ尝试连接RabbitMQ服务器出现错误，请检查配置文件是否正确，将在3秒后尝试再次连接...]");
-                        LogHelper.WriteLog("RabbitMQ尝试连接RabbitMQ服务器出现错误：" + ex.Message, ex);
-                    }
+                    
                 }
             }
             catch (Exception ex)

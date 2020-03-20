@@ -45,7 +45,7 @@ namespace power_aoi
         private TwoSidesPcb twoSidesPcb;
         private PartOfPcb partOfPcb;
         private PcbDetails pcbDetails;
-
+        public bool workPause = false;
         public bool isLeisure = true;
         //public IModel mainChannel;
 
@@ -64,6 +64,7 @@ namespace power_aoi
                 return;
             }
             this.Text = "检验端 "+message;
+            pStatus.BringToFront();
         }
 
         // 队列处理回调！！所有的界面操作方法写在这个函数里
@@ -82,9 +83,14 @@ namespace power_aoi
             //处理完成，手动确认
             //channel.BasicAck(Rabbitmq.deliveryTag, false);
             //Thread.Sleep(1000);
+            if (workPause)
+            {
+                return;
+            }
             if (isLeisure)
             {
                 isLeisure = false;
+     
                 try
                 {
                     
@@ -134,6 +140,7 @@ namespace power_aoi
                             pcbDetails.BeginInvoke((Action)(() =>
                             {
                                 pcbDetails.xxxx(lst2.data);
+                                pcbDetails.changePause("暂停", true);
                             }));
 
                             #endregion
@@ -322,9 +329,45 @@ namespace power_aoi
             //channel.BasicNack(Rabbitmq.deliveryTag, false, true);
         }
 
+        /// <summary>
+        /// 改变工作状态，暂停和继续
+        /// </summary>
+        public void changeStatus()
+        {
+            if (workPause)
+            {
+                if (isLeisure == false)
+                {
+                    return;
+                } 
+                pStatus.Visible = false;
+                pcbDetails.changePause("暂停", false);
+                workPause = false;
+                RabbitMQClientHandler.Resume();
+            
+            }
+            else
+            {
+                workPause = true;
+                MessageBox.Show("完成当前的板子后不再接受新的板子", "提醒", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (isLeisure) // 空闲状态下，暂停可以直接恢复
+                {
+                    pcbDetails.changePause("恢复", true);
+                    this.Text = "检验端 [暂停中...]";
+                }
+                else
+                {
+                    pcbDetails.changePause("恢复", false);
+                }
+
+            }
+        }
+
         public void doLeisure(bool clearAll)
         {
             isLeisure = true;
+
             try
             {
                 RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false);
@@ -342,7 +385,19 @@ namespace power_aoi
             pcbDetails.lbPcbHeight.Text = "";
             pcbDetails.lbPcbChildenNumber.Text = "";
             pcbDetails.lbResult.Text = "";
-            this.Text = "检验端 [等待最新的校验信息...]";
+
+            if (workPause)
+            {
+                this.Text = "检验端 [暂停中...]";
+                pcbDetails.changePause("恢复", true);
+                RabbitMQClientHandler.Pause();
+                pStatus.Visible = true;
+            }
+            else
+            {
+                this.Text = "检验端 [等待最新的校验信息...]";
+            }
+   
 
             if (clearAll)
             {
@@ -481,6 +536,9 @@ namespace power_aoi
                     break;
                 case Keys.Delete:
                     doLeisure(true);
+                    break;
+                case Keys.End:
+                    changeStatus();
                     break;
                 default:
                     break;
