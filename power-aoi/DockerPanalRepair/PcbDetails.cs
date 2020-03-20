@@ -338,8 +338,12 @@ namespace power_aoi.DockerPanal
         /// <param name="pcb"></param>
         public void xxxx(Pcb pcb)
         {
+            checkedNum = 0;
+            needCheckNumAll = 0;
             xboardDoneNum = 0;
             nowWorkingPcb = pcb;
+            frontBoard = null;
+            backBoard = null;
 
             string frontImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/front.jpg";
             string backImgPath = ConfigurationManager.AppSettings["FtpPath"] + pcb.Id + "/back.jpg";
@@ -356,66 +360,72 @@ namespace power_aoi.DockerPanal
 
             for (int i = 0; i <= 7; i++)
             {
-                MySmartThreadPool.Instance().QueueWorkItem((act, n) =>
+                if (frontBoard != null)
                 {
-                    lock (frontBoard)
+                    MySmartThreadPool.Instance().QueueWorkItem((act, n) =>
                     {
-                        try
+                        lock (frontBoard)
                         {
-                            DPoint point = new DPoint();
-                            double dres = Aoi.marker_match_crop(frontBoard.matImg.Ptr, marker.Ptr, ref point, ref act);
-                            this.BeginInvoke((Action<int, double, XBoard>)((bn, bdress, board) =>
+                            try
                             {
-                                xBoardAddTree(bn, bdress, board);
-                            }), n, dres, frontBoard);
-                            //if (dres > threshold)
-                            //{
+                                DPoint point = new DPoint();
+                                double dres = Aoi.marker_match_crop(frontBoard.matImg.Ptr, marker.Ptr, ref point, ref act);
+                                this.BeginInvoke((Action<int, double, XBoard>)((bn, bdress, board) =>
+                                {
+                                    xBoardAddTree(bn, bdress, board);
+                                }), n, dres, frontBoard);
+                                //if (dres > threshold)
+                                //{
 
 
-                            //    //CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
-                            //}
-                            //CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
-                            //CvInvoke.Rectangle(frontMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(0, 0, 255), 20);
-                            //frontMatImg.Save(@"C:\res\f" + point.X + ".jpg");
-                            //Console.WriteLine(dres);
-                            //Console.WriteLine("正面:" + dres);
+                                //    //CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
+                                //}
+                                //CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
+                                //CvInvoke.Rectangle(frontMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(0, 0, 255), 20);
+                                //frontMatImg.Save(@"C:\res\f" + point.X + ".jpg");
+                                //Console.WriteLine(dres);
+                                //Console.WriteLine("正面:" + dres);
+                            }
+                            catch (Exception er)
+                            {
+                                LogHelper.WriteLog("front marker error", er);
+                            }
                         }
-                        catch (Exception er)
-                        {
-                            LogHelper.WriteLog("front marker error", er);
-                        }
-                    }
-                }, frontMarkerCheckArea[i], i);
-
-                MySmartThreadPool.Instance().QueueWorkItem((act, n) =>
+                    }, frontMarkerCheckArea[i], i);
+                }
+                if (backBoard != null)
                 {
-                    lock (backBoard)
+                    MySmartThreadPool.Instance().QueueWorkItem((act, n) =>
                     {
-                        try
+                        lock (backBoard)
                         {
-
-                            DPoint point = new DPoint();
-                            double dres = Aoi.marker_match_crop(backBoard.matImg.Ptr, marker.Ptr, ref point, ref act);
-                            this.BeginInvoke((Action<int, double, XBoard>)((bn, bdress, board) =>
+                            try
                             {
-                                xBoardAddTree(bn, bdress, board);
-                            }), n, dres, backBoard);
-                            //if (dres > threshold)
-                            //{
 
-                            //}
-                            //CvInvoke.PutText(backMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
-                            //CvInvoke.Rectangle(backMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(255, 0, 0), 3);
-                            //backMatImg.Save(@"C:\res\b" + point.X + ".jpg");
-                            //Console.WriteLine(dres);
-                            Console.WriteLine("反面:" + dres);
+                                DPoint point = new DPoint();
+                                double dres = Aoi.marker_match_crop(backBoard.matImg.Ptr, marker.Ptr, ref point, ref act);
+                                this.BeginInvoke((Action<int, double, XBoard>)((bn, bdress, board) =>
+                                {
+                                    xBoardAddTree(bn, bdress, board);
+                                }), n, dres, backBoard);
+                                //if (dres > threshold)
+                                //{
+
+                                //}
+                                //CvInvoke.PutText(backMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
+                                //CvInvoke.Rectangle(backMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(255, 0, 0), 3);
+                                //backMatImg.Save(@"C:\res\b" + point.X + ".jpg");
+                                //Console.WriteLine(dres);
+                                //Console.WriteLine("反面:" + dres);
+                            }
+                            catch (Exception er)
+                            {
+                                LogHelper.WriteLog("back marker error", er);
+                            }
                         }
-                        catch (Exception er)
-                        {
-                            LogHelper.WriteLog("back marker error", er);
-                        }
-                    }
-                }, backMarkerCheckArea[i], i);
+                    }, backMarkerCheckArea[i], i);
+                }
+
 
                 //DPoint point = new DPoint();
                 //double dres = Aoi.marker_match(img.Ptr, marker.Ptr, ref point);
@@ -431,7 +441,6 @@ namespace power_aoi.DockerPanal
             if (isback)
             {
                 tabListView.SelectedIndex = 1;
-
             }
             else
             {
@@ -458,11 +467,15 @@ namespace power_aoi.DockerPanal
                 bitmapBack = null;
             }
 
-            bitmapFront = frontBoard.matImg.Bitmap;
-            bitmapBack = backBoard.matImg.Bitmap;
-
-            twoSidesPcb.showBackImg(bitmapBack);
-            twoSidesPcb.showFrontImg(bitmapFront);
+            if (frontBoard != null)
+            { bitmapFront = frontBoard.matImg.Bitmap;
+                twoSidesPcb.showFrontImg(bitmapFront);
+            }
+            if (backBoard != null)
+            {
+                bitmapBack = backBoard.matImg.Bitmap;
+                twoSidesPcb.showBackImg(bitmapBack);
+            }
 
             if (pcb.results.Count == 0)
             {
@@ -478,9 +491,6 @@ namespace power_aoi.DockerPanal
                 partOfPcb.showImg(null);
                 return;
             }
-            
-            needCheckNumAll = pcb.results.Count;
-            checkedNum = 0;
 
             lbPcbNumber.Text = pcb.PcbNumber;
             lbSurfaceNumber.Text = pcb.SurfaceNumber.ToString();
@@ -491,7 +501,6 @@ namespace power_aoi.DockerPanal
             lbResult.ForeColor = Color.Red;
 
             //这里判断下！！！！是否在X板子里，如果是的话就不加载
-            
             foreach (var item in pcb.results)
             {
                 #region 判断缺陷点是否在badmarker所对应的坐标内
@@ -518,6 +527,7 @@ namespace power_aoi.DockerPanal
 
                 if (badlist.Count == 0)
                 {
+                    needCheckNumAll ++;
                     ListViewItem li = new ListViewItem();
                     li.BackColor = Color.Red;
                     li.SubItems[0].Text = item.PcbId.ToString();
@@ -538,6 +548,20 @@ namespace power_aoi.DockerPanal
                         lvListBack.Items.Add(li);
                     }
                 }
+            }
+            if (needCheckNumAll <= 0)
+            {
+                main.doLeisure(false);
+                lbPcbNumber.Text = pcb.PcbNumber;
+                lbSurfaceNumber.Text = pcb.SurfaceNumber.ToString();
+                lbPcbWidth.Text = pcb.PcbWidth.ToString();
+                lbPcbHeight.Text = pcb.PcbHeight.ToString();
+                lbPcbChildenNumber.Text = pcb.PcbChildenNumber.ToString();
+                lbResult.Text = "OK";
+                lbResult.ForeColor = Color.Green;
+
+                partOfPcb.showImg(null);
+                return;
             }
             ImageList ImgList = new ImageList();
             //高度设为25
