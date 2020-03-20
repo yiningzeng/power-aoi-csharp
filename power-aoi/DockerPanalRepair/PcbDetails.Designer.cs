@@ -73,6 +73,7 @@
             this.lbPcbNumber = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.colScore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.gbPcb.SuspendLayout();
@@ -96,7 +97,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.55556F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.44444F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(972, 452);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1026, 449);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -113,19 +114,19 @@
             this.tableLayoutPanel2.Controls.Add(this.btnLeft, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnPause, 4, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 407);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 405);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(966, 42);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1020, 41);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // btnRight
             // 
             this.btnRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRight.Location = new System.Drawing.Point(582, 3);
+            this.btnRight.Location = new System.Drawing.Point(615, 3);
             this.btnRight.Name = "btnRight";
-            this.btnRight.Size = new System.Drawing.Size(187, 36);
+            this.btnRight.Size = new System.Drawing.Size(198, 35);
             this.btnRight.TabIndex = 3;
             this.btnRight.Text = "反面 (→)";
             this.btnRight.UseVisualStyleBackColor = true;
@@ -134,9 +135,9 @@
             // btnNG
             // 
             this.btnNG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnNG.Location = new System.Drawing.Point(196, 3);
+            this.btnNG.Location = new System.Drawing.Point(207, 3);
             this.btnNG.Name = "btnNG";
-            this.btnNG.Size = new System.Drawing.Size(187, 36);
+            this.btnNG.Size = new System.Drawing.Size(198, 35);
             this.btnNG.TabIndex = 1;
             this.btnNG.Text = "NG (小键盘回车)";
             this.btnNG.UseVisualStyleBackColor = true;
@@ -147,7 +148,7 @@
             this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnOK.Location = new System.Drawing.Point(3, 3);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(187, 36);
+            this.btnOK.Size = new System.Drawing.Size(198, 35);
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "OK (小键盘0)";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -156,9 +157,9 @@
             // btnLeft
             // 
             this.btnLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLeft.Location = new System.Drawing.Point(389, 3);
+            this.btnLeft.Location = new System.Drawing.Point(411, 3);
             this.btnLeft.Name = "btnLeft";
-            this.btnLeft.Size = new System.Drawing.Size(187, 36);
+            this.btnLeft.Size = new System.Drawing.Size(198, 35);
             this.btnLeft.TabIndex = 2;
             this.btnLeft.Text = "正面 (←)";
             this.btnLeft.UseVisualStyleBackColor = true;
@@ -167,9 +168,9 @@
             // btnPause
             // 
             this.btnPause.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnPause.Location = new System.Drawing.Point(775, 3);
+            this.btnPause.Location = new System.Drawing.Point(819, 3);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(188, 36);
+            this.btnPause.Size = new System.Drawing.Size(198, 35);
             this.btnPause.TabIndex = 4;
             this.btnPause.Text = "暂停 (End)";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -182,7 +183,7 @@
             this.gbPcb.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbPcb.Location = new System.Drawing.Point(3, 3);
             this.gbPcb.Name = "gbPcb";
-            this.gbPcb.Size = new System.Drawing.Size(966, 398);
+            this.gbPcb.Size = new System.Drawing.Size(1020, 396);
             this.gbPcb.TabIndex = 2;
             this.gbPcb.TabStop = false;
             // 
@@ -192,7 +193,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(192, 17);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(771, 378);
+            this.panel2.Size = new System.Drawing.Size(825, 376);
             this.panel2.TabIndex = 2;
             // 
             // tabListView
@@ -205,7 +206,7 @@
             this.tabListView.Name = "tabListView";
             this.tabListView.Padding = new System.Drawing.Point(0, 0);
             this.tabListView.SelectedIndex = 0;
-            this.tabListView.Size = new System.Drawing.Size(771, 378);
+            this.tabListView.Size = new System.Drawing.Size(825, 376);
             this.tabListView.TabIndex = 1;
             this.tabListView.SelectedIndexChanged += new System.EventHandler(this.tabListView_SelectedIndexChanged);
             // 
@@ -215,7 +216,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(763, 352);
+            this.tabPage1.Size = new System.Drawing.Size(817, 350);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "正面";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -240,7 +241,7 @@
             this.lvListFront.Location = new System.Drawing.Point(0, 0);
             this.lvListFront.Margin = new System.Windows.Forms.Padding(0);
             this.lvListFront.Name = "lvListFront";
-            this.lvListFront.Size = new System.Drawing.Size(763, 352);
+            this.lvListFront.Size = new System.Drawing.Size(817, 350);
             this.lvListFront.TabIndex = 0;
             this.lvListFront.UseCompatibleStateImageBehavior = false;
             this.lvListFront.View = System.Windows.Forms.View.Details;
@@ -292,7 +293,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(626, 351);
+            this.tabPage2.Size = new System.Drawing.Size(817, 350);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "反面";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -309,6 +310,7 @@
             this.columnHeader6,
             this.columnHeader7,
             this.columnHeader8,
+            this.columnHeader10,
             this.columnHeader9});
             this.lvListBack.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvListBack.FullRowSelect = true;
@@ -316,7 +318,7 @@
             this.lvListBack.Location = new System.Drawing.Point(0, 0);
             this.lvListBack.Margin = new System.Windows.Forms.Padding(0);
             this.lvListBack.Name = "lvListBack";
-            this.lvListBack.Size = new System.Drawing.Size(626, 351);
+            this.lvListBack.Size = new System.Drawing.Size(817, 350);
             this.lvListBack.TabIndex = 1;
             this.lvListBack.UseCompatibleStateImageBehavior = false;
             this.lvListBack.View = System.Windows.Forms.View.Details;
@@ -350,12 +352,12 @@
             // columnHeader7
             // 
             this.columnHeader7.Text = "区域";
-            this.columnHeader7.Width = 200;
+            this.columnHeader7.Width = 150;
             // 
             // columnHeader8
             // 
             this.columnHeader8.Text = "NG种类";
-            this.columnHeader8.Width = 200;
+            this.columnHeader8.Width = 150;
             // 
             // columnHeader9
             // 
@@ -378,7 +380,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(3, 17);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(189, 378);
+            this.panel1.Size = new System.Drawing.Size(189, 376);
             this.panel1.TabIndex = 1;
             // 
             // lbResult
@@ -480,11 +482,16 @@
             this.colScore.Text = "AI检测得分";
             this.colScore.Width = 150;
             // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "AI检测得分";
+            this.columnHeader10.Width = 150;
+            // 
             // PcbDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(972, 452);
+            this.ClientSize = new System.Drawing.Size(1026, 449);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "PcbDetails";
             this.Text = "PcbDetails";
@@ -548,5 +555,6 @@
         public System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.ColumnHeader colScore;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
     }
 }
