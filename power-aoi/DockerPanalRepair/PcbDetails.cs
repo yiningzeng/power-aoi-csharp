@@ -474,7 +474,14 @@ namespace power_aoi.DockerPanal
             lbPcbChildenNumber.Text = pcb.PcbChildenNumber.ToString();
             lbResult.Text = "NG";
             lbResult.ForeColor = Color.Red;
-
+            try
+            {
+                pcb.results.Sort((x, y) => int.Parse(x.Region.Split(',')[0]).CompareTo(int.Parse(y.Region.Split(',')[0])));
+            }
+            catch(Exception er)
+            {
+                LogHelper.WriteLog("排序", er);
+            }
 
             foreach (var item in pcb.results)
             {
