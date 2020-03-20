@@ -288,6 +288,7 @@
     <Compile Include="Tools\DoubleBufferListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Tools\INIHelper.cs" />
     <Compile Include="Tools\LogHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

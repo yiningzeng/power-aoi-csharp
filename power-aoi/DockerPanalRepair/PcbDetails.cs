@@ -468,6 +468,26 @@ namespace power_aoi.DockerPanal
         }
 
         /// <summary>
+        /// 缺陷得分比较
+        /// </summary>
+        /// <param name="ngType"></param>
+        /// <param name="score"></param>
+        /// <returns>bool true那么需要显示，false不显示</returns>
+        private bool aacompare(string ngType, float score)
+        {
+            try
+            {
+                if (float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini")) <= score) return true; // 如果分值小于阈值直接返回
+                return false;
+            }
+            catch (Exception err)
+            {
+                LogHelper.WriteLog("config.ini > AIConfig err", err);
+                return true;
+            }
+        }
+
+        /// <summary>
         /// ListView加载数据
         /// </summary>
         /// <param name="pcb"></param>
@@ -546,25 +566,30 @@ namespace power_aoi.DockerPanal
 
                 if (badlist.Count == 0)
                 {
-                    needCheckNumAll ++;
-                    ListViewItem li = new ListViewItem();
-                    li.BackColor = Color.Red;
-                    li.SubItems[0].Text = item.PcbId.ToString();
-                    li.SubItems.Add(item.IsBack.ToString());
-                    li.SubItems.Add(pcb.PcbPath);
-                    li.SubItems.Add(item.PartImagePath);
-                    li.SubItems.Add(item.Region);
-                    li.SubItems.Add(item.Id.ToString());
-                    li.SubItems.Add(item.Area);
-                    li.SubItems.Add(item.NgType);
-                    li.SubItems.Add("未判定");
-                    if (item.IsBack == 0)
+                    //这里只有通过比较分值大的才显示在列表
+                    if (aacompare(item.NgType, item.score))
                     {
-                        lvListFront.Items.Add(li);
-                    }
-                    else if (item.IsBack == 1)
-                    {
-                        lvListBack.Items.Add(li);
+                        needCheckNumAll++;
+                        ListViewItem li = new ListViewItem();
+                        li.BackColor = Color.Red;
+                        li.SubItems[0].Text = item.PcbId.ToString();
+                        li.SubItems.Add(item.IsBack.ToString());
+                        li.SubItems.Add(pcb.PcbPath);
+                        li.SubItems.Add(item.PartImagePath);
+                        li.SubItems.Add(item.Region);
+                        li.SubItems.Add(item.Id.ToString());
+                        li.SubItems.Add(item.Area);
+                        li.SubItems.Add(item.NgType);
+                        li.SubItems.Add(item.score.ToString());
+                        li.SubItems.Add("未判定");
+                        if (item.IsBack == 0)
+                        {
+                            lvListFront.Items.Add(li);
+                        }
+                        else if (item.IsBack == 1)
+                        {
+                            lvListBack.Items.Add(li);
+                        }
                     }
                 }
             }
@@ -607,7 +632,7 @@ namespace power_aoi.DockerPanal
         {
             foreach (ListViewItem li in selectListView.Items)
             {
-                if (li.SubItems[8].Text == "未判定")
+                if (li.SubItems[9].Text == "未判定")
                 {
                     return true;
                 }
@@ -686,7 +711,7 @@ namespace power_aoi.DockerPanal
                 }
                 if (res == "OK")
                 {
-                    if (selectListView.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
+                    if (selectListView.Items[index].SubItems[9].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
 
                     selectListView.Items[index].BackColor = Color.Green;
                     #region 更新数据库
@@ -708,7 +733,7 @@ namespace power_aoi.DockerPanal
                 }
                 else if(res == "NG")
                 {
-                    if (selectListView.Items[index].SubItems[8].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
+                    if (selectListView.Items[index].SubItems[9].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
 
                     selectListView.Items[index].BackColor = Color.Yellow;
                 }
@@ -716,7 +741,7 @@ namespace power_aoi.DockerPanal
                 {
                     return;
                 }
-                selectListView.Items[index].SubItems[8].Text = res;
+                selectListView.Items[index].SubItems[9].Text = res;
 
                 // 判断是否到最后一行
                 if (index + 1 >= selectListView.Items.Count) // 是最后一行
