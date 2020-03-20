@@ -223,15 +223,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DockerPanalRepair\PcbDetails.cs" />
-    <Compile Include="DockerPanalRepair\PcbDetails.Designer.cs">
-      <DependentUpon>PcbDetails.cs</DependentUpon>
-    </Compile>
     <Compile Include="DockerPanalRepair\TwoSidesPcb.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DockerPanalRepair\TwoSidesPcb.Designer.cs">
       <DependentUpon>TwoSidesPcb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockerPanalRepair\PcbDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockerPanalRepair\PcbDetails.Designer.cs">
+      <DependentUpon>PcbDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="DockerPanalRepair\PartOfPcb.cs">
       <SubType>Form</SubType>
