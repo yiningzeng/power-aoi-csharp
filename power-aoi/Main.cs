@@ -78,6 +78,9 @@ namespace power_aoi
                 BeginInvoke(new RabbitmqMessageCallback(doWork), message);
                 return;
             }
+
+
+
             LogHelper.WriteLog("接收到数据\n" + message);
             //mainChannel = channel;
             //处理完成，手动确认
@@ -149,9 +152,29 @@ namespace power_aoi
                     MySmartThreadPool.Instance().QueueWorkItem<Pcb>(t, lst2.data);
                     #endregion
 
+                    #region 硬盘监控
+
+                    MySmartThreadPool.Instance().QueueWorkItem((str, lim) => {
+                        try
+                        {
+                            string disk = str.Split(':')[0];
+                            long freeGb = Utils.GetHardDiskFreeSpace(disk);
+                            if (freeGb < lim)
+                            {
+                                MessageBox.Show(disk +"盘空间已经不足"+lim+"GB，请及时清理", "报警", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                    }, ConfigurationManager.AppSettings["FtpPath"], Convert.ToInt32(ConfigurationManager.AppSettings["DiskRemind"]));
+
+                    #endregion
+
                     #region 处理图片
 
-   
+
 
 
                     //Graphics ghFront = null;
@@ -159,7 +182,7 @@ namespace power_aoi
 
                     //int drawNum = 0;
                     //int allNum = lst2.data.results.Count;
-           
+
                     //// 画框所有线程中调用显示图片的委托
                     //Action showImg = () =>
                     //{
@@ -171,7 +194,7 @@ namespace power_aoi
                     //            twoSidesPcb.BeginInvoke((Action)(() =>
                     //            {
                     //                twoSidesPcb.showFrontImg(imageFront);
-                                    
+
                     //            }));
                     //            imageFront.Save(path + "drawfront.jpg");
                     //        }
@@ -198,7 +221,7 @@ namespace power_aoi
                     //        var partImg = new ImageFactory().Load(fi);
                     //        partImg.Crop(rect);
                     //        partImg.Save(pp);
-                           
+
                     //        if (ii == 0)
                     //        {
                     //            if (File.Exists(pp))
@@ -214,7 +237,7 @@ namespace power_aoi
                     //            //while (timeOut < 50)
                     //            //{
                     //            //    timeOut++;
-                                    
+
                     //            //    Thread.Sleep(10);
                     //            //}
                     //        }
@@ -234,7 +257,7 @@ namespace power_aoi
                     //            new Pen(Color.Red, 3),
                     //            rect);
                     //        this.BeginInvoke(showImg);
-                    
+
                     //    }
                     //};
 
@@ -243,7 +266,7 @@ namespace power_aoi
                     //{
                     //    lock (ghBack)
                     //    {
-                            
+
                     //        #region 在画框之前先裁剪下来用作局部窗体显示使用
                     //        //MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, backImg, index);
                     //        #endregion
@@ -301,7 +324,7 @@ namespace power_aoi
                     #endregion
 
                 }
-                catch(Exception err)
+                catch (Exception err)
                 {
                     isLeisure = true;
                     RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false);

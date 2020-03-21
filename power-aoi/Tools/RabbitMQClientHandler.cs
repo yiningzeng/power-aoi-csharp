@@ -462,7 +462,7 @@ namespace power_aoi.Tools
                         var body = e.Body; //消息主体
                         var message = Encoding.UTF8.GetString(body);
 
-                        LogHelper.WriteLog("[x] 队列接收到消息：" + message.ToString());
+                        //LogHelper.WriteLog("[x] 队列接收到消息：" + message.ToString());
                         if (e.DeliveryTag != deliveryTag)
                         {
                             deliveryTag = e.DeliveryTag;

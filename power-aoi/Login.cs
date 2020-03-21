@@ -3,6 +3,7 @@ using power_aoi.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -19,6 +20,21 @@ namespace power_aoi
         {
             InitializeComponent();
             this.Icon = Properties.Resources.aa;
+            //MySmartThreadPool.Instance().QueueWorkItem((str, lim) => {
+            //    try
+            //    {
+            //        string disk = str.Split(':')[0];
+            //        long freeGb = Utils.GetHardDiskFreeSpace(disk);
+            //        if (freeGb < lim)
+            //        {
+            //            MessageBox.Show(disk + "盘空间已经不足" + lim + "GB，请及时清理", "报警", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        LogHelper.WriteLog("磁盘空间检测", ex);
+            //    }
+            //}, ConfigurationManager.AppSettings["FtpPath"], Convert.ToInt32(ConfigurationManager.AppSettings["DiskRemind"]));
             //INIHelper.Write("AIConfig", "333", "0.05", Application.StartupPath + "/config.ini");
             //INIHelper.Write("AIConfig", "aokeng", "0.05", Application.StartupPath + "/config.ini");
             //INIHelper.Write("AIConfig", "huashang", "0.05", Application.StartupPath + "/config.ini");
