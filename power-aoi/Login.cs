@@ -68,34 +68,43 @@ namespace power_aoi
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            AoiModel aoiModel = DB.GetAoiModel();
-            try
-            {
-                lbResult.Visible = true;
-                lbResult.Text = "登录中......";
-                string md5Pass = Utils.GenerateMD5(tbPassword.Text);
-                User user = aoiModel.users.Where(u => u.Username == tbUsername.Text && u.Password == md5Pass).FirstOrDefault();
-                if (user != null)
+            lbResult.Visible = true;
+            lbResult.Text = "登录中......";
+            MySmartThreadPool.Instance().QueueWorkItem((username, password) => {
+                AoiModel aoiModel = DB.GetAoiModel();
+                try
                 {
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    string md5Pass = Utils.GenerateMD5(password);
+                    User user = aoiModel.users.Where(u => u.Username == username && u.Password == md5Pass).FirstOrDefault();
+                    if (user != null)
+                    {
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                    }
+                    else
+                    {
+                        this.BeginInvoke((Action)(() =>
+                        {
+                            lbResult.Text = "用户名或密码错误";
+                            lbResult.Visible = true;
+                        }));
+
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    lbResult.Text = "用户名或密码错误";
-                    lbResult.Visible = true;
+                    this.BeginInvoke((Action)(() =>
+                    {
+                        lbResult.Text = "连接数据库出错";
+                        lbResult.Visible = true;
+                    }));
+                    LogHelper.WriteLog("Login error", err);
                 }
-            }
-            catch (Exception err)
-            {
-                lbResult.Text = "连接数据库出错";
-                lbResult.Visible = true;
-                LogHelper.WriteLog("Login error", err);
-            }
-            finally
-            {
-                aoiModel.Dispose();
-            }
+                finally
+                {
+                    aoiModel.Dispose();
+                }
+            }, tbUsername.Text.Trim(), tbPassword.Text.Trim());
         }
 
         private void btnLoginSearch_Click(object sender, EventArgs e)
