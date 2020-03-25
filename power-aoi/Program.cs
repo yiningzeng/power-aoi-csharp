@@ -20,16 +20,30 @@ namespace power_aoi
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Login login = new Login();
-            DialogResult dialogResult = login.ShowDialog();
-            login.Close();
-            if (dialogResult == DialogResult.OK)
+            bool Exist;//定义一个bool变量，用来表示是否已经运行
+                       //创建Mutex互斥对象
+            System.Threading.Mutex newMutex = new System.Threading.Mutex(true, "仅一次", out Exist);
+            if (Exist)//如果没有运行
             {
-                Application.Run(new Main());
-            } else if (dialogResult == DialogResult.Yes)
-            {
-                Application.Run(new MainSearch());
+                newMutex.ReleaseMutex();//运行新窗体
+                Login login = new Login();
+                DialogResult dialogResult = login.ShowDialog();
+                login.Close();
+                if (dialogResult == DialogResult.OK)
+                {
+                    Application.Run(new Main());
+                }
+                else if (dialogResult == DialogResult.Yes)
+                {
+                    Application.Run(new MainSearch());
+                }
             }
+            else
+            {
+                MessageBox.Show("本程序一次只能运行一个实例！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);//弹出提示信息
+            }
+
+
         }
     }
 }
