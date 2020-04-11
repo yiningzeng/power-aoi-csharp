@@ -63,7 +63,7 @@ namespace power_aoi
                 BeginInvoke(new RabbitmqConnectCallback(RabbitmqConnected), message);
                 return;
             }
-            this.Text = "检验端 "+message;
+            this.Text = "检验端-v2.0 "+message;
             pStatus.BringToFront();
         }
 
@@ -136,7 +136,7 @@ namespace power_aoi
 
                             this.BeginInvoke((Action)(() =>
                             {
-                                this.Text = "检验端 ["+res+"]";
+                                this.Text = "检验端-v2.0 ["+res+"]";
                             }));
 
                             #region 加载ng列表
@@ -154,21 +154,21 @@ namespace power_aoi
 
                     #region 硬盘监控
 
-                    MySmartThreadPool.Instance().QueueWorkItem((str, lim) => {
-                        try
-                        {
-                            string disk = str.Split(':')[0];
-                            long freeGb = Utils.GetHardDiskFreeSpace(disk);
-                            if (freeGb < lim)
-                            {
-                                MessageBox.Show(disk +"盘空间已经不足"+lim+"GB，请及时清理", "报警", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            throw ex;
-                        }
-                    }, ConfigurationManager.AppSettings["FtpPath"], Convert.ToInt32(ConfigurationManager.AppSettings["DiskRemind"]));
+                    //MySmartThreadPool.Instance().QueueWorkItem((str, lim) => {
+                    //    try
+                    //    {
+                    //        string disk = str.Split(':')[0];
+                    //        long freeGb = Utils.GetHardDiskFreeSpace(disk);
+                    //        if (freeGb < lim)
+                    //        {
+                    //            MessageBox.Show(disk +"盘空间已经不足"+lim+"GB，请及时清理", "报警", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //        }
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        throw ex;
+                    //    }
+                    //}, ConfigurationManager.AppSettings["FtpPath"], Convert.ToInt32(ConfigurationManager.AppSettings["DiskRemind"]));
 
                     #endregion
 
@@ -330,7 +330,7 @@ namespace power_aoi
                     RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false);
                     this.BeginInvoke((Action)(() =>
                     {
-                        this.Text = "检验端 [数据异常-请把当前板放回重新检测]";
+                        this.Text = "检验端-v2.0 [数据异常-请把当前板放回重新检测]";
                         MessageBox.Show("数据异常-请把当前板放回重新检测", "异常报警", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }));
                     LogHelper.WriteLog("处理失败\n" + message, err);
@@ -377,13 +377,12 @@ namespace power_aoi
                 if (isLeisure) // 空闲状态下，暂停可以直接恢复
                 {
                     pcbDetails.changePause("恢复", true);
-                    this.Text = "检验端 [暂停中...]";
+                    this.Text = "检验端-v2.0 [暂停中...]";
                 }
                 else
                 {
                     pcbDetails.changePause("恢复", false);
                 }
-
             }
         }
 
@@ -405,20 +404,20 @@ namespace power_aoi
             pcbDetails.lbPcbNumber.Text = "";
             pcbDetails.lbSurfaceNumber.Text = "";
             pcbDetails.lbPcbWidth.Text = "";
-            pcbDetails.lbPcbHeight.Text = "";
+            pcbDetails.lbPcbLength.Text = "";
             pcbDetails.lbPcbChildenNumber.Text = "";
             pcbDetails.lbResult.Text = "";
 
             if (workPause)
             {
-                this.Text = "检验端 [暂停中...]";
+                this.Text = "检验端-v2.0 [暂停中...]";
                 pcbDetails.changePause("恢复", true);
                 RabbitMQClientHandler.Pause();
                 pStatus.Visible = true;
             }
             else
             {
-                this.Text = "检验端 [等待最新的校验信息...]";
+                this.Text = "检验端-v2.0 [等待最新的校验信息...]";
             }
    
 
