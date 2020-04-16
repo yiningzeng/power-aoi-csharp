@@ -684,12 +684,12 @@ namespace power_aoi.DockerPanal
                                 result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
                                 if (item.IsBack == 0)
                                 {
-                                    frontResults.RemoveAt(frontResults.Count - 1);
+                                    if (frontResults.Count > 0) frontResults.RemoveAt(frontResults.Count - 1);
                                     frontResults.Add(result);
                                 }
                                 else if (item.IsBack == 1)
                                 {
-                                    backResults.RemoveAt(backResults.Count - 1);
+                                    if (backResults.Count > 0) backResults.RemoveAt(backResults.Count - 1);
                                     backResults.Add(result);
                                 }
                                 //ListViewItem li = new ListViewItem();
@@ -786,12 +786,12 @@ namespace power_aoi.DockerPanal
                                 result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
                                 if (item.IsBack == 0)
                                 {
-                                    frontResults.RemoveAt(frontResults.Count - 1);
+                                    if (frontResults.Count > 0) frontResults.RemoveAt(frontResults.Count - 1);
                                     frontResults.Add(result);
                                 }
                                 else if (item.IsBack == 1)
                                 {
-                                    backResults.RemoveAt(backResults.Count - 1);
+                                    if (backResults.Count > 0) backResults.RemoveAt(backResults.Count - 1);
                                     backResults.Add(result);
                                 }
                             }
