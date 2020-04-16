@@ -79,8 +79,6 @@ namespace power_aoi
                 return;
             }
 
-
-
             LogHelper.WriteLog("接收到数据\n" + message);
             //mainChannel = channel;
             //处理完成，手动确认
@@ -173,10 +171,6 @@ namespace power_aoi
                     #endregion
 
                     #region 处理图片
-
-
-
-
                     //Graphics ghFront = null;
                     //Graphics ghBack = null;
 

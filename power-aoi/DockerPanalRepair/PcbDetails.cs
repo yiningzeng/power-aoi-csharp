@@ -64,6 +64,9 @@ namespace power_aoi.DockerPanal
         XBoard frontBoard;
         XBoard backBoard;
 
+        List<Result> frontResults = new List<Result>();
+        List<Result> backResults = new List<Result>();
+
         List<DRectangle> frontMarkerCheckArea = new List<DRectangle>();
         List<DRectangle> backMarkerCheckArea = new List<DRectangle>();
         Mat marker = new Mat(Application.StartupPath + "/marker.jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
@@ -491,6 +494,52 @@ namespace power_aoi.DockerPanal
         }
 
         /// <summary>
+        /// Listview加载显示
+        /// </summary>
+        /// <param name="pchPath"></param>
+        public void showData(string pchPath)
+        {
+            frontResults.Sort((x, y) => Convert.ToInt32(double.Parse(x.Region.Split(',')[0])).CompareTo(Convert.ToInt32(double.Parse(y.Region.Split(',')[0]))));
+            backResults.Sort((x, y) => Convert.ToInt32(double.Parse(x.Region.Split(',')[0])).CompareTo(Convert.ToInt32(double.Parse(y.Region.Split(',')[0]))));
+
+            foreach (var item in frontResults)
+            {
+                needCheckNumAll++;
+                ListViewItem li = new ListViewItem();
+                li.BackColor = Color.Red;
+                li.SubItems[0].Text = item.PcbId.ToString();
+                li.SubItems.Add(item.IsBack.ToString());
+                li.SubItems.Add(pchPath);
+                li.SubItems.Add(item.PartImagePath);
+                li.SubItems.Add(item.Region);
+                li.SubItems.Add(item.Id.ToString());
+                li.SubItems.Add(item.Area);
+                li.SubItems.Add(item.NgType);
+                li.SubItems.Add(item.score.ToString());
+                li.SubItems.Add("未判定");
+                lvListFront.Items.Add(li);
+            }
+
+            foreach (var item in backResults)
+            {
+                needCheckNumAll++;
+                ListViewItem li = new ListViewItem();
+                li.BackColor = Color.Red;
+                li.SubItems[0].Text = item.PcbId.ToString();
+                li.SubItems.Add(item.IsBack.ToString());
+                li.SubItems.Add(pchPath);
+                li.SubItems.Add(item.PartImagePath);
+                li.SubItems.Add(item.Region);
+                li.SubItems.Add(item.Id.ToString());
+                li.SubItems.Add(item.Area);
+                li.SubItems.Add(item.NgType);
+                li.SubItems.Add(item.score.ToString());
+                li.SubItems.Add("未判定");
+                lvListBack.Items.Add(li);
+            }
+        }
+
+        /// <summary>
         /// ListView加载数据
         /// </summary>
         /// <param name="pcb"></param>
@@ -508,6 +557,8 @@ namespace power_aoi.DockerPanal
                 bitmapBack.Dispose();
                 bitmapBack = null;
             }
+            frontResults.Clear();
+            backResults.Clear();
 
             if (frontBoard != null)
             { bitmapFront = frontBoard.matImg.Bitmap;
@@ -543,8 +594,10 @@ namespace power_aoi.DockerPanal
             lbResult.ForeColor = Color.Red;
             try
             {
-                pcb.results.Sort((x, y) => Convert.ToInt32(double.Parse(x.Region.Split(',')[0])).CompareTo(Convert.ToInt32(double.Parse(y.Region.Split(',')[0]))));
-                //pcb.results.Sort((x, y) => int.Parse(x.Region.Split(',')[0]).CompareTo(int.Parse(y.Region.Split(',')[0])));
+                //pcb.results.Sort((x, y) => Convert.ToInt32(double.Parse(x.Region.Split(',')[0])).CompareTo(Convert.ToInt32(double.Parse(y.Region.Split(',')[0]))));
+
+                //pcb.results.OrderBy(s => s.NgType).ThenBy(s => double.Parse(s.Region.Split(',')[1]));//.ThenBy(s => s.NgType);
+                pcb.results = pcb.results.OrderBy(s => s.NgType).ThenBy(s => double.Parse(s.Region.Split(',')[0])).ThenBy(s => double.Parse(s.Region.Split(',')[1])).ToList();
             }
             catch(Exception er)
             {
@@ -552,8 +605,12 @@ namespace power_aoi.DockerPanal
             }
             if (Convert.ToBoolean(int.Parse(ConfigurationManager.AppSettings["XXX"])))
             {
+                DRectangle beforeRect = new DRectangle(0, 0, 0, 0);
+                string oldNgType = "";
                 foreach (var item in pcb.results)
                 {
+
+                    DRectangle nowRect = new DRectangle(0, 0, 0, 0);
                     //这里判断下！！！！是否在X板子里，如果是的话就不加载
                     #region 判断缺陷点是否在badmarker所对应的坐标内
                     List<DRectangle> badlist = new List<DRectangle>();
@@ -561,9 +618,12 @@ namespace power_aoi.DockerPanal
                     try
                     {
                         string[] reg = item.Region.Split(',');
-                        
-                        RTree.Point point = new RTree.Point(Convert.ToInt32(double.Parse(reg[0])), Convert.ToInt32(double.Parse(reg[1])), 0);
-
+                        int x = Convert.ToInt32(double.Parse(reg[0]));
+                        int y = Convert.ToInt32(double.Parse(reg[1]));
+                        int w = Convert.ToInt32(double.Parse(reg[2]));
+                        int h = Convert.ToInt32(double.Parse(reg[3]));
+                        nowRect = new DRectangle(x, y, w, h);
+                        RTree.Point point = new RTree.Point(x,y, 0);
                         if (item.IsBack == 0)
                         {
                             badlist = frontBoard.badTree.Nearest(point, 0); //检索坏板
@@ -586,63 +646,180 @@ namespace power_aoi.DockerPanal
                         //这里只有通过比较分值大的才显示在列表
                         if (aacompare(item.NgType, item.score))
                         {
-                            needCheckNumAll++;
-                            ListViewItem li = new ListViewItem();
-                            li.BackColor = Color.Red;
-                            li.SubItems[0].Text = item.PcbId.ToString();
-                            li.SubItems.Add(item.IsBack.ToString());
-                            li.SubItems.Add(pcb.PcbPath);
-                            li.SubItems.Add(item.PartImagePath);
-                            li.SubItems.Add(item.Region);
-                            li.SubItems.Add(item.Id.ToString());
-                            li.SubItems.Add(item.Area);
-                            li.SubItems.Add(item.NgType);
-                            li.SubItems.Add(item.score.ToString());
-                            li.SubItems.Add("未判定");
-                            if (item.IsBack == 0)
+                            double distance = 0;
+                            try
                             {
-                                lvListFront.Items.Add(li);
+                                int xdiff = nowRect.X - beforeRect.X;
+                                int ydiff = nowRect.Y - beforeRect.Y;
+                                distance = Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
                             }
-                            else if (item.IsBack == 1)
+                            catch(Exception er)
                             {
-                                lvListBack.Items.Add(li);
+                                LogHelper.WriteLog("合并计算失败", er);
+                            }
+
+                            if (distance!=0 &&distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
+                            {
+                                int finalLeftTopX = nowRect.X, finalLeftTopY = nowRect.Y, finalRightBotomX = nowRect.X + nowRect.Width, finalRightBotomY = nowRect.Y + nowRect.Height;
+                                if (nowRect.X > beforeRect.X)
+                                {
+                                    finalLeftTopX = beforeRect.X;
+                                }
+                                if (nowRect.Y > beforeRect.Y)
+                                {
+                                    finalLeftTopY = beforeRect.Y;
+                                }
+
+                                if (finalRightBotomX < beforeRect.X + beforeRect.Width)
+                                {
+                                    finalRightBotomX = beforeRect.X + beforeRect.Width;
+                                }
+                                if (finalRightBotomY < beforeRect.Y + beforeRect.Height)
+                                {
+                                    finalRightBotomY = beforeRect.Y + beforeRect.Height;
+                                }
+
+                                nowRect = new DRectangle(finalLeftTopX, finalLeftTopY, finalRightBotomX - finalLeftTopX, finalRightBotomY - finalLeftTopY);
+                                Result result = item;
+                                result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
+                                if (item.IsBack == 0)
+                                {
+                                    frontResults.RemoveAt(frontResults.Count - 1);
+                                    frontResults.Add(result);
+                                }
+                                else if (item.IsBack == 1)
+                                {
+                                    backResults.RemoveAt(backResults.Count - 1);
+                                    backResults.Add(result);
+                                }
+                                //ListViewItem li = new ListViewItem();
+                                //li.BackColor = Color.Red;
+                                //li.SubItems[0].Text = item.PcbId.ToString();
+                                //li.SubItems.Add(item.IsBack.ToString());
+                                //li.SubItems.Add(pcb.PcbPath);
+                                //li.SubItems.Add(item.PartImagePath);
+                                //li.SubItems.Add(nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height);
+                                //li.SubItems.Add(item.Id.ToString());
+                                //li.SubItems.Add(item.Area);
+                                //li.SubItems.Add(item.NgType);
+                                //li.SubItems.Add(item.score.ToString());
+                                //li.SubItems.Add("未判定");
+                                //if (item.IsBack == 0)
+                                //{
+                                //    lvListFront.Items.Add(li);
+                                //}
+                                //else if (item.IsBack == 1)
+                                //{
+                                //    lvListBack.Items.Add(li);
+                                //}
+                            }
+                            else
+                            {
+                                if (item.IsBack == 0)
+                                {
+                                    frontResults.Add(item);
+                                }
+                                else if (item.IsBack == 1)
+                                {
+                                    backResults.Add(item);
+                                }
                             }
                         }
+                        beforeRect = nowRect;
+                        oldNgType = item.NgType;
                     }
                 }
             }
             else // 不进行打X板操作
             {
+                DRectangle beforeRect = new DRectangle(0, 0, 0, 0);
+                string oldNgType = "";
                 foreach (var item in pcb.results)
-                { 
-                    //这里只有通过比较分值大的才显示在列表
-                    if (aacompare(item.NgType, item.score))
+                {
+                    try
                     {
-                        needCheckNumAll++;
-                        ListViewItem li = new ListViewItem();
-                        li.BackColor = Color.Red;
-                        li.SubItems[0].Text = item.PcbId.ToString();
-                        li.SubItems.Add(item.IsBack.ToString());
-                        li.SubItems.Add(pcb.PcbPath);
-                        li.SubItems.Add(item.PartImagePath);
-                        li.SubItems.Add(item.Region);
-                        li.SubItems.Add(item.Id.ToString());
-                        li.SubItems.Add(item.Area);
-                        li.SubItems.Add(item.NgType);
-                        li.SubItems.Add(item.score.ToString());
-                        li.SubItems.Add("未判定");
-                        if (item.IsBack == 0)
+                        string[] reg = item.Region.Split(',');
+                        DRectangle nowRect = new DRectangle(0, 0, 0, 0);
+                        int x = Convert.ToInt32(double.Parse(reg[0]));
+                        int y = Convert.ToInt32(double.Parse(reg[1]));
+                        int w = Convert.ToInt32(double.Parse(reg[2]));
+                        int h = Convert.ToInt32(double.Parse(reg[3]));
+                        nowRect = new DRectangle(x, y, w, h);
+                        //这里只有通过比较分值大的才显示在列表
+                        if (aacompare(item.NgType, item.score))
                         {
-                            lvListFront.Items.Add(li);
+                            double distance = 0;
+                            try
+                            {
+                                int xdiff = nowRect.X - beforeRect.X;
+                                int ydiff = nowRect.Y - beforeRect.Y;
+                                distance = Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
+                            }
+                            catch (Exception er)
+                            {
+                                LogHelper.WriteLog("合并计算失败", er);
+                            }
+
+                            if (distance != 0 && distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
+                            {
+                                int finalLeftTopX = nowRect.X, finalLeftTopY = nowRect.Y, finalRightBotomX = nowRect.X + nowRect.Width, finalRightBotomY = nowRect.Y + nowRect.Height;
+                                if (nowRect.X > beforeRect.X)
+                                {
+                                    finalLeftTopX = beforeRect.X;
+                                }
+                                if (nowRect.Y > beforeRect.Y)
+                                {
+                                    finalLeftTopY = beforeRect.Y;
+                                }
+
+                                if(finalRightBotomX < beforeRect.X + beforeRect.Width)
+                                {
+                                    finalRightBotomX = beforeRect.X + beforeRect.Width;
+                                }
+                                if(finalRightBotomY < beforeRect.Y + beforeRect.Height)
+                                {
+                                    finalRightBotomY = beforeRect.Y + beforeRect.Height;
+                                }
+                             
+                                nowRect = new DRectangle(finalLeftTopX, finalLeftTopY, finalRightBotomX - finalLeftTopX, finalRightBotomY - finalLeftTopY);
+                                Result result = item;
+                                result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
+                                if (item.IsBack == 0)
+                                {
+                                    frontResults.RemoveAt(frontResults.Count - 1);
+                                    frontResults.Add(result);
+                                }
+                                else if (item.IsBack == 1)
+                                {
+                                    backResults.RemoveAt(backResults.Count - 1);
+                                    backResults.Add(result);
+                                }
+                            }
+                            else
+                            {
+                                if (item.IsBack == 0)
+                                {
+                                    frontResults.Add(item);
+                                }
+                                else if (item.IsBack == 1)
+                                {
+                                    backResults.Add(item);
+                                }
+                            }
                         }
-                        else if (item.IsBack == 1)
-                        {
-                            lvListBack.Items.Add(li);
-                        }
+                        beforeRect = nowRect;
+                        oldNgType = item.NgType;
                     }
+                    catch(Exception er)
+                    {
+                        int a = 0;
+                    }
+
+
                 }
             }
-            
+
+            showData(pcb.PcbPath);
             if (needCheckNumAll <= 0)
             {
                 main.doLeisure(false);
@@ -695,6 +872,7 @@ namespace power_aoi.DockerPanal
             try
             {
                 string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + selectListView.Items[index].SubItems[2].Text + selectListView.Items[index].SubItems[3].Text;
+                int Zoom = int.Parse(ConfigurationManager.AppSettings["Zoom"]);
                 //if (!File.Exists(tFilePath))
                 {
                     Bitmap resBitmap = null;
@@ -708,7 +886,7 @@ namespace power_aoi.DockerPanal
                     if (selectListView.Items[index].SubItems[1].Text == "0") // 正面
                     {
                         //Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
-                        rect.Inflate(250, 250);
+                        rect.Inflate(Zoom, Zoom);
                         resBitmap = Utils.BitmapCut(bitmapFront, rect);//.Save(tFilePath);
                         twoSidesPcb.BeginInvoke((Action)(() =>
                         {
@@ -718,7 +896,7 @@ namespace power_aoi.DockerPanal
                     else if (selectListView.Items[index].SubItems[1].Text == "1") // 背面
                     {
                         //Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
-                        rect.Inflate(250, 250);
+                        rect.Inflate(Zoom, Zoom);
                         resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
                         twoSidesPcb.BeginInvoke((Action)(() =>
                         {
