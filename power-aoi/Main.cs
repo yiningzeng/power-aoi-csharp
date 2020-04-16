@@ -63,7 +63,7 @@ namespace power_aoi
                 BeginInvoke(new RabbitmqConnectCallback(RabbitmqConnected), message);
                 return;
             }
-            this.Text = "检验端 "+message;
+            this.Text = "检验端-v2.0 "+message;
             pStatus.BringToFront();
         }
 
@@ -78,6 +78,7 @@ namespace power_aoi
                 BeginInvoke(new RabbitmqMessageCallback(doWork), message);
                 return;
             }
+
             LogHelper.WriteLog("接收到数据\n" + message);
             //mainChannel = channel;
             //处理完成，手动确认
@@ -133,7 +134,7 @@ namespace power_aoi
 
                             this.BeginInvoke((Action)(() =>
                             {
-                                this.Text = "检验端 ["+res+"]";
+                                this.Text = "检验端-v2.0 ["+res+"]";
                             }));
 
                             #region 加载ng列表
@@ -149,17 +150,33 @@ namespace power_aoi
                     MySmartThreadPool.Instance().QueueWorkItem<Pcb>(t, lst2.data);
                     #endregion
 
+                    #region 硬盘监控
+
+                    //MySmartThreadPool.Instance().QueueWorkItem((str, lim) => {
+                    //    try
+                    //    {
+                    //        string disk = str.Split(':')[0];
+                    //        long freeGb = Utils.GetHardDiskFreeSpace(disk);
+                    //        if (freeGb < lim)
+                    //        {
+                    //            MessageBox.Show(disk +"盘空间已经不足"+lim+"GB，请及时清理", "报警", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //        }
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        throw ex;
+                    //    }
+                    //}, ConfigurationManager.AppSettings["FtpPath"], Convert.ToInt32(ConfigurationManager.AppSettings["DiskRemind"]));
+
+                    #endregion
+
                     #region 处理图片
-
-   
-
-
                     //Graphics ghFront = null;
                     //Graphics ghBack = null;
 
                     //int drawNum = 0;
                     //int allNum = lst2.data.results.Count;
-           
+
                     //// 画框所有线程中调用显示图片的委托
                     //Action showImg = () =>
                     //{
@@ -171,7 +188,7 @@ namespace power_aoi
                     //            twoSidesPcb.BeginInvoke((Action)(() =>
                     //            {
                     //                twoSidesPcb.showFrontImg(imageFront);
-                                    
+
                     //            }));
                     //            imageFront.Save(path + "drawfront.jpg");
                     //        }
@@ -198,7 +215,7 @@ namespace power_aoi
                     //        var partImg = new ImageFactory().Load(fi);
                     //        partImg.Crop(rect);
                     //        partImg.Save(pp);
-                           
+
                     //        if (ii == 0)
                     //        {
                     //            if (File.Exists(pp))
@@ -214,7 +231,7 @@ namespace power_aoi
                     //            //while (timeOut < 50)
                     //            //{
                     //            //    timeOut++;
-                                    
+
                     //            //    Thread.Sleep(10);
                     //            //}
                     //        }
@@ -234,7 +251,7 @@ namespace power_aoi
                     //            new Pen(Color.Red, 3),
                     //            rect);
                     //        this.BeginInvoke(showImg);
-                    
+
                     //    }
                     //};
 
@@ -243,7 +260,7 @@ namespace power_aoi
                     //{
                     //    lock (ghBack)
                     //    {
-                            
+
                     //        #region 在画框之前先裁剪下来用作局部窗体显示使用
                     //        //MySmartThreadPool.Instance().QueueWorkItem(actCrop, rect, path + result.PartImagePath, backImg, index);
                     //        #endregion
@@ -301,13 +318,13 @@ namespace power_aoi
                     #endregion
 
                 }
-                catch(Exception err)
+                catch (Exception err)
                 {
                     isLeisure = true;
                     RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false);
                     this.BeginInvoke((Action)(() =>
                     {
-                        this.Text = "检验端 [数据异常-请把当前板放回重新检测]";
+                        this.Text = "检验端-v2.0 [数据异常-请把当前板放回重新检测]";
                         MessageBox.Show("数据异常-请把当前板放回重新检测", "异常报警", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }));
                     LogHelper.WriteLog("处理失败\n" + message, err);
@@ -354,13 +371,12 @@ namespace power_aoi
                 if (isLeisure) // 空闲状态下，暂停可以直接恢复
                 {
                     pcbDetails.changePause("恢复", true);
-                    this.Text = "检验端 [暂停中...]";
+                    this.Text = "检验端-v2.0 [暂停中...]";
                 }
                 else
                 {
                     pcbDetails.changePause("恢复", false);
                 }
-
             }
         }
 
@@ -382,20 +398,20 @@ namespace power_aoi
             pcbDetails.lbPcbNumber.Text = "";
             pcbDetails.lbSurfaceNumber.Text = "";
             pcbDetails.lbPcbWidth.Text = "";
-            pcbDetails.lbPcbHeight.Text = "";
+            pcbDetails.lbPcbLength.Text = "";
             pcbDetails.lbPcbChildenNumber.Text = "";
             pcbDetails.lbResult.Text = "";
 
             if (workPause)
             {
-                this.Text = "检验端 [暂停中...]";
+                this.Text = "检验端-v2.0 [暂停中...]";
                 pcbDetails.changePause("恢复", true);
                 RabbitMQClientHandler.Pause();
                 pStatus.Visible = true;
             }
             else
             {
-                this.Text = "检验端 [等待最新的校验信息...]";
+                this.Text = "检验端-v2.0 [等待最新的校验信息...]";
             }
    
 

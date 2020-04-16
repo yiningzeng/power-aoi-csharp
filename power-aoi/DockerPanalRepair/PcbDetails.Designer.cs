@@ -48,6 +48,7 @@
             this.colId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colArea = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colNgType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colScore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colResult = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lvListBack = new power_aoi.Tools.DoubleBufferListView();
@@ -59,11 +60,12 @@
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbResult = new System.Windows.Forms.Label();
             this.lbPcbChildenNumber = new System.Windows.Forms.Label();
-            this.lbPcbHeight = new System.Windows.Forms.Label();
+            this.lbPcbLength = new System.Windows.Forms.Label();
             this.lbPcbWidth = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -72,8 +74,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lbPcbNumber = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.colScore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.gbPcb.SuspendLayout();
@@ -282,6 +282,11 @@
             this.colNgType.Text = "NG种类";
             this.colNgType.Width = 150;
             // 
+            // colScore
+            // 
+            this.colScore.Text = "AI检测得分";
+            this.colScore.Width = 150;
+            // 
             // colResult
             // 
             this.colResult.Text = "人工复验";
@@ -359,6 +364,11 @@
             this.columnHeader8.Text = "NG种类";
             this.columnHeader8.Width = 150;
             // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "AI检测得分";
+            this.columnHeader10.Width = 150;
+            // 
             // columnHeader9
             // 
             this.columnHeader9.Text = "人工复验";
@@ -368,7 +378,7 @@
             // 
             this.panel1.Controls.Add(this.lbResult);
             this.panel1.Controls.Add(this.lbPcbChildenNumber);
-            this.panel1.Controls.Add(this.lbPcbHeight);
+            this.panel1.Controls.Add(this.lbPcbLength);
             this.panel1.Controls.Add(this.lbPcbWidth);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label5);
@@ -400,13 +410,13 @@
             this.lbPcbChildenNumber.Size = new System.Drawing.Size(0, 12);
             this.lbPcbChildenNumber.TabIndex = 5;
             // 
-            // lbPcbHeight
+            // lbPcbLength
             // 
-            this.lbPcbHeight.AutoSize = true;
-            this.lbPcbHeight.Location = new System.Drawing.Point(83, 91);
-            this.lbPcbHeight.Name = "lbPcbHeight";
-            this.lbPcbHeight.Size = new System.Drawing.Size(0, 12);
-            this.lbPcbHeight.TabIndex = 5;
+            this.lbPcbLength.AutoSize = true;
+            this.lbPcbLength.Location = new System.Drawing.Point(83, 91);
+            this.lbPcbLength.Name = "lbPcbLength";
+            this.lbPcbLength.Size = new System.Drawing.Size(0, 12);
+            this.lbPcbLength.TabIndex = 5;
             // 
             // lbPcbWidth
             // 
@@ -477,16 +487,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "板号：";
             // 
-            // colScore
-            // 
-            this.colScore.Text = "AI检测得分";
-            this.colScore.Width = 150;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "AI检测得分";
-            this.columnHeader10.Width = 150;
-            // 
             // PcbDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -533,7 +533,7 @@
         public System.Windows.Forms.Label lbPcbNumber;
         public System.Windows.Forms.Label lbSurfaceNumber;
         public System.Windows.Forms.Label lbPcbWidth;
-        public System.Windows.Forms.Label lbPcbHeight;
+        public System.Windows.Forms.Label lbPcbLength;
         public System.Windows.Forms.Label lbPcbChildenNumber;
         public System.Windows.Forms.ColumnHeader colRegion;
         public System.Windows.Forms.Label lbResult;

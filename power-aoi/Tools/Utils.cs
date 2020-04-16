@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using power_aoi.Tools;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Management;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,6 +18,59 @@ namespace power_aoi
 {
     public class Utils
     {
+        public static int[] Sort(int[] arr)
+        {
+            int temp = 0;
+            for (int i = 0; i < arr.Length - 1; i++)
+            {
+                for (int j = 0; j < arr.Length - 1 - i; j++)
+                {
+                    if (arr[j] > arr[j + 1])
+                    {
+                        temp = arr[j + 1];
+                        arr[j + 1] = arr[j];
+                        arr[j] = temp;
+                    }
+                }
+            }
+            return arr;
+        }
+
+        /// <summary>
+        /// 处理Double值，精确到小数点后几位
+        /// </summary>
+        /// <param name="_value">值</param>
+        /// <param name="Length">精确到小数点后几位</param>
+        /// <returns>返回值</returns>
+        public static double ManagerDoubleValue(double _value, int Length)
+        {
+            if (Length < 0)
+            {
+                Length = 0;
+            }
+            return System.Math.Round(_value, Length);
+        }
+
+        /// <summary>
+        /// 获取指定驱动器的剩余空间总大小(单位为B)
+        /// </summary>
+        /// <param name="str_HardDiskName">只需输入代表驱动器的字母即可 </param>
+        /// <returns> </returns>
+        public static long GetHardDiskFreeSpace(string str_HardDiskName)
+        {
+            long freeSpace = new long();
+            str_HardDiskName = str_HardDiskName + ":\\";
+            System.IO.DriveInfo[] drives = System.IO.DriveInfo.GetDrives();
+            foreach (System.IO.DriveInfo drive in drives)
+            {
+                if (drive.Name == str_HardDiskName)
+                {
+                    freeSpace = drive.TotalFreeSpace / 1073741824;
+                }
+            }
+            return freeSpace;
+        }
+
         /// <summary>
         /// MD5字符串加密
         /// </summary>

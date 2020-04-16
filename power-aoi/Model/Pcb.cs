@@ -28,13 +28,21 @@ namespace power_aoi.Model
         [Description("PCB名称")]
         public string PcbName { get; set; }
 
+        [Column(name: "carrier_width")]
+        [Description("载板长")]
+        public int CarrierLength { get; set; }
+
+        [Column(name: "carrier_height")]
+        [Description("载板宽")]
+        public int CarrierWidth { get; set; }
+
         [Column(name: "pcb_width")]
         [Description("PCB名称")]
-        public int PcbWidth { get; set; }
+        public int PcbLength { get; set; }
 
         [Column(name: "pcb_height")]
         [Description("PCB名称")]
-        public int PcbHeight { get; set; }
+        public int PcbWidth { get; set; }
 
         [Column(name: "pcb_childen_number")]
         [Description("PCB名称")]
