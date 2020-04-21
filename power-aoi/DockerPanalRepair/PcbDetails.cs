@@ -624,134 +624,7 @@ namespace power_aoi.DockerPanal
             {
                 LogHelper.WriteLog("排序", er);
             }
-            if (Convert.ToBoolean(int.Parse(ConfigurationManager.AppSettings["XXX"])))
-            {
-                DRectangle beforeRect = new DRectangle(0, 0, 0, 0);
-                string oldNgType = "";
-                foreach (var item in pcb.results)
-                {
-
-                    DRectangle nowRect = new DRectangle(0, 0, 0, 0);
-                    //这里判断下！！！！是否在X板子里，如果是的话就不加载
-                    #region 判断缺陷点是否在badmarker所对应的坐标内
-                    List<DRectangle> badlist = new List<DRectangle>();
-                    List<DRectangle> oklist = new List<DRectangle>();
-                    try
-                    {
-                        string[] reg = item.Region.Split(',');
-                        int x = Convert.ToInt32(double.Parse(reg[0]));
-                        int y = Convert.ToInt32(double.Parse(reg[1]));
-                        int w = Convert.ToInt32(double.Parse(reg[2]));
-                        int h = Convert.ToInt32(double.Parse(reg[3]));
-                        nowRect = new DRectangle(x, y, w, h);
-                        RTree.Point point = new RTree.Point(x,y, 0);
-                        if (item.IsBack == 0)
-                        {
-                            badlist = frontBoard.badTree.Nearest(point, 0); //检索坏板
-                            oklist = frontBoard.okTree.Nearest(point, 0); //检索好板
-                        }
-                        else
-                        {
-                            badlist = backBoard.badTree.Nearest(point, 0); //检索坏板
-                            oklist = backBoard.okTree.Nearest(point, 0); //检索好板
-                        }
-                    }
-                    catch (Exception er)
-                    {
-                        LogHelper.WriteLog("marker error", er);
-                    }
-                    #endregion
-
-                    if (badlist.Count == 0 && oklist.Count > 0)
-                    {
-                        //这里只有通过比较分值大的才显示在列表
-                        if (aacompare(item.NgType, item.score))
-                        {
-                            double distance = 0;
-                            try
-                            {
-                                int xdiff = nowRect.X - beforeRect.X;
-                                int ydiff = nowRect.Y - beforeRect.Y;
-                                distance = Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
-                            }
-                            catch(Exception er)
-                            {
-                                LogHelper.WriteLog("合并计算失败", er);
-                            }
-
-                            if (distance!=0 &&distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
-                            {
-                                int finalLeftTopX = nowRect.X, finalLeftTopY = nowRect.Y, finalRightBotomX = nowRect.X + nowRect.Width, finalRightBotomY = nowRect.Y + nowRect.Height;
-                                if (nowRect.X > beforeRect.X)
-                                {
-                                    finalLeftTopX = beforeRect.X;
-                                }
-                                if (nowRect.Y > beforeRect.Y)
-                                {
-                                    finalLeftTopY = beforeRect.Y;
-                                }
-
-                                if (finalRightBotomX < beforeRect.X + beforeRect.Width)
-                                {
-                                    finalRightBotomX = beforeRect.X + beforeRect.Width;
-                                }
-                                if (finalRightBotomY < beforeRect.Y + beforeRect.Height)
-                                {
-                                    finalRightBotomY = beforeRect.Y + beforeRect.Height;
-                                }
-
-                                nowRect = new DRectangle(finalLeftTopX, finalLeftTopY, finalRightBotomX - finalLeftTopX, finalRightBotomY - finalLeftTopY);
-                                Result result = item;
-                                result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
-                                if (item.IsBack == 0)
-                                {
-                                    if (frontResults.Count > 0) frontResults.RemoveAt(frontResults.Count - 1);
-                                    frontResults.Add(result);
-                                }
-                                else if (item.IsBack == 1)
-                                {
-                                    if (backResults.Count > 0) backResults.RemoveAt(backResults.Count - 1);
-                                    backResults.Add(result);
-                                }
-                                //ListViewItem li = new ListViewItem();
-                                //li.BackColor = Color.Red;
-                                //li.SubItems[0].Text = item.PcbId.ToString();
-                                //li.SubItems.Add(item.IsBack.ToString());
-                                //li.SubItems.Add(pcb.PcbPath);
-                                //li.SubItems.Add(item.PartImagePath);
-                                //li.SubItems.Add(nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height);
-                                //li.SubItems.Add(item.Id.ToString());
-                                //li.SubItems.Add(item.Area);
-                                //li.SubItems.Add(item.NgType);
-                                //li.SubItems.Add(item.score.ToString());
-                                //li.SubItems.Add("未判定");
-                                //if (item.IsBack == 0)
-                                //{
-                                //    lvListFront.Items.Add(li);
-                                //}
-                                //else if (item.IsBack == 1)
-                                //{
-                                //    lvListBack.Items.Add(li);
-                                //}
-                            }
-                            else
-                            {
-                                if (item.IsBack == 0)
-                                {
-                                    frontResults.Add(item);
-                                }
-                                else if (item.IsBack == 1)
-                                {
-                                    backResults.Add(item);
-                                }
-                            }
-                        }
-                        beforeRect = nowRect;
-                        oldNgType = item.NgType;
-                    }
-                }
-            }
-            else // 不进行打X板操作
+            // 不进行打X板操作
             {
                 DRectangle beforeRect = new DRectangle(0, 0, 0, 0);
                 string oldNgType = "";
@@ -766,85 +639,77 @@ namespace power_aoi.DockerPanal
                         int w = Convert.ToInt32(double.Parse(reg[2]));
                         int h = Convert.ToInt32(double.Parse(reg[3]));
                         nowRect = new DRectangle(x, y, w, h);
-                        RTree.Point point = new RTree.Point(x, y, 0);
-                        bool into = false;
-                        if (item.IsBack == 0)
+                        //RTree.Point point = new RTree.Point(x, y, 0);
+                        if (x > points[0] && x < points[2] && y> points[1] && y< points[3])
                         {
-                            if(BlackBoxRtree.Nearest(point, 0).Count > 0)
+                            if (aacompare(item.NgType, item.score))
                             {
-                                into = true;
+                                double distance = 0;
+                                try
+                                {
+                                    int xdiff = nowRect.X - beforeRect.X;
+                                    int ydiff = nowRect.Y - beforeRect.Y;
+                                    distance = Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
+                                }
+                                catch (Exception er)
+                                {
+                                    LogHelper.WriteLog("合并计算失败", er);
+                                }
+
+                                if (distance != 0 && distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
+                                {
+                                    int finalLeftTopX = nowRect.X, finalLeftTopY = nowRect.Y, finalRightBotomX = nowRect.X + nowRect.Width, finalRightBotomY = nowRect.Y + nowRect.Height;
+                                    if (nowRect.X > beforeRect.X)
+                                    {
+                                        finalLeftTopX = beforeRect.X;
+                                    }
+                                    if (nowRect.Y > beforeRect.Y)
+                                    {
+                                        finalLeftTopY = beforeRect.Y;
+                                    }
+
+                                    if (finalRightBotomX < beforeRect.X + beforeRect.Width)
+                                    {
+                                        finalRightBotomX = beforeRect.X + beforeRect.Width;
+                                    }
+                                    if (finalRightBotomY < beforeRect.Y + beforeRect.Height)
+                                    {
+                                        finalRightBotomY = beforeRect.Y + beforeRect.Height;
+                                    }
+
+                                    nowRect = new DRectangle(finalLeftTopX, finalLeftTopY, finalRightBotomX - finalLeftTopX, finalRightBotomY - finalLeftTopY);
+                                    Result result = item;
+                                    result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
+                                    if (item.IsBack == 0)
+                                    {
+                                        if (frontResults.Count > 0) frontResults.RemoveAt(frontResults.Count - 1);
+                                        frontResults.Add(result);
+                                    }
+                                    else if (item.IsBack == 1)
+                                    {
+                                        if (backResults.Count > 0) backResults.RemoveAt(backResults.Count - 1);
+                                        backResults.Add(result);
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.IsBack == 0)
+                                    {
+                                        frontResults.Add(item);
+                                    }
+                                    else if (item.IsBack == 1)
+                                    {
+                                        backResults.Add(item);
+                                    }
+                                }
                             }
-                        }
-                        if (!into)
-                        {
-                            continue;
+                            beforeRect = nowRect;
+                            oldNgType = item.NgType;
                         }
                         //这里只有通过比较分值大的才显示在列表
-                        if (aacompare(item.NgType, item.score))
-                        {
-                            double distance = 0;
-                            try
-                            {
-                                int xdiff = nowRect.X - beforeRect.X;
-                                int ydiff = nowRect.Y - beforeRect.Y;
-                                distance = Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
-                            }
-                            catch (Exception er)
-                            {
-                                LogHelper.WriteLog("合并计算失败", er);
-                            }
 
-                            if (distance != 0 && distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
-                            {
-                                int finalLeftTopX = nowRect.X, finalLeftTopY = nowRect.Y, finalRightBotomX = nowRect.X + nowRect.Width, finalRightBotomY = nowRect.Y + nowRect.Height;
-                                if (nowRect.X > beforeRect.X)
-                                {
-                                    finalLeftTopX = beforeRect.X;
-                                }
-                                if (nowRect.Y > beforeRect.Y)
-                                {
-                                    finalLeftTopY = beforeRect.Y;
-                                }
-
-                                if(finalRightBotomX < beforeRect.X + beforeRect.Width)
-                                {
-                                    finalRightBotomX = beforeRect.X + beforeRect.Width;
-                                }
-                                if(finalRightBotomY < beforeRect.Y + beforeRect.Height)
-                                {
-                                    finalRightBotomY = beforeRect.Y + beforeRect.Height;
-                                }
-                             
-                                nowRect = new DRectangle(finalLeftTopX, finalLeftTopY, finalRightBotomX - finalLeftTopX, finalRightBotomY - finalLeftTopY);
-                                Result result = item;
-                                result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
-                                if (item.IsBack == 0)
-                                {
-                                    if (frontResults.Count > 0) frontResults.RemoveAt(frontResults.Count - 1);
-                                    frontResults.Add(result);
-                                }
-                                else if (item.IsBack == 1)
-                                {
-                                    if (backResults.Count > 0) backResults.RemoveAt(backResults.Count - 1);
-                                    backResults.Add(result);
-                                }
-                            }
-                            else
-                            {
-                                if (item.IsBack == 0)
-                                {
-                                    frontResults.Add(item);
-                                }
-                                else if (item.IsBack == 1)
-                                {
-                                    backResults.Add(item);
-                                }
-                            }
-                        }
-                        beforeRect = nowRect;
-                        oldNgType = item.NgType;
                     }
-                    catch(Exception er)
+                    catch (Exception er)
                     {
                         int a = 0;
                     }
