@@ -72,13 +72,19 @@ namespace power_aoi.DockerPanal
         Mat marker = new Mat(Application.StartupPath + "/marker.jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
         Mat badMarker = new Mat(Application.StartupPath + "/bad_marker.jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
         double threshold = Convert.ToDouble(ConfigurationManager.AppSettings["MarkerThreshold"]);//0.7;
-
+        string[] pointstr = { "277", "1861", "4785", "2173" };
+        List<int> points = new List<int>();//{ 277, 1861, 4785, 2173 };
         public PcbDetails(Main m, PartOfPcb pPcb, TwoSidesPcb tPcb)
         {
             InitializeComponent();
-
+       
+            pointstr = ConfigurationManager.AppSettings["Region"].Split(',');
+            foreach (var i in pointstr)
+            {
+                points.Add(Convert.ToInt32(i));
+            }
             #region 黑盒
-            BlackBoxRtree.Add(new RRectangle(100, 1500, 3900, 1850, 0, 0), "fuck box");
+            BlackBoxRtree.Add(new RRectangle(points[0], points[1], points[2] - points[0], points[3] - points[1], 0, 0), "fuck box");
             #endregion
 
 
@@ -572,7 +578,7 @@ namespace power_aoi.DockerPanal
             if (frontBoard != null)
             {
                 MCvScalar mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
-                CvInvoke.Rectangle(frontBoard.matImg, new DRectangle(100, 1500, 3900, 1850), mCvScalar, 20);
+                CvInvoke.Rectangle(frontBoard.matImg, new DRectangle(points[0], points[1], points[2] - points[0], points[3] - points[1]), mCvScalar, 20);
                 bitmapFront = frontBoard.matImg.Bitmap;
                 twoSidesPcb.showFrontImg(bitmapFront);
             }
