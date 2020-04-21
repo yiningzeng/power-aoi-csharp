@@ -66,7 +66,7 @@ namespace power_aoi.DockerPanal
 
         List<Result> frontResults = new List<Result>();
         List<Result> backResults = new List<Result>();
-
+        RTree<string> BlackBoxRtree = new RTree<string>();
         List<DRectangle> frontMarkerCheckArea = new List<DRectangle>();
         List<DRectangle> backMarkerCheckArea = new List<DRectangle>();
         Mat marker = new Mat(Application.StartupPath + "/marker.jpg", Emgu.CV.CvEnum.LoadImageType.AnyColor);
@@ -76,6 +76,11 @@ namespace power_aoi.DockerPanal
         public PcbDetails(Main m, PartOfPcb pPcb, TwoSidesPcb tPcb)
         {
             InitializeComponent();
+
+            #region 黑盒
+            BlackBoxRtree.Add(new RRectangle(100, 1500, 3900, 1850, 0, 0), "fuck box");
+            #endregion
+
 
             #region marker点检测区域老版本
             //backMarkerCheckArea.Add(new DRectangle(1031, 3298, 863, 475));
@@ -382,7 +387,11 @@ namespace power_aoi.DockerPanal
                 backBoard = new XBoard(backImgPath, false);
                 backBoard.isBack = true;
             }
-
+            if (!Convert.ToBoolean(int.Parse(ConfigurationManager.AppSettings["XXX"])))
+            {
+                loadData(nowWorkingPcb);
+                return;
+            }
             for (int i = 0; i <= 7; i++)
             {
                 if (frontBoard != null)
@@ -561,7 +570,10 @@ namespace power_aoi.DockerPanal
             backResults.Clear();
 
             if (frontBoard != null)
-            { bitmapFront = frontBoard.matImg.Bitmap;
+            {
+                MCvScalar mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
+                CvInvoke.Rectangle(frontBoard.matImg, new DRectangle(100, 1500, 3900, 1850), mCvScalar, 20);
+                bitmapFront = frontBoard.matImg.Bitmap;
                 twoSidesPcb.showFrontImg(bitmapFront);
             }
             if (backBoard != null)
@@ -569,6 +581,9 @@ namespace power_aoi.DockerPanal
                 bitmapBack = backBoard.matImg.Bitmap;
                 twoSidesPcb.showBackImg(bitmapBack);
             }
+
+
+
 
             if (pcb.results.Count == 0)
             {
@@ -745,6 +760,19 @@ namespace power_aoi.DockerPanal
                         int w = Convert.ToInt32(double.Parse(reg[2]));
                         int h = Convert.ToInt32(double.Parse(reg[3]));
                         nowRect = new DRectangle(x, y, w, h);
+                        RTree.Point point = new RTree.Point(x, y, 0);
+                        bool into = false;
+                        if (item.IsBack == 0)
+                        {
+                            if(BlackBoxRtree.Nearest(point, 0).Count > 0)
+                            {
+                                into = true;
+                            }
+                        }
+                        if (!into)
+                        {
+                            continue;
+                        }
                         //这里只有通过比较分值大的才显示在列表
                         if (aacompare(item.NgType, item.score))
                         {
