@@ -98,44 +98,45 @@ namespace power_aoi.DockerPanal
             #endregion
 
             #region marker点检测区域
-            backMarkerCheckArea.Add(new DRectangle(766, 151, 401, 187));
-            backMarkerCheckArea.Add(new DRectangle(1558, 135, 473, 217));
-            backMarkerCheckArea.Add(new DRectangle(2396, 129, 433, 217));
-            backMarkerCheckArea.Add(new DRectangle(3200, 121, 449, 211));
-            backMarkerCheckArea.Add(new DRectangle(4042, 117, 441, 209));
-            backMarkerCheckArea.Add(new DRectangle(4878, 117, 419, 201));
-            backMarkerCheckArea.Add(new DRectangle(5680, 113, 449, 201));
-            backMarkerCheckArea.Add(new DRectangle(6502, 131, 451, 193));
+            //backMarkerCheckArea.Add(new DRectangle(766, 151, 401, 187));
+            //backMarkerCheckArea.Add(new DRectangle(1558, 135, 473, 217));
+            //backMarkerCheckArea.Add(new DRectangle(2396, 129, 433, 217));
+            //backMarkerCheckArea.Add(new DRectangle(3200, 121, 449, 211));
+            //backMarkerCheckArea.Add(new DRectangle(4042, 117, 441, 209));
+            //backMarkerCheckArea.Add(new DRectangle(4878, 117, 419, 201));
+            //backMarkerCheckArea.Add(new DRectangle(5680, 113, 449, 201));
+            //backMarkerCheckArea.Add(new DRectangle(6502, 131, 451, 193));
 
 
-            frontMarkerCheckArea.Add(new DRectangle(466, 34, 454, 223));
-            frontMarkerCheckArea.Add(new DRectangle(1327, 37, 454, 229));
-            frontMarkerCheckArea.Add(new DRectangle(2169, 45, 367, 253));
-            frontMarkerCheckArea.Add(new DRectangle(2946, 68, 445, 237));
-            frontMarkerCheckArea.Add(new DRectangle(3763, 67, 449, 243));
-            frontMarkerCheckArea.Add(new DRectangle(4636, 87, 372, 241));
-            frontMarkerCheckArea.Add(new DRectangle(5409, 90, 475, 249));
-            frontMarkerCheckArea.Add(new DRectangle(6259, 111, 428, 237));
+            //frontMarkerCheckArea.Add(new DRectangle(466, 34, 454, 223));
+            //frontMarkerCheckArea.Add(new DRectangle(1327, 37, 454, 229));
+            //frontMarkerCheckArea.Add(new DRectangle(2169, 45, 367, 253));
+            //frontMarkerCheckArea.Add(new DRectangle(2946, 68, 445, 237));
+            //frontMarkerCheckArea.Add(new DRectangle(3763, 67, 449, 243));
+            //frontMarkerCheckArea.Add(new DRectangle(4636, 87, 372, 241));
+            //frontMarkerCheckArea.Add(new DRectangle(5409, 90, 475, 249));
+            //frontMarkerCheckArea.Add(new DRectangle(6259, 111, 428, 237));
             #endregion
 
-            #region Rtree marker点检测区域，反馈对应的板子区域
-            //backTree.Add(new RRectangle(1031, 3298, 1031 + 863, 3298 + 475, 0, 0), new DRectangle(new DPoint(724, 594), new Size(1453, 2664)));
-            //backTree.Add(new RRectangle(2743, 3257, 2743 + 781, 3257 + 493, 0, 0), new DRectangle(new DPoint(2389, 585), new Size(1435, 2706)));
-            //backTree.Add(new RRectangle(4417, 3245, 4417 + 724, 3245 + 502, 0, 0), new DRectangle(new DPoint(4084, 600), new Size(1402, 2691)));
-            //backTree.Add(new RRectangle(6022, 3221, 6022 + 811, 3221 + 535, 0, 0), new DRectangle(new DPoint(5737, 600), new Size(1399, 2654)));
-            //backTree.Add(new RRectangle(7649, 3224, 7649 + 847, 3224 + 511, 0, 0), new DRectangle(new DPoint(7364, 568), new Size(1411, 2660)));
-            //backTree.Add(new RRectangle(9342, 3242, 9342 + 823, 3242 + 467, 0, 0), new DRectangle(new DPoint(9042, 598), new Size(1359, 2618)));
-            //backTree.Add(new RRectangle(10981, 3217, 10981 + 796, 3217 + 511, 0, 0), new DRectangle(new DPoint(10681, 576), new Size(1414, 2675)));
-            //backTree.Add(new RRectangle(12658, 3247, 12658 + 769, 3247 + 496, 0, 0), new DRectangle(new DPoint(12358, 570), new Size(1348, 2660)));
+            #region marker点检测区域-对应新的板子-1694
+            backMarkerCheckArea.Add(new DRectangle(583, 1598, 627, 299));
+            backMarkerCheckArea.Add(new DRectangle(1430, 1611, 604, 280));
+            backMarkerCheckArea.Add(new DRectangle(2274, 1627, 590, 268));
+            backMarkerCheckArea.Add(new DRectangle(3094, 1607, 640, 278));
+            backMarkerCheckArea.Add(new DRectangle(3954, 1611, 626, 280));
+            backMarkerCheckArea.Add(new DRectangle(4820, 1637, 624, 270));
+            backMarkerCheckArea.Add(new DRectangle(5660, 1621, 610, 286));
+            backMarkerCheckArea.Add(new DRectangle(6500, 1625, 624, 280));
 
-            //frontTree.Add(new RRectangle(1254, 3277, 1254 + 983, 3277 + 473, 0, 0), new DRectangle(new DPoint(1096, 592), new Size(1381, 2661)));
-            //frontTree.Add(new RRectangle(2970, 3251, 2970 + 887, 3251 + 511, 0, 0), new DRectangle(new DPoint(2734, 607), new Size(1354, 2691)));
-            //frontTree.Add(new RRectangle(4639, 3295, 4639 + 861, 3295 + 477, 0, 0), new DRectangle(new DPoint(4387, 643), new Size(1369, 2682)));
-            //frontTree.Add(new RRectangle(6287, 3307, 6287 + 858, 3307 + 507, 0, 0), new DRectangle(new DPoint(6022, 703), new Size(1333, 2651)));
-            //frontTree.Add(new RRectangle(7867, 3319, 7867 + 995, 3319 + 517, 0, 0), new DRectangle(new DPoint(7668, 718), new Size(1363, 2624)));
-            //frontTree.Add(new RRectangle(9573, 3355, 9573 + 923, 3355 + 517, 0, 0), new DRectangle(new DPoint(9324, 706), new Size(1363, 2666)));
-            //frontTree.Add(new RRectangle(11215, 3375, 11215 + 881, 3375 + 523, 0, 0), new DRectangle(new DPoint(10995, 775), new Size(1366, 2633)));
-            //frontTree.Add(new RRectangle(12907, 3403, 12907 + 869, 3403 + 521, 0, 0), new DRectangle(new DPoint(12630, 748), new Size(1372, 2678)));
+
+            frontMarkerCheckArea.Add(new DRectangle(286, 1547, 621, 354));
+            frontMarkerCheckArea.Add(new DRectangle(1141, 1547, 657, 405));
+            frontMarkerCheckArea.Add(new DRectangle(2001, 1556, 621, 381));
+            frontMarkerCheckArea.Add(new DRectangle(2826, 1586, 675, 351));
+            frontMarkerCheckArea.Add(new DRectangle(3711, 1583, 585, 363));
+            frontMarkerCheckArea.Add(new DRectangle(4560, 1601, 615, 357));
+            frontMarkerCheckArea.Add(new DRectangle(5361, 1622, 635, 330));
+            frontMarkerCheckArea.Add(new DRectangle(6230, 1607, 645, 351));
             #endregion
 
             partOfPcb = pPcb;
@@ -250,43 +251,43 @@ namespace power_aoi.DockerPanal
             {
                 case 0:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(597, 300), new Size(717, 1365)),
-                        new DRectangle(new DPoint(376, 271), new Size(679, 1361)));
+                        new DRectangle(new DPoint(529, 28), new Size(714, 1630)),
+                        new DRectangle(new DPoint(298, 13), new Size(666, 1564)));
                     break;
                 case 1:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(1442, 313), new Size(685, 1350)),
-                        new DRectangle(new DPoint(1192, 277), new Size(702, 1367)));
+                        new DRectangle(new DPoint(1393, 43), new Size(704, 1600)),
+                        new DRectangle(new DPoint(1138, 22), new Size(666, 1564)));
                     break;
                 case 2:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(2265, 306), new Size(688, 1359)),
-                        new DRectangle(new DPoint(2013, 271), new Size(700, 1385)));
+                        new DRectangle(new DPoint(2226, 49), new Size(717, 1603)),
+                        new DRectangle(new DPoint(1983, 13), new Size(681, 1618)));
                     break;
                 case 3:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(3083, 316), new Size(713, 1362)),
-                        new DRectangle(new DPoint(2856, 295), new Size(679, 1355)));
+                        new DRectangle(new DPoint(3081, 43), new Size(717, 1609)),
+                        new DRectangle(new DPoint(2838, 4), new Size(675, 1621)));
                     break;
                 case 4:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(3909, 322), new Size(701, 1357)),
-                        new DRectangle(new DPoint(3672, 295), new Size(679, 1334)));
+                        new DRectangle(new DPoint(3927, 49), new Size(741, 1603)),
+                        new DRectangle(new DPoint(3669, 7), new Size(684, 1618)));
                     break;
                 case 5:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(4740, 327), new Size(698, 1368)),
-                        new DRectangle(new DPoint(4506, 295), new Size(673, 1346)));
+                        new DRectangle(new DPoint(4776, 43), new Size(726, 1624)),
+                        new DRectangle(new DPoint(4503, 7), new Size(714, 1639)));
                     break;
                 case 6:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(5563, 333), new Size(694, 1353)),
-                        new DRectangle(new DPoint(5322, 295), new Size(681, 1367)));
+                        new DRectangle(new DPoint(5630, 43), new Size(720, 1624)),
+                        new DRectangle(new DPoint(5337, 4), new Size(725, 1648)));
                     break;
                 case 7:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(6385, 339), new Size(669, 1358)),
-                        new DRectangle(new DPoint(6143, 316), new Size(697, 1349)));
+                        new DRectangle(new DPoint(6482, 55), new Size(708, 1627)),
+                        new DRectangle(new DPoint(6197, 7), new Size(720, 1654)));
                     break;
             }
 
