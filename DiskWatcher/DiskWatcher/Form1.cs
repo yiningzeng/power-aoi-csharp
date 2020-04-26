@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace DiskWatcher
 
             InitializeComponent();
             timer1.Start();
+            timerAutoDeletePath.Start();
         }
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
@@ -30,6 +32,52 @@ namespace DiskWatcher
             else
             {
                 this.Show();
+            }
+        }
+
+        public void AutoDelete()
+        {
+            try
+            {
+                
+                string disk = ConfigurationManager.AppSettings["AutoDeletePath"];
+                //C#遍历指定文件夹中的所有文件 
+                DirectoryInfo TheFolder = new DirectoryInfo(disk);
+                if (!TheFolder.Exists)
+                    return;
+
+                //遍历文件夹
+                foreach (DirectoryInfo NextFolder in TheFolder.GetDirectories())
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(NextFolder.FullName);
+                    DateTime todayZero = Convert.ToDateTime(DateTime.Now.ToString("D").ToString());
+                    if(NextFolder.LastWriteTime < todayZero)
+                    {
+                        Directory.Delete(NextFolder.FullName,true);
+                    }
+                   
+                }
+
+
+                //遍历文件
+                foreach (FileInfo NextFile in TheFolder.GetFiles())
+                {
+                    //if (NextFile.Name == "0-0-11.grid")
+                    //    continue;
+                    // 获取文件完整路径
+                    string heatmappath = NextFile.FullName;
+                    Console.WriteLine(heatmappath);
+                    DateTime todayZero = Convert.ToDateTime(DateTime.Now.ToString("D").ToString());
+                    if (NextFile.LastWriteTime < todayZero)
+                    {
+                        File.Delete(heatmappath);
+                    }
+                }
+            }
+            catch (Exception er)
+            {
+
             }
         }
 
@@ -47,7 +95,10 @@ namespace DiskWatcher
             }
         }
         #endregion
-
+        private void timerAutoDeletePath_Tick(object sender, EventArgs e)
+        {
+            AutoDelete();
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             try
@@ -112,6 +163,16 @@ namespace DiskWatcher
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Environment.Exit(0);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            AutoDelete();
+        }
+
+        private void 手动清理硬盘ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AutoDelete();
         }
     }
 }
