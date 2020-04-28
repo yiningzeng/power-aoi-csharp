@@ -119,24 +119,20 @@ namespace power_aoi.DockerPanal
             #endregion
 
             #region marker点检测区域-对应新的板子-1694
-            backMarkerCheckArea.Add(new DRectangle(583, 1598, 627, 299));
-            backMarkerCheckArea.Add(new DRectangle(1430, 1611, 604, 280));
-            backMarkerCheckArea.Add(new DRectangle(2274, 1627, 590, 268));
-            backMarkerCheckArea.Add(new DRectangle(3094, 1607, 640, 278));
-            backMarkerCheckArea.Add(new DRectangle(3954, 1611, 626, 280));
-            backMarkerCheckArea.Add(new DRectangle(4820, 1637, 624, 270));
-            backMarkerCheckArea.Add(new DRectangle(5660, 1621, 610, 286));
-            backMarkerCheckArea.Add(new DRectangle(6500, 1625, 624, 280));
+            backMarkerCheckArea.Add(new DRectangle(1558, 27, 577, 331));
+            backMarkerCheckArea.Add(new DRectangle(2434, 25, 621, 329));
+            backMarkerCheckArea.Add(new DRectangle(3370, 17, 677, 347));
+            backMarkerCheckArea.Add(new DRectangle(4300, 21, 643, 359));
+            backMarkerCheckArea.Add(new DRectangle(5220, 17, 697, 363));
+            backMarkerCheckArea.Add(new DRectangle(6176, 21, 653, 349));
 
 
-            frontMarkerCheckArea.Add(new DRectangle(286, 1547, 621, 354));
-            frontMarkerCheckArea.Add(new DRectangle(1141, 1547, 657, 405));
-            frontMarkerCheckArea.Add(new DRectangle(2001, 1556, 621, 381));
-            frontMarkerCheckArea.Add(new DRectangle(2826, 1586, 675, 351));
-            frontMarkerCheckArea.Add(new DRectangle(3711, 1583, 585, 363));
-            frontMarkerCheckArea.Add(new DRectangle(4560, 1601, 615, 357));
-            frontMarkerCheckArea.Add(new DRectangle(5361, 1622, 635, 330));
-            frontMarkerCheckArea.Add(new DRectangle(6230, 1607, 645, 351));
+            frontMarkerCheckArea.Add(new DRectangle(138, 15, 609, 293));
+            frontMarkerCheckArea.Add(new DRectangle(1084, 21, 597, 279));
+            frontMarkerCheckArea.Add(new DRectangle(2044, 31, 567, 289));
+            frontMarkerCheckArea.Add(new DRectangle(2958, 41, 597, 289));
+            frontMarkerCheckArea.Add(new DRectangle(3858, 61, 633, 287));
+            frontMarkerCheckArea.Add(new DRectangle(4798, 51, 587, 297));
             #endregion
 
             partOfPcb = pPcb;
@@ -251,43 +247,33 @@ namespace power_aoi.DockerPanal
             {
                 case 0:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(529, 28), new Size(714, 1630)),
-                        new DRectangle(new DPoint(298, 13), new Size(666, 1564)));
+                        new DRectangle(new DPoint(1216, 271), new Size(891, 2357)),
+                        new DRectangle(new DPoint(138, 197), new Size(863, 2273)));
                     break;
                 case 1:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(1393, 43), new Size(704, 1600)),
-                        new DRectangle(new DPoint(1138, 22), new Size(666, 1564)));
+                        new DRectangle(new DPoint(2190, 288), new Size(883, 2307)),
+                        new DRectangle(new DPoint(1078, 211), new Size(863, 2273)));
                     break;
                 case 2:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(2226, 49), new Size(717, 1603)),
-                        new DRectangle(new DPoint(1983, 13), new Size(681, 1618)));
+                        new DRectangle(new DPoint(3086, 292), new Size(951, 2294)),
+                        new DRectangle(new DPoint(2002, 225), new Size(899, 2255)));
                     break;
                 case 3:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(3081, 43), new Size(717, 1609)),
-                        new DRectangle(new DPoint(2838, 4), new Size(675, 1621)));
+                        new DRectangle(new DPoint(4038, 276), new Size(917, 2318)),
+                        new DRectangle(new DPoint(2924, 231), new Size(921, 2283)));
                     break;
                 case 4:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(3927, 49), new Size(741, 1603)),
-                        new DRectangle(new DPoint(3669, 7), new Size(684, 1618)));
+                        new DRectangle(new DPoint(4964, 282), new Size(943, 2359)),
+                        new DRectangle(new DPoint(3858, 231), new Size(923, 2283)));
                     break;
                 case 5:
                     drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(4776, 43), new Size(726, 1624)),
-                        new DRectangle(new DPoint(4503, 7), new Size(714, 1639)));
-                    break;
-                case 6:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(5630, 43), new Size(720, 1624)),
-                        new DRectangle(new DPoint(5337, 4), new Size(725, 1648)));
-                    break;
-                case 7:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(6482, 55), new Size(708, 1627)),
-                        new DRectangle(new DPoint(6197, 7), new Size(720, 1654)));
+                        new DRectangle(new DPoint(5888, 286), new Size(927, 2318)),
+                        new DRectangle(new DPoint(4784, 237), new Size(893, 2301)));
                     break;
             }
 
@@ -341,14 +327,14 @@ namespace power_aoi.DockerPanal
             //所以要执行loadData
             if (frontBoard != null && backBoard != null)
             {
-                if (xboardDoneNum >= 16)
+                if (xboardDoneNum >= 12)
                 {
                     loadData(nowWorkingPcb);
                 }
             }
             else if (frontBoard != null || backBoard != null)
             {
-                if (xboardDoneNum >= 8)
+                if (xboardDoneNum >= 6)
                 {
                     loadData(nowWorkingPcb);
                 }
@@ -384,7 +370,7 @@ namespace power_aoi.DockerPanal
                 backBoard.isBack = true;
             }
 
-            for (int i = 0; i <= 7; i++)
+            for (int i = 0; i <= 5; i++)
             {
                 if (frontBoard != null)
                 {
