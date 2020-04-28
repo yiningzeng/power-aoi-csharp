@@ -355,14 +355,14 @@ namespace power_aoi.DockerPanal
             //所以要执行loadData
             if (frontBoard != null && backBoard != null)
             {
-                if (xboardDoneNum >= 16)
+                if (xboardDoneNum >= 20)
                 {
                     loadData(nowWorkingPcb);
                 }
             }
             else if (frontBoard != null || backBoard != null)
             {
-                if (xboardDoneNum >= 8)
+                if (xboardDoneNum >= 10)
                 {
                     loadData(nowWorkingPcb);
                 }
