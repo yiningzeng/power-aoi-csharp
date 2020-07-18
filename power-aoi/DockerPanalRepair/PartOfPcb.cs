@@ -31,19 +31,29 @@ namespace power_aoi.DockerPanal
                 double wPro = (double)pbPart.Width / globalImageWidth; // pictureBox.Image.Width改成全局
                 double hPro = (double)pbPart.Height / globalImageHeight;
                 Rectangle newRect = new Rectangle(
-                    Convert.ToInt32((globalRect.X + globalRect.Width / 2) * wPro),
-                    Convert.ToInt32((globalRect.Y + globalRect.Height / 2) * hPro),
+                    Convert.ToInt32((globalRect.X - globalRect.Width / 2) * wPro),
+                    Convert.ToInt32((globalRect.Y - globalRect.Height / 2) * hPro),
                     Convert.ToInt32(globalRect.Width * wPro),
                     Convert.ToInt32(globalRect.Height * hPro));
-                newRect.Inflate(10, 10);
+                newRect.Inflate(20, 20);
+                if (newRect.X < 0) newRect.X = 0;
+                if (newRect.Y < 0) newRect.Y = 0;
                 pbPart.Refresh();
                 Graphics ghFront = pbPart.CreateGraphics();
 
                 Pen newPen = new Pen(Color.Red, 1);//定义一个画笔，黄色
 
-                pbPart.Update();//这句话相当关键  会是消除之前画的图 速度加快
+                pbPart.Update();//消除之前画的图 速度加快
                 ghFront.DrawRectangle(newPen, newRect);
-                ghFront.DrawString(globalNgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, newRect.X, newRect.Y - 15);
+                if (newRect.Y == 0 && newRect.X + newRect.Width < pbPart.Width) // 还有几种情况不影响使用，就不加了
+                {
+                    ghFront.DrawString(globalNgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, newRect.X + newRect.Width, newRect.Y + 5);
+                }
+                else
+                {
+                    ghFront.DrawString(globalNgType, new Font("宋体", 10, FontStyle.Bold), Brushes.Red, newRect.X, newRect.Y - 15);
+                }
+
                 //ghFront.DrawLine(newPen, new Point(newRect.X, 0), new Point(newRect.X, pictureBox.Height));
                 //ghFront.DrawLine(newPen, new Point(0, newRect.Y), new Point(pictureBox.Width, newRect.Y));
             }

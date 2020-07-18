@@ -30,14 +30,16 @@ namespace power_aoi.DockerPanal
     {
         public class XBoard
         {
-            public Mat matImg;
+            //public Mat matImg;
+            public Bitmap bitmap;
             public bool isBack = false;
             public RTree<DRectangle> badTree = new RTree<DRectangle>();
             public RTree<DRectangle> okTree = new RTree<DRectangle>();
 
             public XBoard(string path, bool isBack)
             {
-                matImg = new Mat(path, Emgu.CV.CvEnum.LoadImageType.AnyColor);
+                //matImg = new Mat(path, Emgu.CV.CvEnum.LoadImageType.AnyColor);
+                bitmap = (Bitmap)Image.FromFile(path);
                 this.isBack = isBack;
             }
         }
@@ -118,29 +120,25 @@ namespace power_aoi.DockerPanal
             //frontMarkerCheckArea.Add(new DRectangle(6259, 111, 428, 237));
             #endregion
 
-            #region marker点检测区域-对应新的板子-1694
-            backMarkerCheckArea.Add(new DRectangle(803, 2270, 693, 301));
-            backMarkerCheckArea.Add(new DRectangle(1500, 2269, 636, 294));
-            backMarkerCheckArea.Add(new DRectangle(2156, 2271, 687, 292));
-            backMarkerCheckArea.Add(new DRectangle(2816, 2271, 682, 295));
-            backMarkerCheckArea.Add(new DRectangle(3495, 2277, 678, 286));
-            backMarkerCheckArea.Add(new DRectangle(4162, 2274, 663, 295));
-            backMarkerCheckArea.Add(new DRectangle(4911, 2274, 660, 289));
-            backMarkerCheckArea.Add(new DRectangle(5610, 2274, 667, 303));
-            backMarkerCheckArea.Add(new DRectangle(6280, 2274, 680, 285));
-            backMarkerCheckArea.Add(new DRectangle(6967, 2274, 633, 289));
+            #region marker点检测区域-对应新的板子-1818
+            backMarkerCheckArea.Add(new DRectangle(765, 0, 788, 288));
+            backMarkerCheckArea.Add(new DRectangle(1586, 0, 787, 298));
+            backMarkerCheckArea.Add(new DRectangle(2414, 0, 784, 295));
+            backMarkerCheckArea.Add(new DRectangle(3206, 0, 772, 288));
+            backMarkerCheckArea.Add(new DRectangle(4012, 0, 773, 288));
+            backMarkerCheckArea.Add(new DRectangle(4792, 0, 788, 292));
+            backMarkerCheckArea.Add(new DRectangle(5598, 0, 795, 292));
+            backMarkerCheckArea.Add(new DRectangle(6415, 0, 765, 288));
 
 
-            frontMarkerCheckArea.Add(new DRectangle(505, 2146, 566, 390));
-            frontMarkerCheckArea.Add(new DRectangle(1169, 2161, 615, 385));
-            frontMarkerCheckArea.Add(new DRectangle(1791, 2158, 675, 408));
-            frontMarkerCheckArea.Add(new DRectangle(2504, 2215, 615, 355));
-            frontMarkerCheckArea.Add(new DRectangle(3269, 2230, 570, 342));
-            frontMarkerCheckArea.Add(new DRectangle(3948, 2227, 546, 355));
-            frontMarkerCheckArea.Add(new DRectangle(4533, 2230, 718, 363));
-            frontMarkerCheckArea.Add(new DRectangle(5278, 2233, 618, 364));
-            frontMarkerCheckArea.Add(new DRectangle(5905, 2237, 693, 368));
-            frontMarkerCheckArea.Add(new DRectangle(6610, 2245, 666, 378));
+            frontMarkerCheckArea.Add(new DRectangle(367, 0, 600, 184));
+            frontMarkerCheckArea.Add(new DRectangle(1132, 0, 609, 220));
+            frontMarkerCheckArea.Add(new DRectangle(1892, 0, 723, 229));
+            frontMarkerCheckArea.Add(new DRectangle(2682, 0, 743, 229));
+            frontMarkerCheckArea.Add(new DRectangle(3459, 0, 735, 259));
+            frontMarkerCheckArea.Add(new DRectangle(4275, 0, 757, 266));
+            frontMarkerCheckArea.Add(new DRectangle(5067, 0, 775, 266));
+            frontMarkerCheckArea.Add(new DRectangle(5853, 0, 792, 277));
             #endregion
 
             partOfPcb = pPcb;
@@ -194,181 +192,46 @@ namespace power_aoi.DockerPanal
         /// <param name="xboard"></param>
         /// <param name="dBackRectangle">背面板子的区域</param>
         /// <param name="dFrontRectangle">正面板子的区域</param>
-        private void drawAndTree(XBoard xboard, double markerScore, DRectangle dBackRectangle, DRectangle dFrontRectangle)
-        {
-            if (xboard.isBack)
-            {
-                MCvScalar mCvScalar;
-                //只有匹配结果分值较高时才新增
-                if (markerScore >= threshold) // 得分大于阈值就是坏板
-                {
-                    mCvScalar = new MCvScalar(0, 0, 255); // 使用红色 bgr
-                    //并且需要画X
-                    CvInvoke.Line(backBoard.matImg, dBackRectangle.Location, new DPoint(dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height), mCvScalar, 20);
-                    CvInvoke.Line(backBoard.matImg, new DPoint(dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y), new DPoint(dBackRectangle.X, dBackRectangle.Y + dBackRectangle.Height), mCvScalar, 20);
-                    xboard.badTree.Add(new RRectangle(dBackRectangle.X, dBackRectangle.Y, dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height, 0, 0), dBackRectangle);
-                }
-                else
-                {
-                    mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
-                    xboard.okTree.Add(new RRectangle(dBackRectangle.X, dBackRectangle.Y, dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height, 0, 0), dBackRectangle);
-                }
-                CvInvoke.Rectangle(backBoard.matImg, dBackRectangle, mCvScalar, 20);
-            }
-            else
-            {
-                MCvScalar mCvScalar;
-                //只有匹配结果分值较高时才新增
-                if (markerScore >= threshold) // 得分大于阈值就是坏板
-                {
-                    mCvScalar = new MCvScalar(0, 0, 255); // 使用红色 bgr
-                    CvInvoke.Line(frontBoard.matImg, dFrontRectangle.Location, new DPoint(dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height), mCvScalar, 20);
-                    CvInvoke.Line(frontBoard.matImg, new DPoint(dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y), new DPoint(dFrontRectangle.X, dFrontRectangle.Y + dFrontRectangle.Height), mCvScalar, 20);
-                    xboard.badTree.Add(new RRectangle(dFrontRectangle.X, dFrontRectangle.Y, dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height, 0, 0), dFrontRectangle);
-                }
-                else
-                {
-                    mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
-                    xboard.okTree.Add(new RRectangle(dFrontRectangle.X, dFrontRectangle.Y, dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height, 0, 0), dFrontRectangle);
-                }
-                CvInvoke.Rectangle(frontBoard.matImg, dFrontRectangle, mCvScalar, 20);
-            }
-        }
-
-        /// <summary>
-        /// 增加坏板的区域， 里面存储的都是坏板的直接区域
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="xboard"></param>
-        private void xBoardAddTree(int i, double dres, XBoard xboard)
-        {
-
-            if (xboard.isBack)
-            {
-                Console.WriteLine("反面:" + i + "  " + dres);
-            }
-            else
-            {
-                Console.WriteLine("正面:" + i + "  " + dres);
-            }
-            switch (i)
-            {
-                case 0:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(809, 256), new Size(712, 2062)),
-                        new DRectangle(new DPoint(399, 153), new Size(695, 2094)));
-                    break;
-                case 1:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(1454, 256), new Size(732, 2070)),
-                        new DRectangle(new DPoint(1053, 120), new Size(705, 2140)));
-                    break;
-                case 2:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(2129, 253), new Size(732, 2067)),
-                        new DRectangle(new DPoint(1731, 117), new Size(701, 2151)));
-                    break;
-                case 3:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(2808, 261), new Size(719, 2066)),
-                        new DRectangle(new DPoint(2381, 123), new Size(700, 2164)));
-                    break;
-                case 4:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(3486, 261), new Size(694, 2062)),
-                        new DRectangle(new DPoint(3059, 128), new Size(720, 2162)));
-                    break;
-                case 5:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(4131, 253), new Size(717, 2062)),
-                        new DRectangle(new DPoint(3724, 132), new Size(699, 2160)));
-                    break;
-                case 6:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(4813, 256), new Size(698, 2071)),
-                        new DRectangle(new DPoint(4378, 147), new Size(705, 2151)));
-                    break;
-                case 7:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(5463, 253), new Size(720, 2077)),
-                        new DRectangle(new DPoint(5046, 155), new Size(702, 2147)));
-                    break;
-                case 8:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(6156, 253), new Size(679, 2080)),
-                        new DRectangle(new DPoint(5721, 158), new Size(694, 2156)));
-                    break;
-                case 9:
-                    drawAndTree(xboard, dres,
-                        new DRectangle(new DPoint(6805, 250), new Size(723, 2083)),
-                        new DRectangle(new DPoint(6381, 173), new Size(700, 2144)));
-                    break;
-            }
-
-            #region 老的板区域
-            //switch (i)
-            //{
-            //    case 0:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(724, 594), new Size(1453, 2664)),
-            //            new DRectangle(new DPoint(1096, 592), new Size(1381, 2661)));
-            //        break;
-            //    case 1:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(2389, 585), new Size(1435, 2706)),
-            //            new DRectangle(new DPoint(2734, 607), new Size(1354, 2691)));
-            //        break;
-            //    case 2:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(4084, 600), new Size(1402, 2691)),
-            //            new DRectangle(new DPoint(4387, 643), new Size(1369, 2682)));
-            //        break;
-            //    case 3:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(5737, 600), new Size(1399, 2654)),
-            //            new DRectangle(new DPoint(6022, 703), new Size(1333, 2651)));
-            //        break;
-            //    case 4:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(7364, 568), new Size(1411, 2660)),
-            //            new DRectangle(new DPoint(7668, 718), new Size(1363, 2624)));
-            //        break;
-            //    case 5:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(9042, 598), new Size(1359, 2618)),
-            //            new DRectangle(new DPoint(9324, 706), new Size(1363, 2666)));
-            //        break;
-            //    case 6:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(10681, 576), new Size(1414, 2675)),
-            //            new DRectangle(new DPoint(10995, 775), new Size(1366, 2633)));
-            //        break;
-            //    case 7:
-            //        drawAndTree(xboard, dres,
-            //            new DRectangle(new DPoint(12358, 570), new Size(1348, 2660)),
-            //            new DRectangle(new DPoint(12630, 748), new Size(1372, 2678)));
-            //        break;
-            //}
-            #endregion
-            xboardDoneNum++;
-            //到这里结束了！！！！大于等于16，说明正反面都执行完了
-            //所以要执行loadData
-            if (frontBoard != null && backBoard != null)
-            {
-                if (xboardDoneNum >= 20)
-                {
-                    loadData(nowWorkingPcb);
-                }
-            }
-            else if (frontBoard != null || backBoard != null)
-            {
-                if (xboardDoneNum >= 10)
-                {
-                    loadData(nowWorkingPcb);
-                }
-            }
-
-        }
+        //private void drawAndTree(XBoard xboard, double markerScore, DRectangle dBackRectangle, DRectangle dFrontRectangle)
+        //{
+        //    if (xboard.isBack)
+        //    {
+        //        MCvScalar mCvScalar;
+        //        //只有匹配结果分值较高时才新增
+        //        if (markerScore >= threshold) // 得分大于阈值就是坏板
+        //        {
+        //            mCvScalar = new MCvScalar(0, 0, 255); // 使用红色 bgr
+        //            //并且需要画X
+        //            CvInvoke.Line(backBoard.matImg, dBackRectangle.Location, new DPoint(dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height), mCvScalar, 20);
+        //            CvInvoke.Line(backBoard.matImg, new DPoint(dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y), new DPoint(dBackRectangle.X, dBackRectangle.Y + dBackRectangle.Height), mCvScalar, 20);
+        //            xboard.badTree.Add(new RRectangle(dBackRectangle.X, dBackRectangle.Y, dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height, 0, 0), dBackRectangle);
+        //        }
+        //        else
+        //        {
+        //            mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
+        //            xboard.okTree.Add(new RRectangle(dBackRectangle.X, dBackRectangle.Y, dBackRectangle.X + dBackRectangle.Width, dBackRectangle.Y + dBackRectangle.Height, 0, 0), dBackRectangle);
+        //        }
+        //        CvInvoke.Rectangle(backBoard.matImg, dBackRectangle, mCvScalar, 20);
+        //    }
+        //    else
+        //    {
+        //        MCvScalar mCvScalar;
+        //        //只有匹配结果分值较高时才新增
+        //        if (markerScore >= threshold) // 得分大于阈值就是坏板
+        //        {
+        //            mCvScalar = new MCvScalar(0, 0, 255); // 使用红色 bgr
+        //            CvInvoke.Line(frontBoard.matImg, dFrontRectangle.Location, new DPoint(dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height), mCvScalar, 20);
+        //            CvInvoke.Line(frontBoard.matImg, new DPoint(dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y), new DPoint(dFrontRectangle.X, dFrontRectangle.Y + dFrontRectangle.Height), mCvScalar, 20);
+        //            xboard.badTree.Add(new RRectangle(dFrontRectangle.X, dFrontRectangle.Y, dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height, 0, 0), dFrontRectangle);
+        //        }
+        //        else
+        //        {
+        //            mCvScalar = new MCvScalar(0, 255, 0); // 使用绿色 bgr
+        //            xboard.okTree.Add(new RRectangle(dFrontRectangle.X, dFrontRectangle.Y, dFrontRectangle.X + dFrontRectangle.Width, dFrontRectangle.Y + dFrontRectangle.Height, 0, 0), dFrontRectangle);
+        //        }
+        //        CvInvoke.Rectangle(frontBoard.matImg, dFrontRectangle, mCvScalar, 20);
+        //    }
+        //}
 
         /// <summary>
         /// 执行打X板子
@@ -398,81 +261,7 @@ namespace power_aoi.DockerPanal
                 backBoard.isBack = true;
             }
 
-            for (int i = 0; i <= 9; i++)
-            {
-                if (frontBoard != null)
-                {
-                    MySmartThreadPool.Instance().QueueWorkItem((act, n) =>
-                    {
-                        lock (frontBoard)
-                        {
-                            try
-                            {
-                                DPoint point = new DPoint();
-                                double dres = Aoi.marker_match_crop(frontBoard.matImg.Ptr, marker.Ptr, ref point, ref act);
-                                this.BeginInvoke((Action<int, double, XBoard>)((bn, bdress, board) =>
-                                {
-                                    xBoardAddTree(bn, bdress, board);
-                                }), n, dres, frontBoard);
-                                //if (dres > threshold)
-                                //{
-
-
-                                //    //CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
-                                //}
-                                //CvInvoke.PutText(frontMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
-                                //CvInvoke.Rectangle(frontMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(0, 0, 255), 20);
-                                //frontMatImg.Save(@"C:\res\f" + point.X + ".jpg");
-                                //Console.WriteLine(dres);
-                                //Console.WriteLine("正面:" + dres);
-                            }
-                            catch (Exception er)
-                            {
-                                LogHelper.WriteLog("front marker error", er);
-                            }
-                        }
-                    }, frontMarkerCheckArea[i], i);
-                }
-                if (backBoard != null)
-                {
-                    MySmartThreadPool.Instance().QueueWorkItem((act, n) =>
-                    {
-                        lock (backBoard)
-                        {
-                            try
-                            {
-
-                                DPoint point = new DPoint();
-                                double dres = Aoi.marker_match_crop(backBoard.matImg.Ptr, marker.Ptr, ref point, ref act);
-                                this.BeginInvoke((Action<int, double, XBoard>)((bn, bdress, board) =>
-                                {
-                                    xBoardAddTree(bn, bdress, board);
-                                }), n, dres, backBoard);
-                                //if (dres > threshold)
-                                //{
-
-                                //}
-                                //CvInvoke.PutText(backMatImg, dres + "", new DPoint(point.X + act.X, point.Y + act.Y), FontFace.HersheyComplex, 3, new MCvScalar(0, 0, 255));
-                                //CvInvoke.Rectangle(backMatImg, new DRectangle(new DPoint(point.X + act.X, point.Y + act.Y), new Size(75, 75)), new MCvScalar(255, 0, 0), 3);
-                                //backMatImg.Save(@"C:\res\b" + point.X + ".jpg");
-                                //Console.WriteLine(dres);
-                                //Console.WriteLine("反面:" + dres);
-                            }
-                            catch (Exception er)
-                            {
-                                LogHelper.WriteLog("back marker error", er);
-                            }
-                        }
-                    }, backMarkerCheckArea[i], i);
-                }
-
-
-                //DPoint point = new DPoint();
-                //double dres = Aoi.marker_match(img.Ptr, marker.Ptr, ref point);
-                //CvInvoke.Rectangle(img, new DRectangle(point, new Size(200, 200)), new MCvScalar(0, 0, 255), 20);
-                //img.Save(@"E:\索米测试图片\result\" + i + ".jpg");
-                //Console.WriteLine(res);
-            }
+            loadData(nowWorkingPcb);
         }
 
 
@@ -576,12 +365,12 @@ namespace power_aoi.DockerPanal
             backResults.Clear();
 
             if (frontBoard != null)
-            { bitmapFront = frontBoard.matImg.Bitmap;
+            { bitmapFront = frontBoard.bitmap;
                 twoSidesPcb.showFrontImg(bitmapFront);
             }
             if (backBoard != null)
             {
-                bitmapBack = backBoard.matImg.Bitmap;
+                bitmapBack = backBoard.bitmap;
                 twoSidesPcb.showBackImg(bitmapBack);
             }
 
@@ -618,49 +407,26 @@ namespace power_aoi.DockerPanal
             {
                 LogHelper.WriteLog("排序", er);
             }
-            if (Convert.ToBoolean(int.Parse(ConfigurationManager.AppSettings["XXX"])))
+            // 不进行打X板操作
             {
                 DRectangle beforeRect = new DRectangle(0, 0, 0, 0);
                 string oldNgType = "";
+                List<Result> tt = new List<Result>();
                 foreach (var item in pcb.results)
                 {
-
-                    DRectangle nowRect = new DRectangle(0, 0, 0, 0);
-                    //这里判断下！！！！是否在X板子里，如果是的话就不加载
-                    #region 判断缺陷点是否在badmarker所对应的坐标内
-                    List<DRectangle> badlist = new List<DRectangle>();
-                    List<DRectangle> oklist = new List<DRectangle>();
                     try
                     {
                         string[] reg = item.Region.Split(',');
+                        DRectangle nowRect = new DRectangle(0, 0, 0, 0);
                         int x = Convert.ToInt32(double.Parse(reg[0]));
                         int y = Convert.ToInt32(double.Parse(reg[1]));
                         int w = Convert.ToInt32(double.Parse(reg[2]));
                         int h = Convert.ToInt32(double.Parse(reg[3]));
                         nowRect = new DRectangle(x, y, w, h);
-                        RTree.Point point = new RTree.Point(x,y, 0);
-                        if (item.IsBack == 0)
-                        {
-                            badlist = frontBoard.badTree.Nearest(point, 0); //检索坏板
-                            oklist = frontBoard.okTree.Nearest(point, 0); //检索好板
-                        }
-                        else
-                        {
-                            badlist = backBoard.badTree.Nearest(point, 0); //检索坏板
-                            oklist = backBoard.okTree.Nearest(point, 0); //检索好板
-                        }
-                    }
-                    catch (Exception er)
-                    {
-                        LogHelper.WriteLog("marker error", er);
-                    }
-                    #endregion
-
-                    if (badlist.Count == 0 && oklist.Count > 0)
-                    {
                         //这里只有通过比较分值大的才显示在列表
                         if (aacompare(item.NgType, item.score))
                         {
+                            tt.Add(item);
                             double distance = 0;
                             try
                             {
@@ -668,12 +434,12 @@ namespace power_aoi.DockerPanal
                                 int ydiff = nowRect.Y - beforeRect.Y;
                                 distance = Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
                             }
-                            catch(Exception er)
+                            catch (Exception er)
                             {
                                 LogHelper.WriteLog("合并计算失败", er);
                             }
 
-                            if (distance!=0 &&distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
+                            if (distance != 0 && distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
                             {
                                 int finalLeftTopX = nowRect.X, finalLeftTopY = nowRect.Y, finalRightBotomX = nowRect.X + nowRect.Width, finalRightBotomY = nowRect.Y + nowRect.Height;
                                 if (nowRect.X > beforeRect.X)
@@ -707,26 +473,6 @@ namespace power_aoi.DockerPanal
                                     if (backResults.Count > 0) backResults.RemoveAt(backResults.Count - 1);
                                     backResults.Add(result);
                                 }
-                                //ListViewItem li = new ListViewItem();
-                                //li.BackColor = Color.Red;
-                                //li.SubItems[0].Text = item.PcbId.ToString();
-                                //li.SubItems.Add(item.IsBack.ToString());
-                                //li.SubItems.Add(pcb.PcbPath);
-                                //li.SubItems.Add(item.PartImagePath);
-                                //li.SubItems.Add(nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height);
-                                //li.SubItems.Add(item.Id.ToString());
-                                //li.SubItems.Add(item.Area);
-                                //li.SubItems.Add(item.NgType);
-                                //li.SubItems.Add(item.score.ToString());
-                                //li.SubItems.Add("未判定");
-                                //if (item.IsBack == 0)
-                                //{
-                                //    lvListFront.Items.Add(li);
-                                //}
-                                //else if (item.IsBack == 1)
-                                //{
-                                //    lvListBack.Items.Add(li);
-                                //}
                             }
                             else
                             {
@@ -743,95 +489,15 @@ namespace power_aoi.DockerPanal
                         beforeRect = nowRect;
                         oldNgType = item.NgType;
                     }
-                }
-            }
-            else // 不进行打X板操作
-            {
-                DRectangle beforeRect = new DRectangle(0, 0, 0, 0);
-                string oldNgType = "";
-                foreach (var item in pcb.results)
-                {
-                    try
-                    {
-                        string[] reg = item.Region.Split(',');
-                        DRectangle nowRect = new DRectangle(0, 0, 0, 0);
-                        int x = Convert.ToInt32(double.Parse(reg[0]));
-                        int y = Convert.ToInt32(double.Parse(reg[1]));
-                        int w = Convert.ToInt32(double.Parse(reg[2]));
-                        int h = Convert.ToInt32(double.Parse(reg[3]));
-                        nowRect = new DRectangle(x, y, w, h);
-                        //这里只有通过比较分值大的才显示在列表
-                        if (aacompare(item.NgType, item.score))
-                        {
-                            double distance = 0;
-                            try
-                            {
-                                int xdiff = nowRect.X - beforeRect.X;
-                                int ydiff = nowRect.Y - beforeRect.Y;
-                                distance = Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
-                            }
-                            catch (Exception er)
-                            {
-                                LogHelper.WriteLog("合并计算失败", er);
-                            }
-
-                            if (distance != 0 && distance <= int.Parse(ConfigurationManager.AppSettings["MergeRadius"]) && oldNgType.Equals(item.NgType))//float.Parse(INIHelper.Read("AIConfig", ngType, Application.StartupPath + "/config.ini"))
-                            {
-                                int finalLeftTopX = nowRect.X, finalLeftTopY = nowRect.Y, finalRightBotomX = nowRect.X + nowRect.Width, finalRightBotomY = nowRect.Y + nowRect.Height;
-                                if (nowRect.X > beforeRect.X)
-                                {
-                                    finalLeftTopX = beforeRect.X;
-                                }
-                                if (nowRect.Y > beforeRect.Y)
-                                {
-                                    finalLeftTopY = beforeRect.Y;
-                                }
-
-                                if(finalRightBotomX < beforeRect.X + beforeRect.Width)
-                                {
-                                    finalRightBotomX = beforeRect.X + beforeRect.Width;
-                                }
-                                if(finalRightBotomY < beforeRect.Y + beforeRect.Height)
-                                {
-                                    finalRightBotomY = beforeRect.Y + beforeRect.Height;
-                                }
-                             
-                                nowRect = new DRectangle(finalLeftTopX, finalLeftTopY, finalRightBotomX - finalLeftTopX, finalRightBotomY - finalLeftTopY);
-                                Result result = item;
-                                result.Region = nowRect.X + "," + nowRect.Y + "," + nowRect.Width + "," + nowRect.Height;
-                                if (item.IsBack == 0)
-                                {
-                                    if (frontResults.Count > 0) frontResults.RemoveAt(frontResults.Count - 1);
-                                    frontResults.Add(result);
-                                }
-                                else if (item.IsBack == 1)
-                                {
-                                    if (backResults.Count > 0) backResults.RemoveAt(backResults.Count - 1);
-                                    backResults.Add(result);
-                                }
-                            }
-                            else
-                            {
-                                if (item.IsBack == 0)
-                                {
-                                    frontResults.Add(item);
-                                }
-                                else if (item.IsBack == 1)
-                                {
-                                    backResults.Add(item);
-                                }
-                            }
-                        }
-                        beforeRect = nowRect;
-                        oldNgType = item.NgType;
-                    }
-                    catch(Exception er)
+                    catch (Exception er)
                     {
                         int a = 0;
                     }
 
 
                 }
+                string xa = JsonConvert.SerializeObject(tt);
+                xa = "";
             }
 
             showData(pcb.PcbPath);
@@ -886,23 +552,31 @@ namespace power_aoi.DockerPanal
             #region 截图显示下一个
             try
             {
-                string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + selectListView.Items[index].SubItems[2].Text + selectListView.Items[index].SubItems[3].Text;
+                string tFilePath = ConfigurationManager.AppSettings["FtpPath"] + selectListView.Items[index].SubItems[2].Text + "/results/" + selectListView.Items[index].SubItems[3].Text;
                 int Zoom = int.Parse(ConfigurationManager.AppSettings["Zoom"]);
                 //if (!File.Exists(tFilePath))
                 {
                     Bitmap resBitmap = null;
-                    string[] reg = selectListView.Items[index].SubItems[4].Text.Split(',');
+                    string[] reg = selectListView.Items[index].SubItems[6].Text.Split(',');
                     DRectangle rect = new DRectangle(
                             Convert.ToInt32(double.Parse(reg[0])),
                             Convert.ToInt32(double.Parse(reg[1])),
                             Convert.ToInt32(double.Parse(reg[2])),
                             Convert.ToInt32(double.Parse(reg[3])));
-                    DRectangle oldRect = rect;
+                 
+                    resBitmap = (Bitmap)Bitmap.FromFile(tFilePath);
+
+                    string[] reg2 = selectListView.Items[index].SubItems[4].Text.Split(',');
+                    DRectangle rect2 = new DRectangle(
+                            Convert.ToInt32(double.Parse(reg2[0])),
+                            Convert.ToInt32(double.Parse(reg2[1])),
+                            Convert.ToInt32(double.Parse(reg2[2])),
+                            Convert.ToInt32(double.Parse(reg2[3])));
                     if (selectListView.Items[index].SubItems[1].Text == "0") // 正面
                     {
-                        //Bitmap drawBitmap = Utils.DrawRect(bitmapFront, rect, lvList.Items[index].SubItems[7].Text);
-                        rect.Inflate(Zoom, Zoom);
-                        resBitmap = Utils.BitmapCut(bitmapFront, rect);//.Save(tFilePath);
+                        //rect.Inflate(Zoom, Zoom);
+                        //resBitmap = Utils.BitmapCut(bitmapFront, rect);//.Save(tFilePath);\
+                        //resBitmap.Save(@"D:\Power-Ftp\25969228997592064\result\" + selectListView.Items[index].SubItems[3].Text);
                         twoSidesPcb.BeginInvoke((Action)(() =>
                         {
                             twoSidesPcb.pictureBoxDraw(true, rect);
@@ -910,21 +584,27 @@ namespace power_aoi.DockerPanal
                     }
                     else if (selectListView.Items[index].SubItems[1].Text == "1") // 背面
                     {
-                        //Bitmap drawBitmap = Utils.DrawRect(bitmapBack, rect, lvList.Items[index].SubItems[7].Text);
-                        rect.Inflate(Zoom, Zoom);
-                        resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
+                        //rect.Inflate(Zoom, Zoom);
+                        //resBitmap = Utils.BitmapCut(bitmapBack, rect);//.Save(tFilePath);
+                        //resBitmap.Save(@"D:\Power-Ftp\25969228997592064\result\"+ selectListView.Items[index].SubItems[3].Text);
                         twoSidesPcb.BeginInvoke((Action)(() =>
                         {
                             twoSidesPcb.pictureBoxDraw(false, rect);
                         }));
                     }
 
-                    DRectangle newRect = new DRectangle(oldRect.X - rect.X - oldRect.Width / 2, oldRect.Y - rect.Y - oldRect.Height / 2, oldRect.Width, oldRect.Height);
-                    //resBitmap.Save(tFilePath);
+
+
+                    DRectangle oldRect = rect2;
+
+
                     partOfPcb.BeginInvoke((Action)(() =>
                     {
+                        rect2.Inflate(Zoom, Zoom);
+                        resBitmap = Utils.BitmapCut((Bitmap)resBitmap.Clone(), rect2);
                         try
                         {
+                            DRectangle newRect = new DRectangle(oldRect.X - rect2.X + oldRect.Width / 2, oldRect.Y - rect2.Y + oldRect.Height / 2, oldRect.Width, oldRect.Height);
                             partOfPcb.showImgThread(resBitmap, newRect, selectListView.Items[index].SubItems[7].Text);
                         }
                         catch (Exception er)
@@ -952,7 +632,7 @@ namespace power_aoi.DockerPanal
                 {
                     index = 0;
                 }
-                if (res == "OK")
+                if (res == "OK") // 错判 通过每张512的图一个字典key，关联一个类来判断是否同时存在的错判漏判等
                 {
                     if (selectListView.Items[index].SubItems[9].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
 
@@ -974,7 +654,7 @@ namespace power_aoi.DockerPanal
                     }
                     #endregion
                 }
-                else if(res == "NG")
+                else if(res == "NG") // 正确
                 {
                     if (selectListView.Items[index].SubItems[9].Text == "未判定") checkedNum++; // 只有在未判定更改状态后才+1
 

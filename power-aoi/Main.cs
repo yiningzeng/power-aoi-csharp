@@ -63,7 +63,7 @@ namespace power_aoi
                 BeginInvoke(new RabbitmqConnectCallback(RabbitmqConnected), message);
                 return;
             }
-            this.Text = "检验端-v2.0 "+message;
+            this.Text = "检验端--v3.5 "+message;
             pStatus.BringToFront();
         }
 
@@ -114,27 +114,29 @@ namespace power_aoi
                                 {
                                     pcb.IsError = 1;
                                 }
-                                aoiModel.pcbs.Add(pcb);
-                                aoiModel.results.AddRange(pcb.results);
-                                //aoiModel.markers.AddRange(pcb.markers);
-                                if (aoiModel.SaveChanges() > 0)
-                                {
-                                    res = pcb.Id + "-" + pcb.PcbNumber + " 已入库";
-                                }
-                                else
-                                {
-                                    res = pcb.Id + "-" + pcb.PcbNumber + " 入库失败";
-                                }
-                                aoiModel.Dispose();
+                                //List<Result> results = pcb.results;
+                                //pcb.results = null;
+                                //aoiModel.pcbs.Add(pcb);
+                                ////aoiModel.results.AddRange(pcb.results);
+                                //if (aoiModel.SaveChanges() > 0)
+                                //{
+                                res = pcb.Id + "-" + pcb.PcbNumber + " 已入库";
+                                //}
+                                //else
+                                //{
+                                //    res = pcb.Id + "-" + pcb.PcbNumber + " 入库失败";
+                                //}
+                                //pcb.results = results;
+                                //aoiModel.Dispose();
                             }
                             catch (Exception er)//UpdateException
                             {
-                                res = pcb.Id + "-" + pcb.PcbNumber + " 入库失败,ID冲突";
+                                res = pcb.Id + "-" + pcb.PcbNumber + " 入库失败 (" + er.InnerException.InnerException.Message+")";
                             }
 
                             this.BeginInvoke((Action)(() =>
                             {
-                                this.Text = "检验端-v2.0 ["+res+"]";
+                                this.Text = "检验端--v3.5 ["+res+"]";
                             }));
 
                             #region 加载ng列表
@@ -324,7 +326,7 @@ namespace power_aoi
                     RabbitMQClientHandler.ListenChannel.BasicAck(RabbitMQClientHandler.deliveryTag, false);
                     this.BeginInvoke((Action)(() =>
                     {
-                        this.Text = "检验端-v2.0 [数据异常-请把当前板放回重新检测]";
+                        this.Text = "检验端--v3.5 [数据异常-请把当前板放回重新检测]";
                         MessageBox.Show("数据异常-请把当前板放回重新检测", "异常报警", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }));
                     LogHelper.WriteLog("处理失败\n" + message, err);
@@ -371,7 +373,7 @@ namespace power_aoi
                 if (isLeisure) // 空闲状态下，暂停可以直接恢复
                 {
                     pcbDetails.changePause("恢复", true);
-                    this.Text = "检验端-v2.0 [暂停中...]";
+                    this.Text = "检验端--v3.5 [暂停中...]";
                 }
                 else
                 {
@@ -404,14 +406,14 @@ namespace power_aoi
 
             if (workPause)
             {
-                this.Text = "检验端-v2.0 [暂停中...]";
+                this.Text = "检验端--v3.5 [暂停中...]";
                 pcbDetails.changePause("恢复", true);
                 RabbitMQClientHandler.Pause();
                 pStatus.Visible = true;
             }
             else
             {
-                this.Text = "检验端-v2.0 [等待最新的校验信息...]";
+                this.Text = "检验端--v3.5 [等待最新的校验信息...]";
             }
    
 

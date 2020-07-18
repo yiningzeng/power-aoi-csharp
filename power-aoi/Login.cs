@@ -20,34 +20,7 @@ namespace power_aoi
         {
             InitializeComponent();
             this.Icon = Properties.Resources.aa;
-            //MySmartThreadPool.Instance().QueueWorkItem((str, lim) => {
-            //    try
-            //    {
-            //        string disk = str.Split(':')[0];
-            //        long freeGb = Utils.GetHardDiskFreeSpace(disk);
-            //        if (freeGb < lim)
-            //        {
-            //            MessageBox.Show(disk + "盘空间已经不足" + lim + "GB，请及时清理", "报警", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        LogHelper.WriteLog("磁盘空间检测", ex);
-            //    }
-            //}, ConfigurationManager.AppSettings["FtpPath"], Convert.ToInt32(ConfigurationManager.AppSettings["DiskRemind"]));
-            //INIHelper.Write("AIConfig", "333", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "aokeng", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "huashang", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "jiban-duanlie", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "jieliu", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "luotong", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "quesun", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "xigao-wuran", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "xizhu", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "yanghua", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "yashang", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "yiwu", "0.05", Application.StartupPath + "/config.ini");
-            //INIHelper.Write("AIConfig", "zhanxi", "0.05", Application.StartupPath + "/config.ini");
+         
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

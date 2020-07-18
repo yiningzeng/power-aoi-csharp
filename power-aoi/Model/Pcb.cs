@@ -17,6 +17,10 @@ namespace power_aoi.Model
         [Column(name:"id",TypeName = "varchar")]
         [StringLength(50)]
         public string Id { get; set; }
+        //[Description("AoiIP")]
+        //[Column(name: "ip", TypeName = "varchar")]
+        //[StringLength(50)]
+        //public string Ip { get; set; }
 
         [Column(name: "pcb_number")]
         [StringLength(250)]

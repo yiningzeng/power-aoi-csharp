@@ -273,6 +273,7 @@
     </Compile>
     <Compile Include="Model\AoiModel.cs" />
     <Compile Include="Model\JsonData.cs" />
+    <Compile Include="Model\PcbAlgorithmsInfo.cs" />
     <Compile Include="Model\PcbName.cs" />
     <Compile Include="Model\Pcb.cs" />
     <Compile Include="Model\Marker.cs" />
@@ -282,7 +283,6 @@
     <Compile Include="SqlPars\QueryPars.cs" />
     <Compile Include="SqlPars\SqlQueryData2NG.cs" />
     <Compile Include="SqlPars\SqlQueryData1.cs" />
-    <Compile Include="Tools\Aoi.cs" />
     <Compile Include="Tools\DateTimeHelper.cs" />
     <Compile Include="Tools\DB.cs" />
     <Compile Include="Tools\DoubleBufferListView.cs">
